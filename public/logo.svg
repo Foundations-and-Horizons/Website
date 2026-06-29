@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 320" width="500" height="320">
+  <!-- Arc / horizon dome - larger, taller -->
+  <path d="M 55 185 A 195 195 0 0 1 445 185" fill="none" stroke="#2a7fd4" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Horizontal line -->
+  <line x1="15" y1="185" x2="485" y2="185" stroke="#555555" stroke-width="1.8"/>
+
+  <!-- Star - slightly right of arc center, elongated thin 4-point -->
+  <g transform="translate(258, 12)">
+    <polygon points="0,-22 2.5,-2.5 22,0 2.5,2.5 0,22 -2.5,2.5 -22,0 -2.5,-2.5" fill="#444444"/>
+  </g>
+
+  <!-- FOUNDATIONS -->
+  <text
+    x="250"
+    y="238"
+    text-anchor="middle"
+    font-family="'Didot', 'Bodoni MT', 'Playfair Display', 'Times New Roman', serif"
+    font-size="52"
+    font-weight="300"
+    letter-spacing="3"
+    fill="#4a4a4a"
+  >FOUNDATIONS</text>
+
+  <!-- & HORIZONS -->
+  <text
+    x="250"
+    y="300"
+    text-anchor="middle"
+    font-family="'Didot', 'Bodoni MT', 'Playfair Display', 'Times New Roman', serif"
+    font-size="54"
+    font-weight="300"
+    letter-spacing="3"
+    fill="#2a7fd4"
+  >&amp; HORIZONS</text>
+</svg>
