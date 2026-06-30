@@ -22,8 +22,8 @@ export default function Navbar() {
             <Image
   src="/logo.svg"
   alt="Foundations & Horizons"
-  width={120}
-  height={77}
+  width={90}
+  height={58}
   className="object-contain brightness-0 invert"
 />
           </Link>
