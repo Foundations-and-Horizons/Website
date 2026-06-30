@@ -19,15 +19,13 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="bg-white rounded p-1 flex items-center justify-center w-12 h-12">
-              <Image
-                src="/logo.png"
-                alt="Foundations & Horizons"
-                width={44}
-                height={44}
-                className="object-contain"
-              />
-            </div>
+            <Image
+  src="/logo.svg"
+  alt="Foundations & Horizons"
+  width={120}
+  height={77}
+  className="object-contain brightness-0 invert"
+/>
           </Link>
 
           {/* Desktop nav */}
