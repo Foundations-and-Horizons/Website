@@ -1,6 +1,5 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 import DashboardNav from "./DashboardNav";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardLayout({
   children,
@@ -10,8 +9,9 @@ export default async function DashboardLayout({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  // Login page uses this layout too — don't show the sidebar there
   if (!user) {
-    redirect("/dashboard/login");
+    return <>{children}</>;
   }
 
   return (
