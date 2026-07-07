@@ -187,6 +187,24 @@ export default function VolunteerManagementPage() {
       </section>
 
       {/* Demo Request */}
+      {/* Live demo CTA */}
+      <section className="py-14 px-4 bg-[#2a3db4] text-white text-center">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">See It Live — Right Now</h2>
+          <p className="text-blue-100 mb-8 text-lg">
+            Explore the full platform in your browser. No login required — real features, real data, zero setup.
+          </p>
+          <a
+            href="/volunteer-hub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-white text-[#2a3db4] font-bold px-10 py-4 rounded hover:bg-blue-50 transition-colors text-lg"
+          >
+            Try the Interactive Demo →
+          </a>
+        </div>
+      </section>
+
       <section className="py-20 px-4 bg-gray-50" id="demo">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           <div>
