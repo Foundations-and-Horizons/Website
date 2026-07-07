@@ -12,7 +12,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const [solutionsOpen, setPlatformsOpen] = useState(false);
 
   return (
     <nav className="bg-[#2a3db4] text-white sticky top-0 z-50">
@@ -40,13 +40,13 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* Solutions dropdown */}
+            {/* Platforms dropdown */}
             <div className="relative">
               <button
-                onClick={() => setSolutionsOpen(!solutionsOpen)}
+                onClick={() => setPlatformsOpen(!solutionsOpen)}
                 className="hover:text-blue-200 transition-colors flex items-center gap-1"
               >
-                Solutions
+                Platforms
                 <svg className="w-3 h-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
@@ -56,14 +56,14 @@ export default function Navbar() {
                   <Link
                     href="/solutions/volunteer-management"
                     className="block px-4 py-2 hover:bg-blue-50 text-sm"
-                    onClick={() => setSolutionsOpen(false)}
+                    onClick={() => setPlatformsOpen(false)}
                   >
                     Volunteer Management Platform
                   </Link>
                   <Link
                     href="/solutions/warehouse-operations"
                     className="block px-4 py-2 hover:bg-blue-50 text-sm"
-                    onClick={() => setSolutionsOpen(false)}
+                    onClick={() => setPlatformsOpen(false)}
                   >
                     Warehouse Operations Platform
                   </Link>

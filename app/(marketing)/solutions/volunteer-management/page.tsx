@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import ContactForm from "@/components/ContactForm";
 
 export const metadata = {
   title: "Volunteer Management Platform | Foundations & Horizons",
@@ -65,20 +64,14 @@ export default function VolunteerManagementPage() {
             A purpose-built platform that gives your nonprofit complete visibility into volunteer
             hours, schedules, and impact — so you can run your program with confidence.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="#demo"
-              className="bg-white text-[#2a3db4] px-8 py-4 font-semibold hover:bg-blue-50 transition-colors"
-            >
-              Request a Demo
-            </a>
-            <a
-              href="#features"
-              className="border-2 border-white text-white px-8 py-4 hover:bg-white/10 transition-colors"
-            >
-              See Features
-            </a>
-          </div>
+          <a
+            href="/volunteer-hub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-white text-[#2a3db4] px-10 py-4 font-semibold hover:bg-blue-50 transition-colors"
+          >
+            Try the Interactive Demo →
+          </a>
         </div>
       </section>
 
@@ -205,30 +198,6 @@ export default function VolunteerManagementPage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gray-50" id="demo">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Request a Demo</h2>
-            <p className="text-gray-600 leading-relaxed mb-6">
-              Interested in seeing the Volunteer Management Platform in action for your organization?
-              Fill out the form and we&apos;ll schedule a personalized walkthrough.
-            </p>
-            <ul className="space-y-2 text-gray-600 text-sm">
-              {[
-                "Live walkthrough of all features",
-                "Discussion of your specific needs",
-                "Custom configuration options",
-                "Pricing tailored to your org size",
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <span className="text-[#2a3db4] font-bold">✓</span> {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <ContactForm subject="Volunteer Management Platform Demo Request" />
-        </div>
-      </section>
     </>
   );
 }
