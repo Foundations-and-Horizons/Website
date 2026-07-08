@@ -40,13 +40,13 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* FoundationOS dropdown */}
+            {/* FoundationWorks dropdown */}
             <div className="relative">
               <button
                 onClick={() => setPlatformsOpen(!solutionsOpen)}
                 className="hover:text-blue-200 transition-colors flex items-center gap-1"
               >
-                FoundationOS
+                FoundationWorks
                 <svg className="w-3 h-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
@@ -58,14 +58,14 @@ export default function Navbar() {
                     className="block px-4 py-2 hover:bg-blue-50 text-sm"
                     onClick={() => setPlatformsOpen(false)}
                   >
-                    FoundationOS Volunteers
+                    FoundationWorks Volunteers
                   </Link>
                   <Link
                     href="/solutions/warehouse-operations"
                     className="block px-4 py-2 hover:bg-blue-50 text-sm"
                     onClick={() => setPlatformsOpen(false)}
                   >
-                    FoundationOS Warehouse
+                    FoundationWorks Warehouse
                   </Link>
                 </div>
               )}
@@ -100,12 +100,12 @@ export default function Navbar() {
           <Link href="/solutions/volunteer-management" onClick={() => setMobileOpen(false)}
             className="hover:text-blue-200 py-1"
           >
-            → FoundationOS Volunteers
+            → FoundationWorks Volunteers
           </Link>
           <Link href="/solutions/warehouse-operations" onClick={() => setMobileOpen(false)}
             className="hover:text-blue-200 py-1"
           >
-            → FoundationOS Warehouse
+            → FoundationWorks Warehouse
           </Link>
         </div>
       )}
