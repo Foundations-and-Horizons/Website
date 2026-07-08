@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata = {
-  title: "FoundationOS Volunteers | Foundations & Horizons",
+  title: "FoundationWorks Volunteers | Foundations & Horizons",
 };
 
 const features = [
@@ -58,7 +58,7 @@ export default function VolunteerManagementPage() {
             Custom-Built for Nonprofits
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            FoundationOS Volunteers
+            FoundationWorks Volunteers
           </h1>
           <p className="text-blue-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
             A purpose-built platform that gives your nonprofit complete visibility into volunteer
