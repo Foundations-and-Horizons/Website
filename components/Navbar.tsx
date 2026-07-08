@@ -40,32 +40,32 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* Platforms dropdown */}
+            {/* FoundationOS dropdown */}
             <div className="relative">
               <button
                 onClick={() => setPlatformsOpen(!solutionsOpen)}
                 className="hover:text-blue-200 transition-colors flex items-center gap-1"
               >
-                Platforms
+                FoundationOS
                 <svg className="w-3 h-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               {solutionsOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white text-gray-800 rounded shadow-lg py-1 z-50">
+                <div className="absolute right-0 top-full mt-2 w-64 bg-white text-gray-800 rounded shadow-lg py-1 z-50">
                   <Link
                     href="/solutions/volunteer-management"
                     className="block px-4 py-2 hover:bg-blue-50 text-sm"
                     onClick={() => setPlatformsOpen(false)}
                   >
-                    Volunteer Management Platform
+                    FoundationOS Volunteers
                   </Link>
                   <Link
                     href="/solutions/warehouse-operations"
                     className="block px-4 py-2 hover:bg-blue-50 text-sm"
                     onClick={() => setPlatformsOpen(false)}
                   >
-                    Warehouse Operations Platform
+                    FoundationOS Warehouse
                   </Link>
                 </div>
               )}
@@ -100,12 +100,12 @@ export default function Navbar() {
           <Link href="/solutions/volunteer-management" onClick={() => setMobileOpen(false)}
             className="hover:text-blue-200 py-1"
           >
-            → Volunteer Management Platform
+            → FoundationOS Volunteers
           </Link>
           <Link href="/solutions/warehouse-operations" onClick={() => setMobileOpen(false)}
             className="hover:text-blue-200 py-1"
           >
-            → Warehouse Operations Platform
+            → FoundationOS Warehouse
           </Link>
         </div>
       )}
