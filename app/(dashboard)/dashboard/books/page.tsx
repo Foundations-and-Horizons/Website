@@ -12,7 +12,7 @@ export default function BookSalesPage() {
 
   async function load() {
     const { data } = await supabase.from("book_sales").select("*").order("period", { ascending: false });
-    setSales(data || []);
+    setSales((data || []).map((r) => ({ ...r, units_sold: Number(r.units_sold) })));
   }
   useEffect(() => { load(); }, []);
 
@@ -150,10 +150,10 @@ export default function BookSalesPage() {
           <div className="flex items-end gap-2 h-32 overflow-x-auto pb-2">
             {sorted.map((s) => (
               <div key={s.id} className="flex flex-col items-center min-w-[48px]">
-                <span className={`text-xs mb-1 font-medium ${s.units_sold === 0 ? "text-red-400" : "text-gray-600"}`}>{s.units_sold}</span>
+                <span className={`text-xs mb-1 font-medium ${Number(s.units_sold) === 0 ? "text-red-400" : "text-gray-600"}`}>{s.units_sold}</span>
                 <div
-                  className={`rounded-t w-8 transition-all ${s.units_sold === 0 ? "bg-red-300 border border-red-400" : s.units_sold === bestMonth ? "bg-amber-400" : "bg-[#2a3db4]"}`}
-                  style={{ height: s.units_sold === 0 ? "24px" : `${(s.units_sold / maxUnits) * 100}px` }}
+                  className={`rounded-t w-8 transition-all ${Number(s.units_sold) === 0 ? "bg-red-300 border border-red-400" : Number(s.units_sold) === bestMonth ? "bg-amber-400" : "bg-[#2a3db4]"}`}
+                  style={{ height: Number(s.units_sold) === 0 ? "24px" : `${Math.max(4, (Number(s.units_sold) / maxUnits) * 100)}px` }}
                 />
                 <span className="text-gray-400 mt-1 whitespace-nowrap" style={{ fontSize: "9px" }}>
                   {formatPeriod(s.period).split(" ")[0].slice(0, 3)}
