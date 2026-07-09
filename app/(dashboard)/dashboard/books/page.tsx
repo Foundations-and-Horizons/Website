@@ -17,8 +17,10 @@ export default function BookSalesPage() {
   useEffect(() => { load(); }, []);
 
   async function save() {
+    // period column is DATE — pad YYYY-MM to YYYY-MM-01 so Postgres accepts it
+    const period = form.period.length === 7 ? form.period + "-01" : form.period;
     await supabase.from("book_sales").insert({
-      period: form.period,
+      period,
       units_sold: form.units_sold === "" ? 0 : parseInt(form.units_sold),
       notes: form.notes || null,
     });
@@ -39,7 +41,7 @@ export default function BookSalesPage() {
   const totalUnits = sales.reduce((s, r) => s + r.units_sold, 0);
   const bestMonth = sales.reduce((best, s) => s.units_sold > best ? s.units_sold : best, 0);
   const thisMonthKey = new Date().toISOString().slice(0, 7);
-  const thisMonth = sales.find((s) => s.period === thisMonthKey)?.units_sold ?? null;
+  const thisMonth = sales.find((s) => s.period.slice(0, 7) === thisMonthKey)?.units_sold ?? null;
 
   function formatPeriod(p: string) {
     const [y, m] = p.split("-");
