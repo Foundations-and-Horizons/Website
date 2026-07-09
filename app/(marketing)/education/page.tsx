@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Education | Foundations & Horizons",
@@ -60,12 +61,19 @@ export default function EducationPage() {
             </a>
           </div>
           <div className="flex justify-center">
-            <div className="w-56 h-72 bg-[#2a3db4] rounded-lg shadow-xl flex flex-col items-center justify-center text-white text-center px-6">
-              <p className="text-xs tracking-widest uppercase mb-3 text-blue-200">New Book</p>
-              <p className="font-bold text-lg leading-snug mb-3">Strong Foundations, Higher Horizons</p>
-              <div className="w-12 h-0.5 bg-white/30 mb-3" />
-              <p className="text-sm text-blue-200">Stephen Cook</p>
-            </div>
+            <a
+              href="https://www.amazon.com/Strong-Foundations-Higher-Horizons-nonprofit-ebook/dp/B0G67NDZH7/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src="/book-cover.jpg"
+                alt="Strong Foundations, Higher Horizons by Stephen Cook"
+                width={280}
+                height={420}
+                className="rounded-lg shadow-2xl hover:shadow-blue-200 transition-shadow duration-300"
+              />
+            </a>
           </div>
         </div>
       </section>
