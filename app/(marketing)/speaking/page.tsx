@@ -7,26 +7,21 @@ export const metadata = {
 
 const appearances = [
   {
-    org: "Nonprofit Alliance Elevate Conference",
-    year: "2026",
-    title: "How Organizations Can Sustain Their People",
-    desc: "A panel discussion on the systems, structures, and leadership practices that allow nonprofits to retain and sustain their teams — not just recruit them.",
+    org: "Nonprofit Leadership Alliance — Elevate Conference",
+    years: "2025 & 2026",
+    panels: [
+      { year: "2026", title: "How Organizations Can Sustain Their People", desc: "A panel discussion on the systems, structures, and leadership practices that allow nonprofits to retain and sustain their teams — not just recruit them." },
+      { year: "2025", title: "Sustaining Success: Operational and Fundraising Strategies for Nonprofit Growth", desc: "A panel exploring how nonprofits can build the operational and financial foundation to grow sustainably — without burning out their people or losing their mission focus." },
+    ],
     photo: "/panel-elevate.jpg",
-    photoAlt: "Stephen Cook on panel at Nonprofit Alliance Elevate Conference 2026",
-  },
-  {
-    org: "Nonprofit Alliance Elevate Conference",
-    year: "2025",
-    title: "Sustaining Success: Operational and Fundraising Strategies for Nonprofit Growth",
-    desc: "A panel exploring how nonprofits can build the operational and financial foundation to grow sustainably — without burning out their people or losing their mission focus.",
-    photo: "/panel-elevate.jpg",
-    photoAlt: "Stephen Cook on panel at Nonprofit Alliance Elevate Conference 2025",
+    photoAlt: "Stephen Cook on panel at Nonprofit Leadership Alliance Elevate Conference",
   },
   {
     org: "The Nonprofit Hive",
-    year: "2025",
-    title: "Beyond One Lane: The Power of Understanding Your Full Nonprofit Ecosystem",
-    desc: "A panel discussion on how nonprofit leaders can zoom out, understand the full picture of their organization's ecosystem, and make better strategic decisions as a result. 80+ attendees.",
+    years: "2025",
+    panels: [
+      { year: "2025", title: "Beyond One Lane: The Power of Understanding Your Full Nonprofit Ecosystem", desc: "A panel discussion on how nonprofit leaders can zoom out, understand the full picture of their organization's ecosystem, and make better strategic decisions as a result. 80+ attendees." },
+    ],
     photo: "/panel-hive.jpg",
     photoAlt: "Stephen Cook on panel at The Nonprofit Hive",
   },
@@ -74,22 +69,24 @@ export default function SpeakingPage() {
 
           <div className="space-y-6">
             {appearances.map((a) => (
-              <div key={a.title} className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden hover:border-blue-200 hover:shadow-md transition-all duration-200">
-                <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start">
-                  <div className="shrink-0">
-                    <div className="w-16 h-16 rounded-lg bg-[#2a3db4] flex flex-col items-center justify-center text-white text-center">
-                      <p className="text-lg font-bold leading-none">{a.year}</p>
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-xs font-semibold text-[#2a3db4] uppercase tracking-wide mb-1">{a.org}</p>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">&ldquo;{a.title}&rdquo;</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{a.desc}</p>
+              <div key={a.org} className="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden hover:border-blue-200 hover:shadow-md transition-all duration-200">
+                <div className="p-6 md:p-8">
+                  <p className="text-xs font-semibold text-[#2a3db4] uppercase tracking-wide mb-4">{a.org}</p>
+                  <div className="space-y-4">
+                    {a.panels.map((p) => (
+                      <div key={p.title} className="flex gap-4 items-start">
+                        <div className="shrink-0 w-14 h-14 rounded-lg bg-[#2a3db4] flex items-center justify-center text-white">
+                          <p className="text-sm font-bold leading-none">{p.year}</p>
+                        </div>
+                        <div>
+                          <h3 className="text-base font-bold text-gray-900 mb-1">&ldquo;{p.title}&rdquo;</h3>
+                          <p className="text-gray-600 text-sm leading-relaxed">{p.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="relative w-full h-56 md:h-72">
-                  <Image src={a.photo} alt={a.photoAlt} fill className="object-cover object-top" />
-                </div>
+                <Image src={a.photo} alt={a.photoAlt} width={1200} height={800} className="w-full h-auto" />
               </div>
             ))}
           </div>
