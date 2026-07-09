@@ -83,8 +83,31 @@ export default function ServicesPage() {
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">Consulting</h1>
           <p className="text-blue-100 text-lg leading-relaxed">
-            Every engagement is built around your organization&apos;s specific challenges — not a generic playbook.
+            Built around your organization&apos;s actual challenges — not a generic playbook applied the same way to every client.
           </p>
+        </div>
+      </section>
+
+      {/* Problem intro */}
+      <section className="py-14 px-4 bg-white border-b border-gray-100">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-sm font-semibold tracking-widest text-[#2a3db4] uppercase mb-3 text-center">Who This Is For</p>
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Nonprofits That Are Ready to Stop Reacting and Start Building</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { problem: "You&apos;re growing but the systems can&apos;t keep up.", solution: "Program Operations Scaling" },
+              { problem: "Leadership isn&apos;t aligned on goals or priorities.", solution: "Leadership & OKR Alignment" },
+              { problem: "You don&apos;t have a clear plan — or the one you have isn&apos;t driving decisions.", solution: "Strategic Planning Facilitation" },
+              { problem: "Internal processes are inconsistent or breaking down.", solution: "Operational Assessment & Optimization" },
+              { problem: "Your team is burning out and you don&apos;t know where to start.", solution: "Operational Assessment & Optimization" },
+              { problem: "You want to grow but don&apos;t know what needs to change first.", solution: "Strategic Planning Facilitation" },
+            ].map((item) => (
+              <div key={item.problem} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <div className="w-2 h-2 rounded-full bg-[#2a3db4] shrink-0 mt-2" />
+                <p className="text-gray-700 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: item.problem }} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -155,7 +178,7 @@ export default function ServicesPage() {
             href="/contact"
             className="inline-block bg-white text-[#2a3db4] font-bold px-10 py-4 rounded hover:bg-blue-50 transition-colors"
           >
-            Get in Touch
+            Schedule a Strategy Call
           </Link>
         </div>
       </section>
