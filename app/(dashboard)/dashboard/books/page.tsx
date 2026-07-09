@@ -123,7 +123,7 @@ export default function BookSalesPage() {
             {/* Dots + labels */}
             {sorted.map((s, i) => (
               <g key={s.id}>
-                <circle cx={toX(i)} cy={toY(s.units_sold)} r={4} fill="#2a3db4" stroke="white" strokeWidth={1.5} />
+                <circle cx={toX(i)} cy={toY(s.units_sold)} r={4} fill={s.units_sold === 0 ? "#fca5a5" : "#2a3db4"} stroke="white" strokeWidth={1.5} />
                 <text x={toX(i)} y={chartHeight - padBottom + 14} textAnchor="middle" fontSize={9} fill="#9ca3af">
                   {formatPeriod(s.period)}
                 </text>
@@ -140,10 +140,10 @@ export default function BookSalesPage() {
           <div className="flex items-end gap-2 h-32 overflow-x-auto pb-2">
             {[...sales].reverse().map((s) => (
               <div key={s.id} className="flex flex-col items-center min-w-[40px]">
-                <span className="text-xs text-gray-500 mb-1">{s.units_sold}</span>
+                <span className={`text-xs mb-1 ${s.units_sold === 0 ? "text-red-400" : "text-gray-500"}`}>{s.units_sold}</span>
                 <div
-                  className="bg-[#2a3db4] rounded-t w-8"
-                  style={{ height: `${(s.units_sold / maxUnits) * 100}px` }}
+                  className={`rounded-t w-8 ${s.units_sold === 0 ? "bg-red-200" : "bg-[#2a3db4]"}`}
+                  style={{ height: s.units_sold === 0 ? "6px" : `${(s.units_sold / maxUnits) * 100}px` }}
                 />
                 <span className="text-xs text-gray-400 mt-1 rotate-45 origin-top-left whitespace-nowrap" style={{ fontSize: "10px" }}>
                   {formatPeriod(s.period)}
