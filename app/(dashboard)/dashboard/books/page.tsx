@@ -38,8 +38,30 @@ export default function BookSalesPage() {
     : null;
   const totalUnits = sales.reduce((s, r) => s + r.units_sold, 0);
 
-  // Simple bar chart
+  // Charts
   const maxUnits = Math.max(...sales.map((s) => s.units_sold), 1);
+
+  // Line chart SVG helpers
+  const chartWidth = 600;
+  const chartHeight = 160;
+  const padLeft = 32;
+  const padRight = 16;
+  const padTop = 16;
+  const padBottom = 28;
+  const sorted = [...sales].reverse();
+  const lineMax = Math.max(...sorted.map((s) => s.units_sold), 1);
+  const toX = (i: number) =>
+    sorted.length < 2
+      ? padLeft + (chartWidth - padLeft - padRight) / 2
+      : padLeft + (i / (sorted.length - 1)) * (chartWidth - padLeft - padRight);
+  const toY = (v: number) =>
+    padTop + (1 - v / lineMax) * (chartHeight - padTop - padBottom);
+  const points = sorted.map((s, i) => `${toX(i)},${toY(s.units_sold)}`).join(" ");
+  const areaPoints = [
+    `${toX(0)},${chartHeight - padBottom}`,
+    ...sorted.map((s, i) => `${toX(i)},${toY(s.units_sold)}`),
+    `${toX(sorted.length - 1)},${chartHeight - padBottom}`,
+  ].join(" ");
 
   return (
     <div>
@@ -70,6 +92,40 @@ export default function BookSalesPage() {
           <p className="text-3xl font-bold text-gray-900">{sales.length}</p>
         </div>
       </div>
+
+      {/* Line chart */}
+      {sorted.length > 1 && (
+        <div className="bg-white rounded-lg shadow p-5 mb-6">
+          <h2 className="text-sm font-medium text-gray-700 mb-3">Sales Trend</h2>
+          <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full" style={{ height: 160 }}>
+            {/* Y-axis gridlines */}
+            {[0, 0.25, 0.5, 0.75, 1].map((frac) => {
+              const y = padTop + (1 - frac) * (chartHeight - padTop - padBottom);
+              return (
+                <g key={frac}>
+                  <line x1={padLeft} x2={chartWidth - padRight} y1={y} y2={y} stroke="#f0f0f0" strokeWidth={1} />
+                  <text x={padLeft - 4} y={y + 4} textAnchor="end" fontSize={9} fill="#9ca3af">
+                    {Math.round(frac * lineMax)}
+                  </text>
+                </g>
+              );
+            })}
+            {/* Filled area */}
+            <polygon points={areaPoints} fill="#2a3db4" fillOpacity={0.08} />
+            {/* Line */}
+            <polyline points={points} fill="none" stroke="#2a3db4" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+            {/* Dots + labels */}
+            {sorted.map((s, i) => (
+              <g key={s.id}>
+                <circle cx={toX(i)} cy={toY(s.units_sold)} r={4} fill="#2a3db4" stroke="white" strokeWidth={1.5} />
+                <text x={toX(i)} y={chartHeight - padBottom + 14} textAnchor="middle" fontSize={9} fill="#9ca3af">
+                  {s.period.slice(0, 7)}
+                </text>
+              </g>
+            ))}
+          </svg>
+        </div>
+      )}
 
       {/* Bar chart */}
       {sales.length > 0 && (
