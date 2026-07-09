@@ -78,23 +78,12 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      {/* Banner */}
-      <section className="relative h-48 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/services-bg.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative z-10 h-full flex items-center justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-md">Consulting</h1>
-        </div>
-      </section>
-
-      {/* Intro */}
-      <section className="py-12 px-4 bg-white text-center border-b border-gray-100">
-        <div className="max-w-2xl mx-auto">
-          <p className="text-gray-600 text-lg leading-relaxed">
-            Every engagement is built around your organization&apos;s specific challenges — not a generic playbook. Here&apos;s what we work on together.
+      {/* Hero */}
+      <section className="bg-[#2a3db4] text-white py-20 px-4 text-center">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">Consulting</h1>
+          <p className="text-blue-100 text-lg leading-relaxed">
+            Every engagement is built around your organization&apos;s specific challenges — not a generic playbook.
           </p>
         </div>
       </section>
