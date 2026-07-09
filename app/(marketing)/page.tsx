@@ -49,8 +49,8 @@ const credibilityPoints = [
     detail: "Retired U.S. military — discipline, systems thinking, and operational rigor applied to nonprofit leadership.",
   },
   {
-    label: "USANA Foundation",
-    detail: "Director of Global Operations — built and scaled real nonprofit systems serving communities worldwide.",
+    label: "Nonprofit Operations",
+    detail: "Director of Operations for both global and local nonprofits — built and scaled real systems that allowed organizations to execute with consistency and reach.",
   },
   {
     label: "Elevate Conference",

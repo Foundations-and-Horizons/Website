@@ -25,7 +25,7 @@ export default function AboutPage() {
             Stephen Cook is a retired U.S. military veteran who spent years learning that the difference between an organization that thrives and one that survives comes down to one thing: operational foundation. The military taught him that clarity, systems, and accountability aren&apos;t bureaucratic overhead — they&apos;re what make mission possible.
           </p>
           <p>
-            After his military career, Stephen took that same discipline into the nonprofit world. As Director of Global Operations at the USANA Foundation, he didn&apos;t manage programs from a distance — he built the systems, workflows, and operational infrastructure that allowed a global humanitarian organization to execute with consistency and scale. He knows what it looks like when a nonprofit runs well, and he knows exactly what breaks when it doesn&apos;t.
+            After his military career, Stephen took that same discipline into the nonprofit world. As Director of Operations for both global and local nonprofits, he didn&apos;t manage programs from a distance — he built the systems, workflows, and operational infrastructure that allowed organizations to execute with consistency and scale. He knows what it looks like when a nonprofit runs well, and he knows exactly what breaks when it doesn&apos;t.
           </p>
           <p>
             That firsthand experience is what separates Foundations &amp; Horizons from consulting firms that approach nonprofits with generic frameworks. Stephen has been in the rooms where decisions get made, seen the budget constraints, navigated volunteer turnover, and built processes that actually held up under pressure. He didn&apos;t learn nonprofit operations from a course — he learned it by doing the work.
@@ -49,8 +49,8 @@ export default function AboutPage() {
             <p className="text-gray-600 text-sm leading-relaxed">Retired U.S. military. Operational discipline, systems thinking, and mission-first leadership applied to every engagement.</p>
           </div>
           <div className="p-6 bg-white rounded-lg border border-gray-200">
-            <h3 className="font-semibold text-[#2a3db4] mb-2">USANA Foundation</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">Director of Global Operations — built and scaled nonprofit systems at a global humanitarian organization serving communities across multiple countries.</p>
+            <h3 className="font-semibold text-[#2a3db4] mb-2">Nonprofit Operations</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">Director of Operations for both global and local nonprofits — built and scaled systems that allowed organizations to execute with consistency across communities and countries.</p>
           </div>
           <div className="p-6 bg-white rounded-lg border border-gray-200">
             <h3 className="font-semibold text-[#2a3db4] mb-2">Elevate Conference</h3>
