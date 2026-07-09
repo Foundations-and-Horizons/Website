@@ -19,66 +19,17 @@ export default function Navbar() {
   return (
     <nav className="bg-[#2a3db4] text-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
+        {/* Logo row */}
+        <div className="flex items-center justify-between pt-4 pb-2">
+          <Link href="/" className="shrink-0">
             <Image
               src="/logo.svg"
               alt="Foundations & Horizons"
-              width={160}
-              height={100}
+              width={200}
+              height={128}
               className="object-contain brightness-0 invert"
             />
           </Link>
-
-          <div className="hidden md:flex items-center gap-6 text-sm font-light tracking-wide">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="hover:text-blue-200 transition-colors whitespace-nowrap"
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            <div className="relative">
-              <button
-                onClick={() => setSolutionsOpen(!solutionsOpen)}
-                className="hover:text-blue-200 transition-colors flex items-center gap-1"
-              >
-                FoundationWorks
-                <svg className="w-3 h-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {solutionsOpen && (
-                <div className="absolute right-0 top-full mt-2 w-64 bg-white text-gray-800 rounded shadow-lg py-1 z-50">
-                  <Link
-                    href="/foundationworks"
-                    className="block px-4 py-2 hover:bg-blue-50 text-sm font-medium"
-                    onClick={() => setSolutionsOpen(false)}
-                  >
-                    FoundationWorks Platform
-                  </Link>
-                  <div className="border-t border-gray-100 my-1" />
-                  <Link
-                    href="/solutions/volunteer-management"
-                    className="block px-4 py-2 hover:bg-blue-50 text-sm"
-                    onClick={() => setSolutionsOpen(false)}
-                  >
-                    FoundationWorks Volunteers
-                  </Link>
-                  <Link
-                    href="/solutions/warehouse-operations"
-                    className="block px-4 py-2 hover:bg-blue-50 text-sm"
-                    onClick={() => setSolutionsOpen(false)}
-                  >
-                    FoundationWorks Warehouse
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
 
           <button
             className="md:hidden p-2"
@@ -91,6 +42,57 @@ export default function Navbar() {
               }
             </svg>
           </button>
+        </div>
+
+        {/* Nav links row */}
+        <div className="hidden md:flex items-center gap-6 text-sm font-light tracking-wide pb-4 border-t border-white/20 pt-3">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="hover:text-blue-200 transition-colors whitespace-nowrap"
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          <div className="relative">
+            <button
+              onClick={() => setSolutionsOpen(!solutionsOpen)}
+              className="hover:text-blue-200 transition-colors flex items-center gap-1"
+            >
+              FoundationWorks
+              <svg className="w-3 h-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {solutionsOpen && (
+              <div className="absolute left-0 top-full mt-2 w-64 bg-white text-gray-800 rounded shadow-lg py-1 z-50">
+                <Link
+                  href="/foundationworks"
+                  className="block px-4 py-2 hover:bg-blue-50 text-sm font-medium"
+                  onClick={() => setSolutionsOpen(false)}
+                >
+                  FoundationWorks Platform
+                </Link>
+                <div className="border-t border-gray-100 my-1" />
+                <Link
+                  href="/solutions/volunteer-management"
+                  className="block px-4 py-2 hover:bg-blue-50 text-sm"
+                  onClick={() => setSolutionsOpen(false)}
+                >
+                  FoundationWorks Volunteers
+                </Link>
+                <Link
+                  href="/solutions/warehouse-operations"
+                  className="block px-4 py-2 hover:bg-blue-50 text-sm"
+                  onClick={() => setSolutionsOpen(false)}
+                >
+                  FoundationWorks Warehouse
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
