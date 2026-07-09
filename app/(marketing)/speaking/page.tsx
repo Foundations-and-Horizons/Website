@@ -125,20 +125,20 @@ export default function SpeakingPage() {
               Every session ends with specific, actionable tools people can apply in their organizations immediately. Not inspiration that fades by Monday — frameworks and systems that have worked in real nonprofit environments.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { label: "Concrete frameworks", detail: "Not vague principles — structured tools they can use the week they get back." },
-              { label: "Systems thinking", detail: "Applied to real nonprofit challenges, not theoretical scenarios." },
-              { label: "Honest conversation", detail: "The operational realities that don't always make it onto conference agendas." },
+              { label: "Concrete frameworks", detail: "Not vague principles — structured tools they can use the week they get back. The same tools covered in the book, applied to their context." },
+              { label: "Systems thinking", detail: "Applied to real nonprofit challenges, not theoretical scenarios. Every concept connects — nothing is handed out as a standalone tip." },
+              { label: "Honest conversation", detail: "The operational realities that don't always make it onto conference agendas — including what breaks, what's hard, and what actually works." },
             ].map((item) => (
-              <div key={item.label} className="bg-blue-50 border border-blue-100 rounded-xl p-6">
-                <div className="w-8 h-8 rounded-full bg-[#2a3db4] flex items-center justify-center mb-4">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div key={item.label} className="bg-blue-50 border border-blue-100 rounded-xl p-8">
+                <div className="w-12 h-12 rounded-full bg-[#2a3db4] flex items-center justify-center mb-5">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-1">{item.label}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{item.detail}</p>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.label}</h3>
+                <p className="text-gray-600 text-base leading-relaxed">{item.detail}</p>
               </div>
             ))}
           </div>
