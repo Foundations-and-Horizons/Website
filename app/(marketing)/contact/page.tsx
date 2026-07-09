@@ -8,17 +8,13 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <>
-      {/* CTA Banner */}
-      <section className="relative py-24 flex items-center justify-center text-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/cta-bg.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-white/30" />
-        <div className="relative z-10 px-4 max-w-3xl">
-          <h1 className="text-3xl md:text-4xl font-semibold text-[#2a3db4]">
-            Let&apos;s talk about where your organization is stuck … and how to move forward with clarity
-          </h1>
+      {/* Hero */}
+      <section className="bg-[#2a3db4] text-white py-20 px-4 text-center">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">Get in Touch</h1>
+          <p className="text-blue-100 text-lg leading-relaxed">
+            Let&apos;s talk about where your organization is stuck — and how to move forward with clarity.
+          </p>
         </div>
       </section>
 
