@@ -33,6 +33,9 @@ function exportCSV(rows: Transaction[]) {
 
 export default function FinancePage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [goal, setGoal] = useState(25000);
+  const [editGoal, setEditGoal] = useState(false);
+  const [goalInput, setGoalInput] = useState("25000");
   const [monthFilter, setMonthFilter] = useState("all");
   const [catFilter, setCatFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
@@ -53,8 +56,16 @@ export default function FinancePage() {
     if (catFilter !== "all") q = q.eq("category", catFilter);
     const { data } = await q;
     setTransactions(data || []);
+    const { data: gs } = await supabase.from("settings").select("value").eq("key", "annual_net_income_goal").single();
+    if (gs) { setGoal(Number(gs.value)); setGoalInput(gs.value); }
   }
   useEffect(() => { load(); }, [monthFilter, catFilter]);
+
+  async function saveGoal() {
+    await supabase.from("settings").upsert({ key: "annual_net_income_goal", value: goalInput });
+    setGoal(Number(goalInput));
+    setEditGoal(false);
+  }
 
   async function save() {
     await supabase.from("transactions").insert({
@@ -77,6 +88,7 @@ export default function FinancePage() {
   const income = transactions.filter((t) => t.type === "income").reduce((s, t) => s + Number(t.amount), 0);
   const expenses = transactions.filter((t) => t.type === "expense").reduce((s, t) => s + Number(t.amount), 0);
   const net = income - expenses;
+  const goalPct = Math.min(100, Math.max(0, Math.round((net / goal) * 100)));
 
   const months = Array.from({ length: 12 }, (_, i) => {
     const d = new Date(); d.setMonth(i);
@@ -97,6 +109,34 @@ export default function FinancePage() {
             + Add Transaction
           </button>
         </div>
+      </div>
+
+      {/* Net Income Goal */}
+      <div className="bg-white rounded-lg shadow p-5 mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Net Income Goal — {new Date().getFullYear()}</p>
+            <p className="text-2xl font-bold text-gray-900">${net.toLocaleString()} <span className="text-sm font-normal text-gray-400">of ${goal.toLocaleString()}</span></p>
+          </div>
+          <div className="text-right">
+            <p className="text-2xl font-bold text-[#2a3db4]">{goalPct}%</p>
+            {!editGoal ? (
+              <button onClick={() => setEditGoal(true)} className="text-xs text-gray-400 hover:text-[#2a3db4] hover:underline">Edit goal</button>
+            ) : (
+              <div className="flex gap-1 items-center mt-1">
+                <span className="text-sm">$</span>
+                <input type="number" value={goalInput} onChange={(e) => setGoalInput(e.target.value)}
+                  className="w-24 border border-gray-300 rounded px-2 py-1 text-sm" />
+                <button onClick={saveGoal} className="text-xs bg-[#2a3db4] text-white px-2 py-1 rounded">Save</button>
+                <button onClick={() => setEditGoal(false)} className="text-xs text-gray-400 hover:underline ml-1">Cancel</button>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="w-full bg-gray-100 rounded-full h-3">
+          <div className={`h-3 rounded-full transition-all ${net < 0 ? "bg-red-500" : "bg-[#2a3db4]"}`} style={{ width: `${goalPct}%` }} />
+        </div>
+        <p className="text-xs text-gray-400 mt-1">${Math.max(0, goal - net).toLocaleString()} remaining to goal</p>
       </div>
 
       {/* Summary */}

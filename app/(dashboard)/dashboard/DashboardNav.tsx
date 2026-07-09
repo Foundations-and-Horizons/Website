@@ -8,7 +8,6 @@ const navItems = [
   { href: "/dashboard/leads", label: "Pipeline", icon: "👥" },
   { href: "/dashboard/linkedin", label: "LinkedIn", icon: "💼" },
   { href: "/dashboard/books", label: "Book Sales", icon: "📚" },
-  { href: "/dashboard/revenue", label: "Revenue Goal", icon: "🎯" },
   { href: "/dashboard/finance", label: "Finance", icon: "💰" },
 ];
 

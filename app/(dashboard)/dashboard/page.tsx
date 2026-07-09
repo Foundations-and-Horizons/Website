@@ -53,29 +53,21 @@ export default async function DashboardHome() {
     .order("created_at", { ascending: false })
     .limit(1);
 
-  // Revenue vs goal
-  const yearStart = startOfYear();
-  const { data: revenueRows } = await supabase
-    .from("revenue_entries")
-    .select("amount")
-    .gte("date_received", yearStart);
+  // Net income vs goal
   const { data: goalRow } = await supabase
     .from("settings")
     .select("value")
-    .eq("key", "annual_revenue_goal")
+    .eq("key", "annual_net_income_goal")
     .single();
-
-  const totalRevenue = (revenueRows || []).reduce((s, r) => s + Number(r.amount), 0);
   const goal = Number(goalRow?.value || 25000);
-  const revenuePercent = Math.min(100, Math.round((totalRevenue / goal) * 100));
 
-  // Net income
   const { data: transactions } = await supabase
     .from("transactions")
     .select("type, amount");
   const netIncome = (transactions || []).reduce((s, t) => {
     return t.type === "income" ? s + Number(t.amount) : s - Number(t.amount);
   }, 0);
+  const revenuePercent = Math.min(100, Math.round((netIncome / goal) * 100));
 
   const overdueCount = overdue?.length || 0;
   const postsCount = postsThisWeek?.length || 0;
@@ -123,20 +115,20 @@ export default async function DashboardHome() {
         </Link>
       </div>
 
-      {/* Revenue progress */}
-      <div className="bg-white rounded-lg shadow p-5 mb-6">
+      {/* Net Income progress */}
+      <Link href="/dashboard/finance" className="block bg-white rounded-lg shadow p-5 mb-6 hover:shadow-md transition-shadow">
         <div className="flex items-center justify-between mb-2">
-          <p className="text-sm font-medium text-gray-700">Revenue vs. Annual Goal</p>
-          <p className="text-sm text-gray-500">${totalRevenue.toLocaleString()} / ${goal.toLocaleString()}</p>
+          <p className="text-sm font-medium text-gray-700">Net Income vs. $25k Goal</p>
+          <p className="text-sm text-gray-500">${netIncome.toLocaleString()} / ${goal.toLocaleString()}</p>
         </div>
         <div className="w-full bg-gray-100 rounded-full h-3">
           <div
-            className="bg-[#2a3db4] h-3 rounded-full transition-all"
-            style={{ width: `${revenuePercent}%` }}
+            className={`h-3 rounded-full transition-all ${netIncome < 0 ? "bg-red-500" : "bg-[#2a3db4]"}`}
+            style={{ width: `${Math.max(0, revenuePercent)}%` }}
           />
         </div>
-        <p className="text-xs text-gray-400 mt-1">{revenuePercent}% of goal</p>
-      </div>
+        <p className="text-xs text-gray-400 mt-1">{revenuePercent}% of goal — click to manage finances</p>
+      </Link>
 
       {/* Overdue leads list */}
       {overdueCount > 0 && (
