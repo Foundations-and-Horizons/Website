@@ -4,15 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 
 const navLinks = [
-  { label: "Tools for Nonprofit Leaders", href: "/tools" },
+  { label: "Home", href: "/" },
+  { label: "Consulting", href: "/services" },
+  { label: "Education", href: "/education" },
+  { label: "Speaking", href: "/speaking" },
   { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
   { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [solutionsOpen, setPlatformsOpen] = useState(false);
+  const [solutionsOpen, setSolutionsOpen] = useState(false);
 
   return (
     <nav className="bg-[#2a3db4] text-white sticky top-0 z-50">
@@ -20,15 +22,14 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image
-  src="/logo.svg"
-  alt="Foundations & Horizons"
-  width={90}
-  height={58}
-  className="object-contain brightness-0 invert"
-/>
+              src="/logo.svg"
+              alt="Foundations & Horizons"
+              width={90}
+              height={58}
+              className="object-contain brightness-0 invert"
+            />
           </Link>
 
-          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-6 text-sm font-light tracking-wide">
             {navLinks.map((link) => (
               <Link
@@ -40,10 +41,9 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* FoundationWorks dropdown */}
             <div className="relative">
               <button
-                onClick={() => setPlatformsOpen(!solutionsOpen)}
+                onClick={() => setSolutionsOpen(!solutionsOpen)}
                 className="hover:text-blue-200 transition-colors flex items-center gap-1"
               >
                 FoundationWorks
@@ -54,16 +54,24 @@ export default function Navbar() {
               {solutionsOpen && (
                 <div className="absolute right-0 top-full mt-2 w-64 bg-white text-gray-800 rounded shadow-lg py-1 z-50">
                   <Link
+                    href="/foundationworks"
+                    className="block px-4 py-2 hover:bg-blue-50 text-sm font-medium"
+                    onClick={() => setSolutionsOpen(false)}
+                  >
+                    FoundationWorks Platform
+                  </Link>
+                  <div className="border-t border-gray-100 my-1" />
+                  <Link
                     href="/solutions/volunteer-management"
                     className="block px-4 py-2 hover:bg-blue-50 text-sm"
-                    onClick={() => setPlatformsOpen(false)}
+                    onClick={() => setSolutionsOpen(false)}
                   >
                     FoundationWorks Volunteers
                   </Link>
                   <Link
                     href="/solutions/warehouse-operations"
                     className="block px-4 py-2 hover:bg-blue-50 text-sm"
-                    onClick={() => setPlatformsOpen(false)}
+                    onClick={() => setSolutionsOpen(false)}
                   >
                     FoundationWorks Warehouse
                   </Link>
@@ -72,7 +80,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile toggle */}
           <button
             className="md:hidden p-2"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -87,7 +94,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-[#2236a0] px-4 pb-4 flex flex-col gap-3 text-sm">
           {navLinks.map((link) => (
@@ -97,13 +103,18 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <Link href="/foundationworks" onClick={() => setMobileOpen(false)}
+            className="hover:text-blue-200 py-1 font-medium"
+          >
+            FoundationWorks Platform
+          </Link>
           <Link href="/solutions/volunteer-management" onClick={() => setMobileOpen(false)}
-            className="hover:text-blue-200 py-1"
+            className="hover:text-blue-200 py-1 pl-3"
           >
             → FoundationWorks Volunteers
           </Link>
           <Link href="/solutions/warehouse-operations" onClick={() => setMobileOpen(false)}
-            className="hover:text-blue-200 py-1"
+            className="hover:text-blue-200 py-1 pl-3"
           >
             → FoundationWorks Warehouse
           </Link>
