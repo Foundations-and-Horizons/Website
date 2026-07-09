@@ -61,8 +61,12 @@ const credibilityPoints = [
 export default function HomePage() {
   return (
     <>
-      <section className="bg-[#2a3db4] text-white py-28 px-4 text-center">
-        <div className="max-w-3xl mx-auto">
+      <section
+        className="relative text-white py-28 px-4 text-center bg-cover bg-center"
+        style={{ backgroundImage: "url('/hero-bg.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-[#1a2a6e]/75" />
+        <div className="relative max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
             Helping Nonprofits Build<br />Foundations That Work.
           </h1>
