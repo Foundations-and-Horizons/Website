@@ -19,13 +19,13 @@ export default function Navbar() {
   return (
     <nav className="bg-[#2a3db4] text-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-24">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image
               src="/logo.svg"
               alt="Foundations & Horizons"
-              width={90}
-              height={58}
+              width={160}
+              height={100}
               className="object-contain brightness-0 invert"
             />
           </Link>
