@@ -29,20 +29,20 @@ const appearances = [
 
 const topics = [
   {
+    title: "Strategic Clarity & Decision-Making",
+    desc: "Everything else depends on this. Before you can build systems or sustain people, you need to know where you're going and what to say no to. This session covers how to filter opportunities, stop mission creep before it starts, and make decisions that serve the organization — not just the moment.",
+  },
+  {
     title: "Nonprofit Operations & Systems",
-    desc: "How to build the operational infrastructure that lets a nonprofit execute on its mission consistently, at scale, without burning out its team.",
+    desc: "Clarity without structure is just intention. This session tackles what it actually takes to build the operational foundation that lets a nonprofit execute consistently — because you can't scale chaos, and capacity is a boundary, not a bad word.",
   },
   {
     title: "Sustaining Your People",
-    desc: "The systems, culture, and leadership practices that allow organizations to retain and develop their teams for the long haul.",
-  },
-  {
-    title: "Strategic Clarity & Decision-Making",
-    desc: "How to filter opportunities, set priorities, and make decisions that serve the mission — not just the moment.",
+    desc: "Systems only work if the people running them aren't burning out. This session addresses the leadership practices, cultural norms, and structural decisions that allow teams to stay in the work for the long haul — not just survive the next season.",
   },
   {
     title: "Building Sustainable Organizations",
-    desc: "The structures and thinking that separate nonprofits that endure from those that struggle year to year.",
+    desc: "When clarity, systems, and people all work together, something different becomes possible. This session pulls the full picture together — what separates nonprofits that endure from those that struggle year to year, and how leaders can start building that foundation now.",
   },
 ];
 
