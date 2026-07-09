@@ -38,6 +38,12 @@ export default function BookSalesPage() {
     : null;
   const totalUnits = sales.reduce((s, r) => s + r.units_sold, 0);
 
+  function formatPeriod(p: string) {
+    const [y, m] = p.split("-");
+    if (!m) return p;
+    return new Date(Number(y), Number(m) - 1).toLocaleString("en-US", { month: "long", year: "numeric" });
+  }
+
   // Charts
   const maxUnits = Math.max(...sales.map((s) => s.units_sold), 1);
 
@@ -119,7 +125,7 @@ export default function BookSalesPage() {
               <g key={s.id}>
                 <circle cx={toX(i)} cy={toY(s.units_sold)} r={4} fill="#2a3db4" stroke="white" strokeWidth={1.5} />
                 <text x={toX(i)} y={chartHeight - padBottom + 14} textAnchor="middle" fontSize={9} fill="#9ca3af">
-                  {s.period.slice(0, 7)}
+                  {formatPeriod(s.period)}
                 </text>
               </g>
             ))}
@@ -140,7 +146,7 @@ export default function BookSalesPage() {
                   style={{ height: `${(s.units_sold / maxUnits) * 100}px` }}
                 />
                 <span className="text-xs text-gray-400 mt-1 rotate-45 origin-top-left whitespace-nowrap" style={{ fontSize: "10px" }}>
-                  {s.period}
+                  {formatPeriod(s.period)}
                 </span>
               </div>
             ))}
@@ -162,7 +168,7 @@ export default function BookSalesPage() {
           <tbody className="divide-y">
             {sales.map((s) => (
               <tr key={s.id}>
-                <td className="px-4 py-3">{s.period}</td>
+                <td className="px-4 py-3">{formatPeriod(s.period)}</td>
                 <td className="px-4 py-3 font-medium">{s.units_sold}</td>
                 <td className="px-4 py-3 text-gray-500">{s.notes || "—"}</td>
                 <td className="px-4 py-3">
@@ -180,8 +186,8 @@ export default function BookSalesPage() {
             <h2 className="text-lg font-semibold mb-4">Log Book Sales</h2>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs text-gray-600 mb-0.5">Period (month/week)</label>
-                <input type="date" value={form.period} onChange={(e) => setForm((f) => ({ ...f, period: e.target.value }))}
+                <label className="block text-xs text-gray-600 mb-0.5">Month</label>
+                <input type="month" value={form.period} onChange={(e) => setForm((f) => ({ ...f, period: e.target.value }))}
                   className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm" />
               </div>
               <div>
