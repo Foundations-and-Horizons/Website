@@ -34,7 +34,7 @@ export default function AboutPage() {
             Out of that experience, he wrote <em className="font-semibold">Strong Foundations, Higher Horizons</em> — a practical guide for nonprofit leaders who are ready to move from reactive to intentional. And when he couldn&apos;t find software that fit the way nonprofits actually operate, he built it himself. FoundationWorks is the platform that came from that effort: custom-built systems that organizations own outright, with no ongoing subscriptions or vendor dependency.
           </p>
           <p>
-            Stephen is also a featured speaker at the Nonprofit Alliance Elevate Conference, where he has presented two years running on topics including nonprofit operations, volunteer management, systems building, and sustainable leadership. His approach in every room is the same as it is in consulting: practical, direct, and grounded in what actually works.
+            Stephen is also a featured speaker at the Nonprofit Leadership Alliance Elevate Conference, where he has presented two years running on topics including nonprofit operations, volunteer management, systems building, and sustainable leadership. His approach in every room is the same as it is in consulting: practical, direct, and grounded in what actually works.
           </p>
           <p className="italic text-[#2a3db4] font-medium">
             Foundations &amp; Horizons isn&apos;t built on theory. It&apos;s built on the systems, failures, lessons, and hard-won wins of someone who has been doing this work for years. That&apos;s the difference.
@@ -54,7 +54,7 @@ export default function AboutPage() {
           </div>
           <div className="p-6 bg-white rounded-lg border border-gray-200">
             <h3 className="font-semibold text-[#2a3db4] mb-2">Elevate Conference</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">Featured speaker at the Nonprofit Alliance Elevate Conference two consecutive years — practical sessions on operations, systems, and nonprofit leadership.</p>
+            <p className="text-gray-600 text-sm leading-relaxed">Featured speaker at the Nonprofit Leadership Alliance Elevate Conference two consecutive years — practical sessions on operations, systems, and nonprofit leadership.</p>
           </div>
         </div>
       </section>
