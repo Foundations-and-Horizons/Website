@@ -100,18 +100,16 @@ export default function SpeakingPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Speaking Topics</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">Each session is built around practical takeaways — not inspiration that fades before the drive home.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {topics.map((topic) => (
-              <div key={topic.title} className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md hover:border-blue-200 transition-all duration-200">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#2a3db4]/10 flex items-center justify-center shrink-0">
-                    <svg className="w-4 h-4 text-[#2a3db4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                    </svg>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {topics.map((topic, i) => (
+              <div key={topic.title} className="bg-white rounded-xl border border-gray-200 p-8 hover:shadow-lg hover:border-blue-200 transition-all duration-200">
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-12 h-12 rounded-xl bg-[#2a3db4] flex items-center justify-center shrink-0 text-white font-bold text-lg">
+                    {i + 1}
                   </div>
-                  <h3 className="font-semibold text-gray-900">{topic.title}</h3>
+                  <h3 className="text-lg font-bold text-gray-900 leading-snug">{topic.title}</h3>
                 </div>
-                <p className="text-gray-500 text-sm leading-relaxed">{topic.desc}</p>
+                <p className="text-gray-600 text-base leading-relaxed">{topic.desc}</p>
               </div>
             ))}
           </div>
