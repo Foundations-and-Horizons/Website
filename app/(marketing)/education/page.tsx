@@ -7,20 +7,24 @@ export const metadata = {
 
 const guides = [
   {
-    title: "Volunteer Management Guide",
-    desc: "A practical framework for recruiting, onboarding, engaging, and retaining volunteers who show up consistently and make a real impact.",
+    title: "Burnout Self-Check",
+    desc: "A reflective tool for nonprofit leaders to surface early warning signs of burnout — not to assign blame, but to identify when systems, expectations, and capacity are out of alignment.",
+    file: "/pdfs/BurnoutSelfCheck.pdf",
   },
   {
-    title: "Board Governance Template",
-    desc: "Clarify roles, responsibilities, and expectations for your board so leadership is aligned and accountability is built into the structure.",
+    title: "Capacity Map",
+    desc: "Make the invisible visible. This tool helps leaders honestly assess what the organization is carrying, where strain is showing up, and what tradeoffs need to be named before something breaks.",
+    file: "/pdfs/CapacityMap.pdf",
   },
   {
-    title: "Operations Assessment",
-    desc: "A structured self-assessment to identify the operational gaps holding your nonprofit back — and the priority areas to address first.",
+    title: "Mission Filter Checklist",
+    desc: "A practical decision tool to slow the yes down just enough to ask the right questions — so every new program, partnership, or initiative truly serves the mission and the team's capacity.",
+    file: "/pdfs/MissionFilterChecklist.pdf",
   },
   {
-    title: "Leadership Development Framework",
-    desc: "A guide for building leadership capacity inside your organization, from frontline staff to executive directors.",
+    title: "Delegation Planner",
+    desc: "Clarify what truly needs to stay with you and intentionally transfer ownership in a way that strengthens both people and systems — without creating more work in the process.",
+    file: "/pdfs/DelegationPlanner.pdf",
   },
 ];
 
@@ -87,7 +91,7 @@ export default function EducationPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {guides.map((guide) => (
-              <div key={guide.title} className="bg-white rounded-lg border border-gray-200 p-6 flex flex-col">
+              <div key={guide.title} className="bg-white rounded-lg border border-gray-200 p-6 flex flex-col hover:shadow-md hover:border-blue-200 transition-all duration-200">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="mt-1 w-8 h-8 rounded bg-[#2a3db4]/10 flex items-center justify-center shrink-0">
                     <svg className="w-4 h-4 text-[#2a3db4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,8 +102,9 @@ export default function EducationPage() {
                 </div>
                 <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-4">{guide.desc}</p>
                 <a
-                  href="#"
-                  className="inline-flex items-center gap-2 text-[#2a3db4] font-semibold text-sm hover:underline"
+                  href={guide.file}
+                  download
+                  className="inline-flex items-center gap-2 text-white bg-[#2a3db4] hover:bg-[#1e2e8a] transition-colors text-sm font-semibold px-4 py-2 rounded self-start"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
