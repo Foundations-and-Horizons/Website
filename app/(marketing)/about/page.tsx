@@ -22,22 +22,22 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto space-y-8 text-gray-700 leading-relaxed text-lg">
           <h2 className="text-3xl font-bold text-gray-900">Stephen Cook — Founder &amp; CEO</h2>
           <p>
-            Stephen Cook is a retired U.S. military veteran who spent years learning that the difference between an organization that thrives and one that survives comes down to one thing: operational foundation. The military taught him that clarity, systems, and accountability aren&apos;t bureaucratic overhead — they&apos;re what make mission possible.
+            Stephen Cook is a retired U.S. military veteran. The military didn&apos;t just teach him discipline — it taught him that clarity, systems, and accountability are what make mission possible. Without them, even the most committed teams struggle to execute. That lesson stayed with him.
           </p>
           <p>
-            After his military career, Stephen took that same discipline into the nonprofit world. As Director of Operations for both global and local nonprofits, he didn&apos;t manage programs from a distance — he built the systems, workflows, and operational infrastructure that allowed organizations to execute with consistency and scale. He knows what it looks like when a nonprofit runs well, and he knows exactly what breaks when it doesn&apos;t.
+            After his military career, Stephen moved into nonprofit operations — not as an outside advisor, but as someone doing the actual work. As Director of Operations for both global and local nonprofits, he built the systems, workflows, and operational infrastructure that allowed organizations to function consistently and scale. He sat in the budget meetings. He dealt with volunteer turnover. He rebuilt processes that had stopped working and built new ones where none existed. He knows exactly what it looks like when a nonprofit runs well — and exactly what breaks when it doesn&apos;t.
           </p>
           <p>
-            That firsthand experience is what separates Foundations &amp; Horizons from consulting firms that approach nonprofits with generic frameworks. Stephen has been in the rooms where decisions get made, seen the budget constraints, navigated volunteer turnover, and built processes that actually held up under pressure. He didn&apos;t learn nonprofit operations from a course — he learned it by doing the work.
+            That experience is the foundation of everything at Foundations &amp; Horizons. Not a framework studied in a course. Not a methodology developed from the outside looking in. Real operational experience — the kind that only comes from being accountable for outcomes.
           </p>
           <p>
-            Out of that experience, he wrote <em className="font-semibold">Strong Foundations, Higher Horizons</em> — a practical guide for nonprofit leaders who are ready to move from reactive to intentional. And when he couldn&apos;t find software that fit the way nonprofits actually operate, he built it himself. FoundationWorks is the platform that came from that effort: custom-built systems that organizations own outright, with no ongoing subscriptions or vendor dependency.
+            When he couldn&apos;t find a book that gave nonprofit leaders the systems-level thinking they needed, he wrote one: <em className="font-semibold">Strong Foundations, Higher Horizons</em>. When he couldn&apos;t find software that fit the way nonprofits actually operate, he built it: FoundationWorks. Both came from the same place — years of doing the work and refusing to accept that nonprofits have to operate in chaos just because they&apos;re nonprofits.
           </p>
           <p>
-            Stephen is also a featured speaker at the Nonprofit Leadership Alliance Elevate Conference, where he has presented two years running on topics including nonprofit operations, volunteer management, systems building, and sustainable leadership. His approach in every room is the same as it is in consulting: practical, direct, and grounded in what actually works.
+            He brings that same directness to speaking. As a featured speaker at the Nonprofit Leadership Alliance Elevate Conference two years running, his sessions aren&apos;t about motivation — they&apos;re about the operational realities nonprofit leaders actually face, and what to do about them.
           </p>
-          <p className="italic text-[#2a3db4] font-medium">
-            Foundations &amp; Horizons isn&apos;t built on theory. It&apos;s built on the systems, failures, lessons, and hard-won wins of someone who has been doing this work for years. That&apos;s the difference.
+          <p className="italic text-[#2a3db4] font-medium border-l-4 border-[#2a3db4] pl-4">
+            Foundations &amp; Horizons isn&apos;t built on theory. It&apos;s built on the systems, failures, lessons, and hard-won wins of someone who has lived this work for years. That&apos;s the difference.
           </p>
         </div>
       </section>
