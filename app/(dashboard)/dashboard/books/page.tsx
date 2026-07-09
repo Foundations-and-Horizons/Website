@@ -19,7 +19,7 @@ export default function BookSalesPage() {
   async function save() {
     await supabase.from("book_sales").insert({
       period: form.period,
-      units_sold: parseInt(form.units_sold) || 0,
+      units_sold: form.units_sold === "" ? 0 : parseInt(form.units_sold),
       notes: form.notes || null,
     });
     setForm({ period: "", units_sold: "", notes: "" });
@@ -142,8 +142,8 @@ export default function BookSalesPage() {
               <div key={s.id} className="flex flex-col items-center min-w-[40px]">
                 <span className={`text-xs mb-1 ${s.units_sold === 0 ? "text-red-400" : "text-gray-500"}`}>{s.units_sold}</span>
                 <div
-                  className={`rounded-t w-8 ${s.units_sold === 0 ? "bg-red-200" : "bg-[#2a3db4]"}`}
-                  style={{ height: s.units_sold === 0 ? "6px" : `${(s.units_sold / maxUnits) * 100}px` }}
+                  className={`rounded-t w-8 ${s.units_sold === 0 ? "bg-red-300 border border-red-400" : "bg-[#2a3db4]"}`}
+                  style={{ height: s.units_sold === 0 ? "24px" : `${(s.units_sold / maxUnits) * 100}px` }}
                 />
                 <span className="text-xs text-gray-400 mt-1 rotate-45 origin-top-left whitespace-nowrap" style={{ fontSize: "10px" }}>
                   {formatPeriod(s.period)}
