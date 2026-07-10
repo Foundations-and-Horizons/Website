@@ -32,11 +32,12 @@ export async function middleware(request: NextRequest) {
   const isDashboard = request.nextUrl.pathname.startsWith("/dashboard");
   const isLoginPage = request.nextUrl.pathname === "/dashboard/login";
 
-  if (isDashboard && !isLoginPage && !user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard/login";
-    return NextResponse.redirect(url);
-  }
+  // AUTH TEMPORARILY DISABLED — re-enable by uncommenting this block
+  // if (isDashboard && !isLoginPage && !user) {
+  //   const url = request.nextUrl.clone();
+  //   url.pathname = "/dashboard/login";
+  //   return NextResponse.redirect(url);
+  // }
 
   if (isLoginPage && user) {
     const url = request.nextUrl.clone();
