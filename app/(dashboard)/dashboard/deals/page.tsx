@@ -19,7 +19,7 @@ type Activity = {
   occurred_at: string; created_at: string;
 };
 type Company = { id: string; name: string };
-type Contact = { id: string; full_name: string };
+type Contact = { id: string; full_name: string; email: string | null; phone: string | null };
 
 const ACTIVITY_TYPES = [
   { key: "email",    label: "Email",       icon: "📧" },
@@ -75,6 +75,12 @@ export default function DealsPage() {
   const [logNextAction, setLogNextAction] = useState("");
   const [logDue, setLogDue] = useState("");
   const [loggingActivity, setLoggingActivity] = useState(false);
+  // Compose email modal
+  const [showCompose, setShowCompose] = useState(false);
+  const [composeSubject, setComposeSubject] = useState("");
+  const [composeBody, setComposeBody] = useState("");
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const load = useCallback(async () => {
     const [{ data: pData }, { data: sData }, { data: dData }, { data: coData }, { data: ctData }] = await Promise.all([
@@ -82,7 +88,7 @@ export default function DealsPage() {
       supabase.from("pipeline_stages").select("*").order("sort_order"),
       supabase.from("deals").select("*, companies(name), contacts(full_name)").order("updated_at", { ascending: false }),
       supabase.from("companies").select("id, name").order("name"),
-      supabase.from("contacts").select("id, full_name").order("full_name"),
+      supabase.from("contacts").select("id, full_name, email, phone").order("full_name"),
     ]);
     setPipelines(pData || []);
     setStages(sData || []);
@@ -109,9 +115,38 @@ export default function DealsPage() {
 
   useEffect(() => { load(); }, []);
 
+  async function sendEmail() {
+    if (!selectedDeal || !composeSubject.trim() || !composeBody.trim()) return;
+    const contact = contacts.find((c) => c.id === selectedDeal.primary_contact_id);
+    if (!contact?.email) return;
+    setSendingEmail(true);
+    const res = await fetch("/api/outreach", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: contact.email,
+        subject: composeSubject.trim(),
+        body: composeBody.trim(),
+        dealId: selectedDeal.id,
+        companyId: selectedDeal.company_id,
+        contactName: contact.full_name,
+      }),
+    });
+    setSendingEmail(false);
+    if (res.ok) {
+      setEmailSent(true);
+      setComposeSubject("");
+      setComposeBody("");
+      setTimeout(() => { setEmailSent(false); setShowCompose(false); }, 1500);
+      openDeal(selectedDeal);
+    }
+  }
+
   async function openDeal(deal: Deal) {
     setSelectedDeal(deal);
     setLogBody("");
+    setShowCompose(false);
+    setEmailSent(false);
     setLogNextAction(deal.next_action || "");
     setLogDue(deal.next_action_due || "");
     const { data } = await supabase
@@ -336,8 +371,82 @@ export default function DealsPage() {
             <h2 className="text-lg font-bold text-gray-900 leading-tight mb-1">{selectedDeal.title}</h2>
             {selectedDeal.companies && <p className="text-sm text-gray-400">🏢 {(selectedDeal.companies as unknown as { name: string }).name}</p>}
             {selectedDeal.contacts && <p className="text-sm text-gray-400">👤 {(selectedDeal.contacts as unknown as { full_name: string }).full_name}</p>}
+            {(() => {
+              const c = contacts.find((ct) => ct.id === selectedDeal.primary_contact_id);
+              return c ? (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {c.email && (
+                    <a href={`mailto:${c.email}`} className="text-xs text-[#2a3db4] bg-blue-50 px-2.5 py-1 rounded-lg font-medium hover:bg-blue-100 transition-colors">
+                      ✉ {c.email}
+                    </a>
+                  )}
+                  {c.phone && (
+                    <a href={`tel:${c.phone}`} className="text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                      📞 {c.phone}
+                    </a>
+                  )}
+                </div>
+              ) : null;
+            })()}
             {selectedDeal.value && <p className="text-sm font-bold text-[#2a3db4] mt-1">${Number(selectedDeal.value).toLocaleString()}</p>}
+            {contacts.find((c) => c.id === selectedDeal.primary_contact_id)?.email && (
+              <button
+                onClick={() => { setShowCompose((v) => !v); setEmailSent(false); }}
+                className="mt-3 w-full py-2 rounded-xl text-sm font-semibold bg-[#2a3db4] text-white hover:bg-[#1e2d8a] transition-all shadow-sm"
+              >
+                ✉ Compose Email
+              </button>
+            )}
           </div>
+
+          {/* Compose email */}
+          {showCompose && (
+            <div className="px-5 py-4 border-b border-blue-50 bg-blue-50/40 shrink-0">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-semibold text-[#2a3db4] uppercase tracking-wide">New Email</p>
+                <p className="text-xs text-gray-400">From: stephen.cook@foundationsandhorizons.com</p>
+              </div>
+              {emailSent ? (
+                <div className="text-center py-4">
+                  <p className="text-green-600 font-semibold text-sm">✓ Email sent and logged!</p>
+                </div>
+              ) : (
+                <>
+                  <p className="text-xs text-gray-400 mb-2">
+                    To: <span className="font-medium text-gray-600">{contacts.find((c) => c.id === selectedDeal.primary_contact_id)?.email}</span>
+                  </p>
+                  <input
+                    value={composeSubject}
+                    onChange={(e) => setComposeSubject(e.target.value)}
+                    placeholder="Subject"
+                    className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20 mb-2 bg-white"
+                  />
+                  <textarea
+                    value={composeBody}
+                    onChange={(e) => setComposeBody(e.target.value)}
+                    placeholder={`Hi ${contacts.find((c) => c.id === selectedDeal.primary_contact_id)?.full_name?.split(" ")[0] || "there"},\n\n`}
+                    rows={6}
+                    className="w-full border border-blue-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20 resize-none bg-white mb-2"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setShowCompose(false)}
+                      className="flex-1 py-2 border border-gray-200 rounded-xl text-sm text-gray-500 hover:bg-gray-50 font-medium"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={sendEmail}
+                      disabled={!composeSubject.trim() || !composeBody.trim() || sendingEmail}
+                      className="flex-1 py-2 bg-[#2a3db4] text-white rounded-xl text-sm font-semibold hover:bg-[#1e2d8a] disabled:opacity-40 shadow-sm transition-all"
+                    >
+                      {sendingEmail ? "Sending…" : "Send ✉"}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
 
           {/* Stage progress */}
           <div className="px-5 py-4 border-b border-gray-50 shrink-0">
