@@ -139,7 +139,6 @@ export default function DealsPage() {
         next_action_due: logDue || null,
       }).eq("id", selectedDeal.id);
     }
-    await supabase.from("xp_events").insert({ amount: 25, reason: `Logged ${typeLabel}`, source_type: "deal", source_id: selectedDeal.id });
     setLogBody("");
     setLoggingActivity(false);
     openDeal(selectedDeal);
@@ -157,9 +156,6 @@ export default function DealsPage() {
       deal_id: deal.id, type: "stage_change",
       subject: `Moved to ${next.label}`, body: null,
     });
-    if (next.is_won) {
-      await supabase.from("xp_events").insert({ amount: 300, reason: "Closed a deal 🏆", source_type: "deal", source_id: deal.id });
-    }
     if (selectedDeal?.id === deal.id) {
       const updated = { ...deal, stage_id: next.id, status };
       setSelectedDeal(updated);
@@ -237,8 +233,8 @@ export default function DealsPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-5 shrink-0">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Deals 🎯</h1>
-            <p className="text-sm text-gray-400">Every conversation is a seed. Keep planting.</p>
+            <h1 className="text-2xl font-bold text-gray-900">Pipeline</h1>
+            <p className="text-sm text-gray-400">Track every opportunity from first contact to close.</p>
           </div>
           <button onClick={openNew} className="bg-[#2a3db4] text-white text-sm px-4 py-2 rounded-xl hover:bg-[#1e2d8a] font-semibold shadow-sm transition-all">
             + New Deal
@@ -405,7 +401,7 @@ export default function DealsPage() {
             </div>
             <button onClick={logActivity} disabled={!logBody.trim() || loggingActivity}
               className="w-full py-2.5 bg-[#2a3db4] text-white rounded-xl text-sm font-semibold hover:bg-[#1e2d8a] disabled:opacity-40 transition-all shadow-sm">
-              {loggingActivity ? "Saving…" : "Log it ⚡ +25 XP"}
+              {loggingActivity ? "Saving…" : "Log Activity"}
             </button>
           </div>
 

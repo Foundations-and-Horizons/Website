@@ -19,14 +19,6 @@ function greeting() {
   return "Good evening";
 }
 
-function xpToLevel(xp: number): { level: number; label: string; nextXp: number; prevXp: number } {
-  const thresholds = [0, 500, 1200, 2500, 5000, 10000, 20000];
-  const labels = ["Beginner", "Builder", "Momentum", "Operator", "Leader", "Visionary", "Legend"];
-  let i = thresholds.length - 1;
-  while (i > 0 && xp < thresholds[i]) i--;
-  return { level: i + 1, label: labels[i], nextXp: thresholds[i + 1] ?? thresholds[i], prevXp: thresholds[i] };
-}
-
 export default async function DashboardHome() {
   const supabase = await createClient();
 
@@ -45,9 +37,6 @@ export default async function DashboardHome() {
     { data: goalRow },
     { data: transactions },
     { data: openTasks },
-    { data: xpRows },
-    { data: earnedAch },
-    { data: allAch },
   ] = await Promise.all([
     supabase.from("deals").select("id, title, next_action, next_action_due, companies(name)")
       .eq("status", "open").not("next_action_due", "is", null).lte("next_action_due", today).order("next_action_due"),
@@ -61,9 +50,6 @@ export default async function DashboardHome() {
     supabase.from("settings").select("value").eq("key", "annual_net_income_goal").single(),
     supabase.from("transactions").select("type, amount"),
     supabase.from("tasks").select("id, title, due_date, priority, deal_id, contact_id").eq("done", false).order("due_date"),
-    supabase.from("xp_events").select("amount"),
-    supabase.from("earned_achievements").select("achievement_key, earned_at"),
-    supabase.from("achievements").select("key, name, icon, xp").order("sort_order"),
   ]);
 
   // Finance
@@ -72,14 +58,13 @@ export default async function DashboardHome() {
   const revenuePercent = Math.min(100, Math.max(0, Math.round((netIncome / goal) * 100)));
   const barColor = netIncome < 0 ? "bg-red-500" : revenuePercent >= 75 ? "bg-green-500" : "bg-[#2a3db4]";
 
-  // Deals
+  // Pipeline
   const overdueDeals = overdueDealRows || [];
   const overdueCount = overdueDeals.length;
   const openCount = openDeals?.length || 0;
   const wonCount = wonDeals?.length || 0;
   const pipelineValue = (openDeals || []).reduce((s, d) => s + Number(d.value || 0), 0);
 
-  // Per-pipeline open deal counts
   const pipelineStats = (pipelines || []).map((p) => ({
     ...p,
     openCount: (openDeals || []).filter((d) => d.pipeline_id === p.id).length,
@@ -98,14 +83,6 @@ export default async function DashboardHome() {
   const todayTasks = (openTasks || []).filter((t) => t.due_date && t.due_date <= today);
   const upcomingTasks = (openTasks || []).filter((t) => !t.due_date || t.due_date > today).slice(0, 3);
 
-  // XP & gamification
-  const totalXp = (xpRows || []).reduce((s, r) => s + r.amount, 0);
-  const { level, label: levelLabel, nextXp, prevXp } = xpToLevel(totalXp);
-  const xpPercent = Math.min(100, Math.round(((totalXp - prevXp) / (nextXp - prevXp)) * 100));
-  const earnedKeys = new Set((earnedAch || []).map((e) => e.achievement_key));
-  const unearnedAch = (allAch || []).filter((a) => !earnedKeys.has(a.key));
-
-  // Motivational line
   function motiveLine() {
     if (overdueCount > 0) return `${overdueCount} deal${overdueCount > 1 ? "s" : ""} waiting on you. Don't let momentum die.`;
     if (postsCount >= 3) return "LinkedIn goal hit this week. Systems are working. Keep going.";
@@ -126,7 +103,7 @@ export default async function DashboardHome() {
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         <Link href="/dashboard/deals" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${overdueCount > 0 ? "bg-red-50 border-red-400" : openCount >= 10 ? "bg-green-50 border-green-400" : "bg-white border-[#2a3db4]"}`}>
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Deals</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Pipeline</p>
             <span className="text-xl">🎯</span>
           </div>
           <p className={`text-3xl font-bold ${overdueCount > 0 ? "text-red-600" : "text-gray-900"}`}>
@@ -176,7 +153,6 @@ export default async function DashboardHome() {
 
       {/* Goal bar + Pipeline breakdown side by side */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        {/* Goal progress */}
         <Link href="/dashboard/finance" className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-5 border border-gray-100">
           <div className="flex items-center justify-between mb-3">
             <div>
@@ -198,7 +174,6 @@ export default async function DashboardHome() {
           </div>
         </Link>
 
-        {/* Pipeline by type */}
         <Link href="/dashboard/deals" className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-5 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm font-bold text-gray-800">Pipeline Breakdown</p>
@@ -224,8 +199,8 @@ export default async function DashboardHome() {
         </Link>
       </div>
 
-      {/* Middle row: Overdue / Tasks / XP */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+      {/* Middle row: Overdue / Tasks */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 
         {/* Overdue deals */}
         <div className={`bg-white rounded-xl shadow-sm border p-5 ${overdueCount > 0 ? "border-red-200" : "border-green-200"}`}>
@@ -248,13 +223,13 @@ export default async function DashboardHome() {
                 </div>
               ))}
               {overdueCount > 5 && <p className="text-xs text-gray-400 text-center">+{overdueCount - 5} more</p>}
-              <Link href="/dashboard/deals" className="block text-center text-xs text-[#2a3db4] font-semibold hover:underline pt-1">Open Deals Board →</Link>
+              <Link href="/dashboard/deals" className="block text-center text-xs text-[#2a3db4] font-semibold hover:underline pt-1">Open Pipeline →</Link>
             </div>
           ) : (
             <div className="text-center py-4">
               <p className="text-sm text-gray-500">You're on top of it.</p>
               <p className="text-xs text-gray-400 mt-1">Keep deals moving forward.</p>
-              <Link href="/dashboard/deals" className="mt-3 inline-block text-xs text-[#2a3db4] font-semibold hover:underline">View Deals →</Link>
+              <Link href="/dashboard/deals" className="mt-3 inline-block text-xs text-[#2a3db4] font-semibold hover:underline">View Pipeline →</Link>
             </div>
           )}
         </div>
@@ -296,54 +271,7 @@ export default async function DashboardHome() {
             </div>
           )}
           {!todayTasks.length && !upcomingTasks.length && (
-            <p className="text-sm text-gray-400 text-center py-4">No open tasks. Add one from the Deals page.</p>
-          )}
-        </div>
-
-        {/* XP & Level */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <span>⚡</span>
-            <h2 className="text-sm font-bold text-gray-800">Your Progress</h2>
-          </div>
-          <div className="text-center mb-4">
-            <p className="text-4xl font-bold text-[#2a3db4]">{totalXp.toLocaleString()}</p>
-            <p className="text-xs text-gray-400 mt-1">XP earned</p>
-            <div className="mt-2 inline-block bg-[#2a3db4]/10 text-[#2a3db4] text-xs font-bold px-3 py-1 rounded-full">
-              Level {level} · {levelLabel}
-            </div>
-          </div>
-          <div className="mb-4">
-            <div className="flex justify-between text-xs text-gray-400 mb-1">
-              <span>{totalXp.toLocaleString()} XP</span>
-              <span>{nextXp.toLocaleString()} XP next level</span>
-            </div>
-            <div className="w-full bg-gray-100 rounded-full h-2">
-              <div className="h-2 rounded-full bg-[#2a3db4] transition-all" style={{ width: `${xpPercent}%` }} />
-            </div>
-          </div>
-          {earnedAch && earnedAch.length > 0 && (
-            <div>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Achievements</p>
-              <div className="flex flex-wrap gap-1">
-                {(allAch || []).map((a) => (
-                  <span key={a.key} className={`text-lg ${earnedKeys.has(a.key) ? "" : "opacity-20 grayscale"}`} title={a.name}>{a.icon}</span>
-                ))}
-              </div>
-            </div>
-          )}
-          {(!earnedAch || earnedAch.length === 0) && unearnedAch.length > 0 && (
-            <div>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Next achievements</p>
-              <div className="space-y-1">
-                {unearnedAch.slice(0, 3).map((a) => (
-                  <div key={a.key} className="flex items-center gap-2 opacity-50">
-                    <span className="text-sm">{a.icon}</span>
-                    <p className="text-xs text-gray-500">{a.name} · {a.xp} XP</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <p className="text-sm text-gray-400 text-center py-4">No open tasks. Add one from the Pipeline page.</p>
           )}
         </div>
       </div>
@@ -353,7 +281,7 @@ export default async function DashboardHome() {
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Quick Actions</p>
         <div className="flex flex-wrap gap-2">
           <Link href="/dashboard/deals" className="flex items-center gap-2 bg-[#2a3db4] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#1e2d8a] font-medium transition-colors">
-            🎯 New Deal
+            🎯 Open Pipeline
           </Link>
           <Link href="/dashboard/contacts" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
             👤 Add Contact
