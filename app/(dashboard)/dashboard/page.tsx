@@ -19,13 +19,6 @@ function greeting() {
   return "Good evening";
 }
 
-function motiveLine(overdueCount: number, postsCount: number, revenuePercent: number) {
-  if (overdueCount > 0) return `You have ${overdueCount} follow-up${overdueCount > 1 ? "s" : ""} waiting. Don't let momentum die.`;
-  if (postsCount >= 3) return "LinkedIn goal hit this week. Systems are working. Keep going.";
-  if (revenuePercent >= 75) return "You're in the final stretch on the annual goal. Push.";
-  return "Every day you show up compounds. Let's build.";
-}
-
 export default async function DashboardHome() {
   const supabase = await createClient();
 
@@ -33,66 +26,95 @@ export default async function DashboardHome() {
   const weekStart = startOfWeek();
 
   const [
-    { data: overdue },
+    { data: overdueDealRows },
+    { data: openDeals },
+    { data: wonDeals },
+    { data: pipelines },
     { data: postsThisWeek },
     { data: lastPost },
     { data: lastSale },
     { data: totalSales },
     { data: goalRow },
     { data: transactions },
-    { data: activeLeads },
-    { data: wonLeads },
+    { data: openTasks },
   ] = await Promise.all([
-    supabase.from("leads").select("id, name, organization, next_action_due, stage")
-      .lte("next_action_due", today).not("stage", "in", "(won,lost)").not("next_action_due", "is", null).order("next_action_due"),
+    supabase.from("deals").select("id, title, next_action, next_action_due, companies(name)")
+      .eq("status", "open").not("next_action_due", "is", null).lte("next_action_due", today).order("next_action_due"),
+    supabase.from("deals").select("id, pipeline_id, value").eq("status", "open"),
+    supabase.from("deals").select("id").eq("status", "won"),
+    supabase.from("pipelines").select("id, name, color, icon, key").order("sort_order"),
     supabase.from("linkedin_posts").select("id").eq("status", "posted").gte("posted_date", weekStart),
     supabase.from("linkedin_posts").select("posted_date").eq("status", "posted").order("posted_date", { ascending: false }).limit(1),
     supabase.from("book_sales").select("created_at").order("created_at", { ascending: false }).limit(1),
     supabase.from("book_sales").select("units_sold"),
     supabase.from("settings").select("value").eq("key", "annual_net_income_goal").single(),
     supabase.from("transactions").select("type, amount"),
-    supabase.from("leads").select("id").not("stage", "in", "(won,lost)"),
-    supabase.from("leads").select("id").eq("stage", "won"),
+    supabase.from("tasks").select("id, title, due_date, priority, deal_id, contact_id").eq("done", false).order("due_date"),
   ]);
 
+  // Finance
   const goal = Number(goalRow?.value || 25000);
   const netIncome = (transactions || []).reduce((s, t) => t.type === "income" ? s + Number(t.amount) : s - Number(t.amount), 0);
   const revenuePercent = Math.min(100, Math.max(0, Math.round((netIncome / goal) * 100)));
-
-  const overdueCount = overdue?.length || 0;
-  const postsCount = postsThisWeek?.length || 0;
-  const daysSincePost = lastPost?.[0]?.posted_date ? daysSince(lastPost[0].posted_date) : null;
-  const daysSinceSale = lastSale?.[0]?.created_at ? daysSince(lastSale[0].created_at) : null;
-  const bookTotal = (totalSales || []).reduce((s, r) => s + Number(r.units_sold), 0);
-  const pipelineCount = activeLeads?.length || 0;
-  const closedCount = wonLeads?.length || 0;
-
   const barColor = netIncome < 0 ? "bg-red-500" : revenuePercent >= 75 ? "bg-green-500" : "bg-[#2a3db4]";
 
+  // Pipeline
+  const overdueDeals = overdueDealRows || [];
+  const overdueCount = overdueDeals.length;
+  const openCount = openDeals?.length || 0;
+  const wonCount = wonDeals?.length || 0;
+  const pipelineValue = (openDeals || []).reduce((s, d) => s + Number(d.value || 0), 0);
+
+  const pipelineStats = (pipelines || []).map((p) => ({
+    ...p,
+    openCount: (openDeals || []).filter((d) => d.pipeline_id === p.id).length,
+    value: (openDeals || []).filter((d) => d.pipeline_id === p.id).reduce((s, d) => s + Number(d.value || 0), 0),
+  }));
+
+  // LinkedIn
+  const postsCount = postsThisWeek?.length || 0;
+  const daysSincePost = lastPost?.[0]?.posted_date ? daysSince(lastPost[0].posted_date) : null;
+
+  // Books
+  const daysSinceSale = lastSale?.[0]?.created_at ? daysSince(lastSale[0].created_at) : null;
+  const bookTotal = (totalSales || []).reduce((s, r) => s + Number(r.units_sold), 0);
+
+  // Tasks
+  const todayTasks = (openTasks || []).filter((t) => t.due_date && t.due_date <= today);
+  const upcomingTasks = (openTasks || []).filter((t) => !t.due_date || t.due_date > today).slice(0, 3);
+
+  function motiveLine() {
+    if (overdueCount > 0) return `${overdueCount} deal${overdueCount > 1 ? "s" : ""} waiting on you. Don't let momentum die.`;
+    if (postsCount >= 3) return "LinkedIn goal hit this week. Systems are working. Keep going.";
+    if (revenuePercent >= 75) return "In the final stretch on the annual goal. Push.";
+    if (todayTasks.length > 0) return `${todayTasks.length} task${todayTasks.length > 1 ? "s" : ""} on deck today. Let's knock them out.`;
+    return "Every day you show up compounds. Let's build.";
+  }
+
   return (
-    <div>
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-8">
+      <div>
         <h1 className="text-3xl font-bold text-gray-900">{greeting()}, Stephen. 👋</h1>
-        <p className="text-gray-500 mt-1">{motiveLine(overdueCount, postsCount, revenuePercent)}</p>
+        <p className="text-gray-500 mt-1">{motiveLine()}</p>
       </div>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-        <Link href="/dashboard/leads" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${overdueCount > 0 ? "bg-red-50 border-red-400" : "bg-white border-gray-100 hover:border-[#2a3db4]"}`}>
+      {/* Top stat cards */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        <Link href="/dashboard/deals" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${overdueCount > 0 ? "bg-red-50 border-red-400" : openCount >= 10 ? "bg-green-50 border-green-400" : "bg-white border-[#2a3db4]"}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Pipeline</p>
             <span className="text-xl">🎯</span>
           </div>
           <p className={`text-3xl font-bold ${overdueCount > 0 ? "text-red-600" : "text-gray-900"}`}>
-            {overdueCount > 0 ? overdueCount : pipelineCount}
+            {overdueCount > 0 ? overdueCount : openCount}
           </p>
           <p className="text-xs text-gray-400 mt-1">
-            {overdueCount > 0 ? `overdue follow-up${overdueCount > 1 ? "s" : ""} 🔴` : `active leads · ${closedCount} won`}
+            {overdueCount > 0 ? `overdue follow-up${overdueCount > 1 ? "s" : ""} 🔴` : `open · ${wonCount} won`}
           </p>
         </Link>
 
-        <Link href="/dashboard/linkedin" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${postsCount >= 3 ? "bg-green-50 border-green-400" : "bg-white border-gray-100 hover:border-[#2a3db4]"}`}>
+        <Link href="/dashboard/linkedin" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${postsCount >= 3 ? "bg-green-50 border-green-400" : "bg-white border-[#c026d3]"}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">LinkedIn</p>
             <span className="text-xl">💼</span>
@@ -101,11 +123,11 @@ export default async function DashboardHome() {
             {postsCount}/3
           </p>
           <p className="text-xs text-gray-400 mt-1">
-            {postsCount >= 3 ? "Weekly goal crushed 🎉" : daysSincePost !== null ? `${daysSincePost}d since last post` : "No posts yet"}
+            {postsCount >= 3 ? "Weekly goal crushed 🎉" : daysSincePost !== null ? `${daysSincePost}d since last post` : "No posts yet this week"}
           </p>
         </Link>
 
-        <Link href="/dashboard/books" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${daysSinceSale !== null && daysSinceSale > 30 ? "bg-amber-50 border-amber-400" : "bg-white border-gray-100 hover:border-[#2a3db4]"}`}>
+        <Link href="/dashboard/books" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${daysSinceSale !== null && daysSinceSale > 30 ? "bg-amber-50 border-amber-400" : "bg-white border-amber-400"}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Book Sales</p>
             <span className="text-xl">📚</span>
@@ -117,7 +139,7 @@ export default async function DashboardHome() {
           </p>
         </Link>
 
-        <Link href="/dashboard/finance" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${netIncome < 0 ? "bg-red-50 border-red-400" : netIncome >= goal * 0.75 ? "bg-green-50 border-green-400" : "bg-white border-gray-100 hover:border-[#2a3db4]"}`}>
+        <Link href="/dashboard/finance" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${netIncome < 0 ? "bg-red-50 border-red-400" : netIncome >= goal * 0.75 ? "bg-green-50 border-green-400" : "bg-white border-green-500"}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Net Income</p>
             <span className="text-xl">💰</span>
@@ -125,71 +147,156 @@ export default async function DashboardHome() {
           <p className={`text-3xl font-bold ${netIncome >= 0 ? "text-green-600" : "text-red-600"}`}>
             ${netIncome.toLocaleString("en-US", { maximumFractionDigits: 0 })}
           </p>
-          <p className="text-xs text-gray-400 mt-1">income − expenses</p>
+          <p className="text-xs text-gray-400 mt-1">{revenuePercent}% of ${goal.toLocaleString()} goal</p>
         </Link>
       </div>
 
-      {/* Goal progress bar */}
-      <Link href="/dashboard/finance" className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-5 mb-6 border border-gray-100 hover:border-[#2a3db4]">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <p className="text-sm font-bold text-gray-800">Annual Net Income Goal</p>
-            <p className="text-xs text-gray-400">You need ${Math.max(0, goal - netIncome).toLocaleString()} more to hit ${goal.toLocaleString()}</p>
-          </div>
-          <div className="text-right">
+      {/* Goal bar + Pipeline breakdown side by side */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <Link href="/dashboard/finance" className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-5 border border-gray-100">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-sm font-bold text-gray-800">Annual Net Income Goal</p>
+              <p className="text-xs text-gray-400">
+                {netIncome >= goal ? "Goal achieved! 🎉" : `$${Math.max(0, goal - netIncome).toLocaleString()} to go`}
+              </p>
+            </div>
             <span className={`text-2xl font-bold ${revenuePercent >= 100 ? "text-green-600" : revenuePercent >= 50 ? "text-[#2a3db4]" : "text-gray-700"}`}>
               {revenuePercent}%
             </span>
-            {revenuePercent >= 100 && <p className="text-xs text-green-500 font-semibold">Goal hit! 🎉</p>}
           </div>
-        </div>
-        <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
-          <div
-            className={`h-4 rounded-full transition-all duration-700 ${barColor}`}
-            style={{ width: `${Math.max(2, revenuePercent)}%` }}
-          />
-        </div>
-        <div className="flex justify-between mt-2">
-          <p className="text-xs text-gray-400">${netIncome.toLocaleString()} earned</p>
-          <p className="text-xs text-gray-400">Goal: ${goal.toLocaleString()}</p>
-        </div>
-      </Link>
+          <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
+            <div className={`h-4 rounded-full transition-all duration-700 ${barColor}`} style={{ width: `${Math.max(2, revenuePercent)}%` }} />
+          </div>
+          <div className="flex justify-between mt-2">
+            <p className="text-xs text-gray-400">${netIncome.toLocaleString()} earned</p>
+            <p className="text-xs text-gray-400">Goal: ${goal.toLocaleString()}</p>
+          </div>
+        </Link>
 
-      {/* Overdue leads */}
-      {overdueCount > 0 && (
-        <div className="bg-white rounded-xl shadow-sm border border-red-100 p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-base">🔴</span>
-            <h2 className="text-sm font-bold text-gray-800">Overdue Follow-ups — Don&apos;t Ghost These People</h2>
+        <Link href="/dashboard/deals" className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-5 border border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-sm font-bold text-gray-800">Pipeline Breakdown</p>
+            <p className="text-xs text-gray-400">{openCount} open · {pipelineValue > 0 ? `$${pipelineValue.toLocaleString()} value` : "no value logged"}</p>
           </div>
-          <div className="divide-y divide-gray-50">
-            {overdue!.map((lead) => (
-              <div key={lead.id} className="py-3 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">{lead.name}</p>
-                  <p className="text-xs text-gray-400">{lead.organization} · {lead.stage}</p>
+          <div className="space-y-3">
+            {pipelineStats.map((p) => (
+              <div key={p.id} className="flex items-center gap-3">
+                <span className="text-base w-6 text-center">{p.icon}</span>
+                <div className="flex-1">
+                  <div className="flex justify-between mb-1">
+                    <p className="text-xs font-medium text-gray-700">{p.name}</p>
+                    <p className="text-xs text-gray-400">{p.openCount} open{p.value > 0 ? ` · $${p.value.toLocaleString()}` : ""}</p>
+                  </div>
+                  <div className="w-full bg-gray-100 rounded-full h-1.5">
+                    <div className="h-1.5 rounded-full" style={{ width: openCount > 0 ? `${Math.round((p.openCount / openCount) * 100)}%` : "0%", background: p.color }} />
+                  </div>
                 </div>
-                <span className="text-xs bg-red-100 text-red-700 font-medium rounded-full px-3 py-1">
-                  {lead.next_action_due}
-                </span>
               </div>
             ))}
+            {pipelineStats.length === 0 && <p className="text-xs text-gray-400 text-center py-2">No pipeline data yet</p>}
           </div>
-          <Link href="/dashboard/leads" className="mt-4 block text-center text-sm text-[#2a3db4] font-semibold hover:underline">
-            Open Pipeline →
+        </Link>
+      </div>
+
+      {/* Middle row: Overdue / Tasks */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+
+        {/* Overdue deals */}
+        <div className={`bg-white rounded-xl shadow-sm border p-5 ${overdueCount > 0 ? "border-red-200" : "border-green-200"}`}>
+          <div className="flex items-center gap-2 mb-4">
+            <span>{overdueCount > 0 ? "🔴" : "✅"}</span>
+            <h2 className="text-sm font-bold text-gray-800">
+              {overdueCount > 0 ? "Overdue Follow-ups" : "All Follow-ups Clear"}
+            </h2>
+          </div>
+          {overdueCount > 0 ? (
+            <div className="space-y-3">
+              {overdueDeals.slice(0, 5).map((deal) => (
+                <div key={deal.id} className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 truncate">{deal.title}</p>
+                    {deal.companies && !Array.isArray(deal.companies) && <p className="text-xs text-gray-400 truncate">{(deal.companies as unknown as { name: string }).name}</p>}
+                    {deal.next_action && <p className="text-xs text-gray-400 truncate">→ {deal.next_action}</p>}
+                  </div>
+                  <span className="shrink-0 text-xs bg-red-100 text-red-700 font-medium rounded-full px-2 py-0.5">{deal.next_action_due}</span>
+                </div>
+              ))}
+              {overdueCount > 5 && <p className="text-xs text-gray-400 text-center">+{overdueCount - 5} more</p>}
+              <Link href="/dashboard/deals" className="block text-center text-xs text-[#2a3db4] font-semibold hover:underline pt-1">Open Pipeline →</Link>
+            </div>
+          ) : (
+            <div className="text-center py-4">
+              <p className="text-sm text-gray-500">You're on top of it.</p>
+              <p className="text-xs text-gray-400 mt-1">Keep deals moving forward.</p>
+              <Link href="/dashboard/deals" className="mt-3 inline-block text-xs text-[#2a3db4] font-semibold hover:underline">View Pipeline →</Link>
+            </div>
+          )}
+        </div>
+
+        {/* Tasks */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span>📋</span>
+              <h2 className="text-sm font-bold text-gray-800">Tasks</h2>
+            </div>
+            <span className="text-xs bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 font-medium">{openTasks?.length || 0} open</span>
+          </div>
+          {todayTasks.length > 0 && (
+            <div className="mb-3">
+              <p className="text-xs font-semibold text-red-500 uppercase tracking-wide mb-2">Due Today</p>
+              <div className="space-y-2">
+                {todayTasks.slice(0, 3).map((t) => (
+                  <div key={t.id} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
+                    <p className="text-sm text-gray-700 truncate">{t.title}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {upcomingTasks.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Upcoming</p>
+              <div className="space-y-2">
+                {upcomingTasks.map((t) => (
+                  <div key={t.id} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-300 shrink-0" />
+                    <p className="text-sm text-gray-500 truncate">{t.title}</p>
+                    {t.due_date && <span className="ml-auto text-xs text-gray-300 shrink-0">{t.due_date}</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {!todayTasks.length && !upcomingTasks.length && (
+            <p className="text-sm text-gray-400 text-center py-4">No open tasks. Add one from the Pipeline page.</p>
+          )}
+        </div>
+      </div>
+
+      {/* Quick actions */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Quick Actions</p>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/dashboard/deals" className="flex items-center gap-2 bg-[#2a3db4] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#1e2d8a] font-medium transition-colors">
+            🎯 Open Pipeline
+          </Link>
+          <Link href="/dashboard/contacts" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
+            👤 Add Contact
+          </Link>
+          <Link href="/dashboard/linkedin" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
+            💼 Log LinkedIn Post
+          </Link>
+          <Link href="/dashboard/books" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
+            📚 Log Book Sales
+          </Link>
+          <Link href="/dashboard/finance" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
+            💰 Log Transaction
           </Link>
         </div>
-      )}
-
-      {/* All clear */}
-      {overdueCount === 0 && (
-        <div className="bg-white rounded-xl shadow-sm border border-green-100 p-6 text-center">
-          <p className="text-2xl mb-2">✅</p>
-          <p className="text-sm font-semibold text-gray-700">No overdue follow-ups. You&apos;re on top of it.</p>
-          <p className="text-xs text-gray-400 mt-1">Check the pipeline to keep leads moving forward.</p>
-          <Link href="/dashboard/leads" className="mt-3 inline-block text-sm text-[#2a3db4] font-semibold hover:underline">View Pipeline →</Link>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
