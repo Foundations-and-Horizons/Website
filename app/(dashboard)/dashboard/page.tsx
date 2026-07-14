@@ -241,7 +241,7 @@ export default async function DashboardHome() {
                 <div key={deal.id} className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-gray-900 truncate">{deal.title}</p>
-                    {deal.companies && <p className="text-xs text-gray-400 truncate">{(deal.companies as { name: string }).name}</p>}
+                    {deal.companies && !Array.isArray(deal.companies) && <p className="text-xs text-gray-400 truncate">{(deal.companies as unknown as { name: string }).name}</p>}
                     {deal.next_action && <p className="text-xs text-gray-400 truncate">→ {deal.next_action}</p>}
                   </div>
                   <span className="shrink-0 text-xs bg-red-100 text-red-700 font-medium rounded-full px-2 py-0.5">{deal.next_action_due}</span>
