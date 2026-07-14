@@ -1,5 +1,6 @@
 import DashboardNav from "./DashboardNav";
 import { createClient } from "@/lib/supabase/server";
+import { isDashboardPublic } from "@/lib/access";
 
 export default async function DashboardLayout({
   children,
@@ -9,8 +10,9 @@ export default async function DashboardLayout({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Login page uses this layout too — don't show the sidebar there
-  if (!user) {
+  // Login page uses this layout too — don't show the sidebar there.
+  // In public mode there's no user, but we still want the full shell.
+  if (!user && !isDashboardPublic()) {
     return <>{children}</>;
   }
 
