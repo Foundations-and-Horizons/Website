@@ -1,8 +1,16 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isDashboardPublic } from "@/lib/access";
 
-export async function middleware(request: NextRequest) {
+// Next.js 16: the former `middleware` convention is now `proxy`.
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
+
+  // When public access is enabled, skip the auth gate entirely so the
+  // dashboard is reachable without logging in. See lib/access.ts.
+  if (isDashboardPublic()) {
+    return supabaseResponse;
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
