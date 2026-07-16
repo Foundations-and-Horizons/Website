@@ -16,6 +16,7 @@
     --denim:#3D5A73;
     --money:#3E7C4F;
     --card:#FFFDF8;
+    --page:#8CC0B7;
     --font-display:'Arial Narrow','Helvetica Neue Condensed',Impact,system-ui,sans-serif;
     --font-body:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
     --font-mono:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
@@ -24,12 +25,18 @@
   html,body{margin:0;padding:0;}
   /* Commit to the warm cream world in either OS/viewer theme — this app is deliberately single-look. */
   body{
-    background:var(--cream);
+    background:linear-gradient(180deg,#95C6BE 0%,#79ADA5 100%) fixed;
     color:var(--charcoal);
     font-family:var(--font-body);
     -webkit-font-smoothing:antialiased;
     min-height:100vh;
   }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27104%27%20height%3D%27104%27%20viewBox%3D%270%200%20104%20104%27%3E%3Cg%20fill%3D%27%23FFF6E6%27%20fill-opacity%3D%270.11%27%3E%3Cg%20transform%3D%27translate%289%2C13%29%20scale%280.52%29%27%3E%3Cpolygon%20points%3D%2212%202%2015.09%208.26%2022%209.27%2017%2014.14%2018.18%2021.02%2012%2017.77%205.82%2021.02%207%2014.14%202%209.27%208.91%208.26%2012%202%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2866%2C40%29%20scale%280.8%29%27%3E%3Cpolygon%20points%3D%2212%202%2015.09%208.26%2022%209.27%2017%2014.14%2018.18%2021.02%2012%2017.77%205.82%2021.02%207%2014.14%202%209.27%208.91%208.26%2012%202%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2840%2C78%29%20scale%280.44%29%27%3E%3Cpolygon%20points%3D%2212%202%2015.09%208.26%2022%209.27%2017%2014.14%2018.18%2021.02%2012%2017.77%205.82%2021.02%207%2014.14%202%209.27%208.91%208.26%2012%202%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-size:104px 104px;
+  }
+  #app{position:relative;z-index:1;}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
   input,textarea,select{font-family:inherit;}
   a{color:inherit;}
@@ -51,7 +58,8 @@
     position:sticky;top:0;z-index:20;
     display:flex;align-items:center;justify-content:space-between;
     padding:12px 16px;background:var(--charcoal);
-    box-shadow:0 4px 14px rgba(0,0,0,.18);
+    border-bottom:4px double var(--gold);
+    box-shadow:0 4px 14px rgba(0,0,0,.22);
   }
   .brand{font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:.03em;color:var(--cream);cursor:pointer;}
   .tabs{display:flex;gap:4px;}
@@ -86,7 +94,8 @@
   .navcard .t{font-family:var(--font-display);font-weight:800;font-size:20px;line-height:1.05;}
   .navcard .s{font-size:12px;color:var(--leather);margin-top:2px;}
 
-  .card{background:var(--card);border:2px solid rgba(217,154,61,.2);border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(42,33,27,.05);}
+  .card{position:relative;background:var(--card);border:2px solid rgba(217,154,61,.2);border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(42,33,27,.08);}
+  .card::after{content:"";position:absolute;inset:5px;border:1.5px dashed rgba(92,58,33,.20);border-radius:13px;pointer-events:none;}
   .list{display:flex;flex-direction:column;gap:12px;}
   .grid2{display:grid;gap:12px;}
   @media(min-width:640px){ .grid2{grid-template-columns:repeat(2,1fr);} }
