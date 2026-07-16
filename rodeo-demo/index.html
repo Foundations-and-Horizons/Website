@@ -14,6 +14,7 @@
     --gold:#D99A3D;
     --teal:#2E8B8B;
     --denim:#3D5A73;
+    --money:#3E7C4F;
     --card:#FFFDF8;
     --font-display:'Arial Narrow','Helvetica Neue Condensed',Impact,system-ui,sans-serif;
     --font-body:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -41,6 +42,7 @@
   .between{justify-content:space-between;}
   .gap2{gap:8px;} .gap3{gap:12px;} .gap4{gap:16px;}
   .grow{flex:1;}
+  .wrapf{flex-wrap:wrap;}
   .hide-sm{display:none;}
   @media(min-width:640px){ .hide-sm{display:inline;} }
 
@@ -57,12 +59,13 @@
   .tab.active{background:var(--rust);color:var(--cream);}
 
   /* ---- Stat pills ---- */
-  .stats{display:flex;gap:12px;padding:0 16px;margin-top:-32px;position:relative;z-index:10;}
-  .pill{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:var(--card);border:2px solid rgba(217,154,61,.2);border-radius:18px;padding:16px 12px;
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 16px;margin-top:-32px;position:relative;z-index:10;}
+  @media(min-width:640px){ .stats{grid-template-columns:repeat(4,1fr);} }
+  .pill{display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:var(--card);border:2px solid rgba(217,154,61,.2);border-radius:18px;padding:14px 10px;
     box-shadow:0 6px 18px rgba(42,33,27,.08);}
-  .pill .num{font-family:var(--font-mono);font-size:26px;font-weight:700;margin-top:4px;}
-  .pill .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--leather);margin-top:2px;text-align:center;}
+  .pill .num{font-family:var(--font-mono);font-size:22px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums;line-height:1;}
+  .pill .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--leather);margin-top:4px;text-align:center;}
 
   /* ---- Hero ---- */
   .hero{position:relative;width:100%;height:56vh;min-height:320px;overflow:hidden;}
@@ -93,6 +96,10 @@
   .chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;}
   .chip.denim{background:rgba(61,90,115,.14);color:var(--denim);}
   .chip.teal{background:rgba(46,139,139,.15);color:var(--teal);}
+  .chip.gold{background:rgba(217,154,61,.22);color:#8A6520;}
+  .chip.rustc{background:rgba(190,75,35,.14);color:var(--rust);}
+  .chip.money{background:rgba(62,124,79,.16);color:var(--money);}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
 
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;font-weight:700;font-size:14px;padding:9px 16px;color:#fff;transition:filter .15s;white-space:nowrap;flex:none;}
   .btn:hover{filter:brightness(1.06);}
@@ -104,7 +111,7 @@
   .empty{text-align:center;padding:64px 0;color:var(--leather);}
   .empty .title{margin-top:8px;}
 
-  .time{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--rust);line-height:1;}
+  .time{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--rust);line-height:1;font-variant-numeric:tabular-nums;}
   .tny{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--leather);}
 
   /* ---- Modal ---- */
@@ -118,16 +125,24 @@
   .field{margin-bottom:16px;}
   .field > label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--leather);margin-bottom:6px;}
   .inp{width:100%;padding:10px 12px;border-radius:10px;border:2px solid rgba(217,154,61,.4);background:#fff;font-size:15px;color:var(--charcoal);}
+  select.inp{appearance:auto;}
   textarea.inp{min-height:72px;resize:vertical;}
   .seg{display:flex;gap:8px;}
-  .seg button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-weight:700;font-size:14px;text-transform:capitalize;border:2px solid rgba(46,139,139,.35);background:#fff;color:var(--leather);}
-  .seg button.on{background:var(--teal);color:#fff;}
+  .seg.tri{flex-wrap:wrap;}
+  .seg button{flex:1;min-width:120px;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-weight:700;font-size:14px;border:2px solid rgba(92,58,33,.25);background:#fff;color:var(--leather);}
+  .seg.teal button.on{background:var(--teal);color:#fff;border-color:var(--teal);}
+  .seg.denim button.on{background:var(--denim);color:#fff;border-color:var(--denim);}
+  .seg.rust button.on{background:var(--rust);color:#fff;border-color:var(--rust);}
   .stars{display:flex;gap:4px;}
   .stars button{padding:2px;}
   .toggle{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:12px;font-weight:700;font-size:14px;border:2px solid rgba(61,90,115,.35);background:#fff;color:var(--leather);}
   .toggle.on{background:var(--denim);color:#fff;}
+  .prefix{position:relative;}
+  .prefix > span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--leather);font-weight:700;}
+  .prefix > input{padding-left:26px;}
   .demo-tag{position:fixed;bottom:10px;right:10px;z-index:5;background:rgba(42,33,27,.82);color:var(--cream);font-size:11px;letter-spacing:.04em;padding:5px 10px;border-radius:999px;pointer-events:none;}
   .line2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .substay{display:flex;align-items:center;gap:8px;background:var(--cream);border-radius:12px;padding:8px 12px;}
 </style>
 </head>
 <body>
@@ -160,7 +175,11 @@ var ICON_PATHS = {
   trash:'<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
   pencil:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
   sort:'<path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>',
-  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>'
+  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+  building:'<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>',
+  trophy:'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+  award:'<path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/>'
 };
 function icon(name,size,color,fill){
   size=size||18;
@@ -172,54 +191,73 @@ var seq=0;
 function uid(){ return 'id'+Math.abs((Date.now()^(performance.now()*1000|0))).toString(36)+(seq++); }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function fmtTime(sec){ if(sec===''||sec==null||isNaN(sec)) return '--'; return Number(sec).toFixed(2); }
+function fmtMoney(n){ n=Number(n)||0; return '$'+n.toLocaleString(undefined,{maximumFractionDigits:0}); }
 function fmtDate(d){ if(!d) return ''; var dt=new Date(d+'T00:00:00'); if(isNaN(dt)) return d;
   return dt.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }
+function catLabel(c){ return c==='college'?'College Rodeo':'Jackpot'; }
+function catClass(c){ return c==='college'?'gold':'rustc'; }
+function typeLabel(t){ return t==='indoor'?'Indoor':t==='outdoor'?'Outdoor':''; }
 
-/* ---- storage + seed ---- */
+/* ---- storage ---- */
 function load(key,fb){ try{ var v=localStorage.getItem(key); return v==null?fb:JSON.parse(v);}catch(e){return fb;} }
 function save(key,v){ try{ localStorage.setItem(key,JSON.stringify(v)); }catch(e){} }
+
+/* ---- seed sample data (v2: arena type, run category, winnings, stay↔arena) ---- */
 (function seedData(){
-  if(localStorage.getItem('rodeo-demo-seeded')) return;
+  if(localStorage.getItem('rodeo-demo-seed-v2')) return;
   save('runs',[
-    {id:'r1',date:'2026-06-27',event:'Cache County Fair Barrel Race',arena:'Cache County Fairgrounds',time:'17.42',videoLink:'',notes:'Clean run, great first turn.'},
-    {id:'r2',date:'2026-06-13',event:'Utah High School Rodeo Finals',arena:'Heber City Rodeo Grounds',time:'17.88',videoLink:'',notes:'Tipped barrel 2, still a solid time.'},
-    {id:'r3',date:'2026-05-30',event:'Spring Sizzler Jackpot',arena:'Cache County Fairgrounds',time:'17.61',videoLink:'',notes:''},
-    {id:'r4',date:'2026-05-16',event:'Weber County Open',arena:'Golden Spike Arena',time:'18.05',videoLink:'',notes:'Deep ground, ran wide on purpose.'},
-    {id:'r5',date:'2026-04-25',event:'Season Opener Jackpot',arena:'Heber City Rodeo Grounds',time:'17.95',videoLink:'',notes:'First run of the season.'}
+    {id:'r1',date:'2026-06-27',event:'Cache Valley Summer Jackpot',arena:'Cache County Fairgrounds',category:'jackpot',time:'17.42',earnings:320,videoLink:'',notes:'Clean run, great first turn.'},
+    {id:'r6',date:'2026-06-06',event:'Southern Utah University Rodeo',arena:'Golden Spike Arena',category:'college',time:'17.48',earnings:0,videoLink:'',notes:'Great indoor footing.'},
+    {id:'r2',date:'2026-05-30',event:'Weber State College Rodeo',arena:'Golden Spike Arena',category:'college',time:'17.65',earnings:0,videoLink:'',notes:'First college rodeo of the split.'},
+    {id:'r3',date:'2026-05-16',event:'Spring Sizzler Jackpot',arena:'Cache County Fairgrounds',category:'jackpot',time:'17.61',earnings:150,videoLink:'',notes:''},
+    {id:'r4',date:'2026-04-25',event:'Utah State University Rodeo',arena:'Heber City Rodeo Grounds',category:'college',time:'18.05',earnings:0,videoLink:'',notes:'Deep ground, ran wide on purpose.'},
+    {id:'r5',date:'2026-04-11',event:'Season Opener Jackpot',arena:'Heber City Rodeo Grounds',category:'jackpot',time:'17.95',earnings:75,videoLink:'',notes:'First run of the season.'}
   ]);
   save('travel',[
-    {id:'t1',startDate:'2026-06-26',endDate:'2026-06-28',type:'hotel',name:'Best Western Logan Inn',ada:true,rating:4,notes:'Close to the fairgrounds, easy trailer parking.'},
-    {id:'t2',startDate:'2026-05-15',endDate:'2026-05-17',type:'campground',name:'Golden Spike RV Park',ada:false,rating:3,notes:'Full hookups, a little dusty but fine for a weekend.'}
+    {id:'t1',startDate:'2026-06-26',endDate:'2026-06-28',type:'hotel',name:'Best Western Logan Inn',arena:'Cache County Fairgrounds',ada:true,rating:4,notes:'Close to the fairgrounds, easy trailer parking.'},
+    {id:'t2',startDate:'2026-05-29',endDate:'2026-05-31',type:'campground',name:'Golden Spike RV Park',arena:'Golden Spike Arena',ada:false,rating:3,notes:'Full hookups, a little dusty but fine for a weekend.'}
   ]);
-  save('arena-notes',{
-    'Cache County Fairgrounds':'Ground stays firm. Good electronic timer. Warm-up pen is small — get there early.',
-    'Heber City Rodeo Grounds':'Deep near barrel 3, take it a touch wider. Long score line.',
-    'Golden Spike Arena':'Indoor, great footing. Can get loud, give her a minute to settle.'
+  save('arena-info',{
+    'Cache County Fairgrounds':{type:'outdoor',notes:'Ground stays firm. Good electronic timer. Warm-up pen is small — get there early.'},
+    'Golden Spike Arena':{type:'indoor',notes:'Indoor, great footing. Can get loud, give her a minute to settle.'},
+    'Heber City Rodeo Grounds':{type:'outdoor',notes:'Deep near barrel 3, take it a touch wider. Long score line.'}
   });
-  localStorage.setItem('rodeo-demo-seeded','1');
+  localStorage.setItem('rodeo-demo-seed-v2','1');
 })();
 
-/* ---- state ---- */
+/* ---- state (with light migration/defaulting of older records) ---- */
+function migrateArenaInfo(){
+  var info=load('arena-info',null);
+  if(info) return info;
+  var oldNotes=load('arena-notes',{}), out={};
+  Object.keys(oldNotes).forEach(function(k){ out[k]={type:'',notes:oldNotes[k]||''}; });
+  return out;
+}
 var S = {
   view:'home',
-  runs:load('runs',[]),
-  travel:load('travel',[]),
-  arenaNotes:load('arena-notes',{}),
-  modal:null,     // {kind, ...}
-  form:null,      // working copy for modal forms
+  runs:load('runs',[]).map(function(r){ return Object.assign({category:'jackpot',earnings:0,videoLink:'',notes:''},r); }),
+  travel:load('travel',[]).map(function(t){ return Object.assign({arena:''},t); }),
+  arenaInfo:migrateArenaInfo(),
+  modal:null,
+  form:null,
   runFilter:'all',
+  runCat:'all',
   runSort:'date-desc'
 };
-function persist(){ save('runs',S.runs); save('travel',S.travel); save('arena-notes',S.arenaNotes); }
+function persist(){ save('runs',S.runs); save('travel',S.travel); save('arena-info',S.arenaInfo); }
 function arenas(){
   var set={}; S.runs.forEach(function(r){ if(r.arena) set[r.arena]=1; });
-  Object.keys(S.arenaNotes).forEach(function(a){ set[a]=1; });
+  Object.keys(S.arenaInfo).forEach(function(a){ set[a]=1; });
   return Object.keys(set).sort();
 }
-function bestTime(){
-  var t=S.runs.map(function(r){return Number(r.time);}).filter(function(n){return !isNaN(n)&&n>0;});
+function arenaType(name){ return (S.arenaInfo[name]&&S.arenaInfo[name].type)||''; }
+function arenaNotesOf(name){ return (S.arenaInfo[name]&&S.arenaInfo[name].notes)||''; }
+function bestByType(type){
+  var t=S.runs.filter(function(r){return arenaType(r.arena)===type;}).map(function(r){return Number(r.time);}).filter(function(n){return !isNaN(n)&&n>0;});
   return t.length?Math.min.apply(null,t):null;
 }
+function totalWon(){ return S.runs.reduce(function(s,r){return s+(Number(r.earnings)||0);},0); }
+function staysForArena(name){ return S.travel.filter(function(t){return t.arena===name;}); }
 
 /* ---- shared bits ---- */
 function topbar(current){
@@ -231,24 +269,30 @@ function topbar(current){
       return '<button class="tab'+(on?' active':'')+'" data-nav="'+t[0]+'">'+icon(t[2],15,on?'#F3EBDC':'#C9BFAE')+'<span class="hide-sm">'+t[1]+'</span></button>';
     }).join('')+'</div></div>';
 }
+function typeChip(type){
+  if(type==='outdoor') return '<span class="chip teal">'+icon('sun',11,'var(--teal)')+'Outdoor</span>';
+  if(type==='indoor') return '<span class="chip denim">'+icon('building',11,'var(--denim)')+'Indoor</span>';
+  return '';
+}
 
 /* ---- HOME ---- */
 function viewHome(){
   var cards=[
-    ['runs','Log a run','Times, arenas, video','timer','var(--rust)'],
-    ['arenas','Arenas','Compare & remember','mappin','var(--denim)'],
+    ['runs','Log a run','Times, category, winnings','timer','var(--rust)'],
+    ['arenas','Arenas','Indoor/outdoor & notes','mappin','var(--denim)'],
     ['travel','On the road','Hotels & campgrounds','hotel','var(--teal)']
   ];
-  var bt=bestTime();
+  var bo=bestByType('outdoor'), bi=bestByType('indoor');
   return '<div class="hero">'+
       '<img src="'+HERO_IMG+'" alt="Barrel racing" />'+
       '<div class="scrim"></div>'+
       '<div class="cap"><h1>RODEO ROAD LOG</h1><p>Every run, every arena, every stop on the road — in one place.</p></div>'+
     '</div>'+
     '<div class="stats">'+
-      pill('Runs logged',S.runs.length,'flag')+
-      pill('Arenas',arenas().length,'mappin')+
-      pill('Best time',bt?fmtTime(bt):'--','timer')+
+      pill('Runs logged',S.runs.length,'flag',null)+
+      pill('Total won',fmtMoney(totalWon()),'trophy','var(--money)')+
+      pill('Best outdoor',bo?fmtTime(bo):'--','sun',null)+
+      pill('Best indoor',bi?fmtTime(bi):'--','building',null)+
     '</div>'+
     '<div class="navgrid">'+cards.map(function(c){
       return '<button class="navcard" data-nav="'+c[0]+'">'+
@@ -257,13 +301,14 @@ function viewHome(){
         icon('chevron',18,'var(--leather)')+'</button>';
     }).join('')+'</div>';
 }
-function pill(label,value,ic){
-  return '<div class="pill">'+icon(ic,20,'var(--rust)')+'<div class="num">'+value+'</div><div class="lbl">'+label+'</div></div>';
+function pill(label,value,ic,numColor){
+  return '<div class="pill">'+icon(ic,20,'var(--rust)')+'<div class="num"'+(numColor?' style="color:'+numColor+'"':'')+'>'+value+'</div><div class="lbl">'+label+'</div></div>';
 }
 
 /* ---- RUNS ---- */
 function viewRuns(){
   var list=S.runs.filter(function(r){return S.runFilter==='all'||r.arena===S.runFilter;})
+    .filter(function(r){return S.runCat==='all'||r.category===S.runCat;})
     .sort(function(a,b){
       if(S.runSort==='date-desc') return (b.date||'').localeCompare(a.date||'');
       if(S.runSort==='date-asc') return (a.date||'').localeCompare(b.date||'');
@@ -271,28 +316,36 @@ function viewRuns(){
       return 0;
     });
   var sortLbl=S.runSort==='date-desc'?'Newest':S.runSort==='date-asc'?'Oldest':'Fastest';
-  var opts='<option value="all">All arenas</option>'+arenas().map(function(a){
+  var arenaOpts='<option value="all">All arenas</option>'+arenas().map(function(a){
     return '<option value="'+esc(a)+'"'+(S.runFilter===a?' selected':'')+'>'+esc(a)+'</option>';}).join('');
+  var catOpts=[['all','All types'],['jackpot','Jackpots'],['college','College rodeo']].map(function(o){
+    return '<option value="'+o[0]+'"'+(S.runCat===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('');
   var body=topbar('runs')+'<div class="wrap">'+
-    '<div class="row between gap2" style="margin-bottom:12px;flex-wrap:wrap;">'+
-      '<div class="row gap2 grow" style="flex:1 1 200px;min-width:0;">'+
-        '<select class="selectlike" data-runfilter style="min-width:0;flex:1;">'+opts+'</select>'+
+    '<div class="row between gap2 wrapf" style="margin-bottom:12px;">'+
+      '<div class="row gap2 wrapf grow" style="flex:1 1 200px;min-width:0;">'+
+        '<select class="selectlike" data-catfilter style="min-width:0;">'+catOpts+'</select>'+
+        '<select class="selectlike" data-runfilter style="min-width:0;">'+arenaOpts+'</select>'+
         '<button class="selectlike row gap2" data-runsort style="white-space:nowrap;flex:none;">'+icon('sort',13,'var(--leather)')+sortLbl+'</button>'+
       '</div>'+
       '<button class="btn rust" data-newrun>'+icon('plus',16,'#fff')+'Log run</button>'+
     '</div>';
   if(list.length===0){
-    body+='<div class="empty">'+icon('timer',32,'var(--leather)')+'<div class="title">No runs yet</div><div>Tap &ldquo;Log run&rdquo; to add your first one.</div></div>';
+    body+='<div class="empty">'+icon('timer',32,'var(--leather)')+'<div class="title">No runs to show</div><div>Tap &ldquo;Log run&rdquo; to add one.</div></div>';
   }
   body+='<div class="list">'+list.map(function(r){
+    var money=Number(r.earnings)>0?'<span class="chip money">'+icon('trophy',11,'var(--money)')+'Won '+fmtMoney(r.earnings)+'</span>':'';
     return '<div class="card">'+
       '<div class="row between" style="align-items:flex-start;">'+
-        '<div><div class="font-display" style="font-size:20px;font-weight:800;line-height:1.05;">'+esc(r.event)+'</div>'+
+        '<div style="padding-right:8px;"><div class="font-display" style="font-size:20px;font-weight:800;line-height:1.05;">'+esc(r.event)+'</div>'+
           '<div class="muted" style="font-size:12px;margin-top:2px;">'+esc(fmtDate(r.date))+'</div>'+
-          '<div class="chip denim" style="margin-top:6px;">'+icon('mappin',11,'var(--denim)')+esc(r.arena)+'</div></div>'+
+          '<div class="chips">'+
+            '<span class="chip '+catClass(r.category)+'">'+catLabel(r.category)+'</span>'+
+            '<span class="chip denim">'+icon('mappin',11,'var(--denim)')+esc(r.arena)+'</span>'+
+            money+
+          '</div></div>'+
         '<div style="text-align:right;"><div class="time">'+fmtTime(r.time)+'</div><div class="tny">seconds</div></div>'+
       '</div>'+
-      (r.notes?'<div style="font-size:14px;margin-top:8px;">'+esc(r.notes)+'</div>':'')+
+      (r.notes?'<div style="font-size:14px;margin-top:10px;">'+esc(r.notes)+'</div>':'')+
       '<div class="row between" style="margin-top:12px;">'+
         (r.videoLink?'<a class="chip teal" href="'+esc(r.videoLink)+'" target="_blank" rel="noreferrer">'+icon('video',12,'var(--teal)')+'Watch run</a>':'<span></span>')+
         '<div class="row gap2">'+
@@ -309,7 +362,7 @@ function viewRuns(){
 function viewArenas(){
   var stats=arenas().map(function(name){
     var times=S.runs.filter(function(r){return r.arena===name;}).map(function(r){return Number(r.time);}).filter(function(n){return !isNaN(n)&&n>0;});
-    return {name:name,count:times.length,best:times.length?Math.min.apply(null,times):null};
+    return {name:name,count:times.length,best:times.length?Math.min.apply(null,times):null,type:arenaType(name)};
   });
   var body=topbar('arenas')+'<div class="wrap">'+
     '<div class="row between" style="margin-bottom:12px;">'+
@@ -320,9 +373,13 @@ function viewArenas(){
     body+='<div class="empty">'+icon('mappin',32,'var(--leather)')+'<div class="title">No arenas yet</div><div>Log a run or add one manually.</div></div>';
   }
   body+='<div class="grid2">'+stats.map(function(a){
-    var note=S.arenaNotes[a.name];
+    var note=arenaNotesOf(a.name), nStays=staysForArena(a.name).length;
     return '<button class="card" style="text-align:left;" data-arena="'+esc(a.name)+'">'+
       '<div class="row between" style="align-items:flex-start;"><div class="font-display" style="font-size:20px;font-weight:800;line-height:1.05;padding-right:8px;">'+esc(a.name)+'</div>'+icon('mappin',16,'var(--denim)')+'</div>'+
+      '<div class="chips">'+
+        (typeChip(a.type)||'<span class="chip gold">Set indoor/outdoor</span>')+
+        (nStays?'<span class="chip teal">'+icon('hotel',11,'var(--teal)')+nStays+' stay'+(nStays===1?'':'s')+'</span>':'')+
+      '</div>'+
       '<div class="row gap4" style="margin-top:8px;font-size:14px;">'+
         '<span class="muted">'+a.count+' run'+(a.count===1?'':'s')+'</span>'+
         (a.best!==null?'<span class="font-mono" style="font-weight:700;color:var(--rust);">Best '+fmtTime(a.best)+'</span>':'')+
@@ -349,11 +406,14 @@ function viewTravel(){
     var dates=esc(fmtDate(t.startDate))+(t.endDate&&t.endDate!==t.startDate?' &ndash; '+esc(fmtDate(t.endDate)):'');
     return '<div class="card">'+
       '<div class="row between" style="align-items:flex-start;">'+
-        '<div><div class="row gap2">'+icon(t.type==='hotel'?'hotel':'tent',15,'var(--teal)')+'<div class="font-display" style="font-size:20px;font-weight:800;line-height:1.05;">'+esc(t.name)+'</div></div>'+
+        '<div style="padding-right:8px;"><div class="row gap2">'+icon(t.type==='hotel'?'hotel':'tent',15,'var(--teal)')+'<div class="font-display" style="font-size:20px;font-weight:800;line-height:1.05;">'+esc(t.name)+'</div></div>'+
           '<div class="muted" style="font-size:12px;margin-top:2px;">'+dates+'</div></div>'+
         '<div class="row" style="gap:2px;">'+stars+'</div>'+
       '</div>'+
-      (t.ada?'<div style="margin-top:8px;"><span class="chip denim">'+icon('accessibility',11,'var(--denim)')+'ADA room</span></div>':'')+
+      '<div class="chips">'+
+        (t.arena?'<span class="chip denim">'+icon('mappin',11,'var(--denim)')+esc(t.arena)+'</span>':'')+
+        (t.ada?'<span class="chip denim">'+icon('accessibility',11,'var(--denim)')+'ADA room</span>':'')+
+      '</div>'+
       (t.notes?'<div style="font-size:14px;margin-top:8px;">'+esc(t.notes)+'</div>':'')+
       '<div class="row" style="justify-content:flex-end;gap:8px;margin-top:12px;">'+
         '<button class="icon-btn" data-editstay="'+t.id+'">'+icon('pencil',14,'var(--leather)')+'</button>'+
@@ -371,17 +431,27 @@ function modalShell(title,inner){
     '<div class="body">'+inner+'</div></div></div>';
 }
 function field(label,inner){ return '<div class="field"><label>'+esc(label)+'</label>'+inner+'</div>'; }
+function arenaSelect(fieldName,current,withNone){
+  var opts=(withNone?'<option value="">— none —</option>':'')+arenas().map(function(a){
+    return '<option value="'+esc(a)+'"'+(current===a?' selected':'')+'>'+esc(a)+'</option>';}).join('');
+  return '<select class="inp" data-f="'+fieldName+'">'+opts+'</select>';
+}
 
 function renderModal(){
   if(!S.modal) return '';
-  var m=S.modal, f=S.form;
+  var m=S.modal, f=S.form, i;
   if(m.kind==='run'){
     var alist=arenas().map(function(a){return '<option value="'+esc(a)+'"></option>';}).join('');
     return modalShell(m.editing?'Edit run':'Log a run',
-      field('Event / Rodeo name','<input class="inp" data-f="event" value="'+esc(f.event)+'" placeholder="e.g. College National Finals">')+
+      field('Event / Rodeo name','<input class="inp" data-f="event" value="'+esc(f.event)+'" placeholder="e.g. Weber State College Rodeo">')+
+      field('Type','<div class="seg rust">'+[['jackpot','Jackpot'],['college','College Rodeo']].map(function(o){
+        return '<button data-cat="'+o[0]+'" class="'+(f.category===o[0]?'on':'')+'">'+o[1]+'</button>';}).join('')+'</div>')+
       field('Date','<input class="inp" type="date" data-f="date" value="'+esc(f.date)+'">')+
       field('Arena','<input class="inp" data-f="arena" list="arena-sug" value="'+esc(f.arena)+'" placeholder="e.g. Weber County Fairgrounds"><datalist id="arena-sug">'+alist+'</datalist>')+
-      field('Time (seconds)','<input class="inp" type="number" step="0.01" data-f="time" value="'+esc(f.time)+'" placeholder="17.23">')+
+      field('Arena type','<div class="seg denim">'+[['outdoor','Outdoor','sun'],['indoor','Indoor','building']].map(function(o){
+        return '<button data-atype="'+o[0]+'" class="'+(f.arenaType===o[0]?'on':'')+'">'+icon(o[2],15)+o[1]+'</button>';}).join('')+'</div>')+
+      field('Time (seconds)','<input class="inp" type="number" step="0.01" inputmode="decimal" data-f="time" value="'+esc(f.time)+'" placeholder="17.23">')+
+      field('Money won (leave 0 if none)','<div class="prefix"><span>$</span><input class="inp" type="number" step="1" inputmode="numeric" data-f="earnings" value="'+esc(f.earnings)+'" placeholder="0"></div>')+
       field('Video link','<input class="inp" data-f="videoLink" value="'+esc(f.videoLink)+'" placeholder="Paste a link for now">')+
       field('Notes','<textarea class="inp" data-f="notes" placeholder="Wide first turn, watch the gate...">'+esc(f.notes)+'</textarea>')+
       '<button class="btn-block" style="background:var(--rust)" data-saverun>Save run</button>');
@@ -389,27 +459,39 @@ function renderModal(){
   if(m.kind==='arenaDetail'){
     var runs=S.runs.filter(function(r){return r.arena===m.name;}).sort(function(a,b){return (Number(a.time)||999)-(Number(b.time)||999);});
     var rows=runs.map(function(r){
-      return '<div class="row between" style="background:var(--cream);border-radius:12px;padding:8px 12px;">'+
-        '<div><div style="font-size:14px;font-weight:700;">'+esc(r.event)+'</div><div class="muted" style="font-size:12px;">'+esc(fmtDate(r.date))+'</div></div>'+
+      return '<div class="row between substay">'+
+        '<div><div style="font-size:14px;font-weight:700;">'+esc(r.event)+'</div><div class="muted" style="font-size:12px;">'+esc(fmtDate(r.date))+' · '+catLabel(r.category)+'</div></div>'+
         '<div class="font-mono" style="font-weight:700;color:var(--rust);">'+fmtTime(r.time)+'</div></div>';
     }).join('');
     if(runs.length===0) rows='<div class="muted" style="font-size:14px;">No runs logged here yet.</div>';
+    var stays=staysForArena(m.name).map(function(t){
+      return '<div class="substay">'+icon(t.type==='hotel'?'hotel':'tent',15,'var(--teal)')+
+        '<div class="grow"><div style="font-size:14px;font-weight:700;">'+esc(t.name)+'</div><div class="muted" style="font-size:12px;">'+esc(fmtDate(t.startDate))+'</div></div>'+
+        '<button class="chip teal" data-gotostay>View</button></div>';
+    }).join('');
+    if(stays.length===0) stays='<div class="muted" style="font-size:14px;">No stays saved for this arena yet — add one on the Travel screen and pick this arena.</div>';
     return modalShell(m.name,
+      field('Indoor or outdoor','<div class="seg denim">'+[['outdoor','Outdoor','sun'],['indoor','Indoor','building']].map(function(o){
+        return '<button data-atype="'+o[0]+'" class="'+(f.type===o[0]?'on':'')+'">'+icon(o[2],15)+o[1]+'</button>';}).join('')+'</div>')+
       '<div class="field"><label>Times here, fastest first</label><div class="list" style="gap:8px;">'+rows+'</div></div>'+
+      '<div class="field"><label>Where we stayed</label><div class="list" style="gap:8px;">'+stays+'</div></div>'+
       field('Tips & tricks for this arena','<textarea class="inp" style="min-height:90px;" data-f="note" placeholder="e.g. Ground is deep near barrel 3, take it wider...">'+esc(f.note)+'</textarea>')+
-      '<button class="btn-block" style="background:var(--denim)" data-savenote>Save notes</button>');
+      '<button class="btn-block" style="background:var(--denim)" data-savenote>Save arena</button>');
   }
   if(m.kind==='arenaNew'){
     return modalShell('Add an arena',
       field('Arena name','<input class="inp" data-f="name" value="'+esc(f.name)+'" placeholder="e.g. Utah State Fairpark">')+
+      field('Indoor or outdoor','<div class="seg denim">'+[['outdoor','Outdoor','sun'],['indoor','Indoor','building']].map(function(o){
+        return '<button data-atype="'+o[0]+'" class="'+(f.type===o[0]?'on':'')+'">'+icon(o[2],15)+o[1]+'</button>';}).join('')+'</div>')+
       '<button class="btn-block" style="background:var(--denim)" data-savearena>Add arena</button>');
   }
   if(m.kind==='travel'){
-    var stars='';for(var i=0;i<5;i++){stars+='<button data-star="'+(i+1)+'">'+icon('star',26,'var(--gold)',i<f.rating?'var(--gold)':'none')+'</button>';}
+    var stars='';for(i=0;i<5;i++){stars+='<button data-star="'+(i+1)+'">'+icon('star',26,'var(--gold)',i<f.rating?'var(--gold)':'none')+'</button>';}
     return modalShell(m.editing?'Edit stay':'Log a stay',
-      field('Type','<div class="seg">'+['hotel','campground'].map(function(o){
-        return '<button data-type="'+o+'" class="'+(f.type===o?'on':'')+'">'+icon(o==='hotel'?'hotel':'tent',15)+o+'</button>';}).join('')+'</div>')+
+      field('Type','<div class="seg teal">'+['hotel','campground'].map(function(o){
+        return '<button data-type="'+o+'" class="'+(f.type===o?'on':'')+'" style="text-transform:capitalize;">'+icon(o==='hotel'?'hotel':'tent',15)+o+'</button>';}).join('')+'</div>')+
       field('Name','<input class="inp" data-f="name" value="'+esc(f.name)+'" placeholder="e.g. Best Western Fairgrounds Inn">')+
+      field('Arena this stay was for',arenaSelect('arena',f.arena,true))+
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'+
         field('Check-in','<input class="inp" type="date" data-f="startDate" value="'+esc(f.startDate)+'">')+
         field('Check-out','<input class="inp" type="date" data-f="endDate" value="'+esc(f.endDate)+'">')+
@@ -430,34 +512,42 @@ function render(){
 
 /* ---- events ---- */
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-nav],[data-newrun],[data-editrun],[data-delrun],[data-runsort],[data-newarena],[data-arena],[data-newstay],[data-editstay],[data-delstay],[data-closemodal],[data-overlay],[data-saverun],[data-savenote],[data-savearena],[data-savestay],[data-type],[data-star],[data-ada]');
+  var t=e.target.closest('[data-nav],[data-newrun],[data-editrun],[data-delrun],[data-runsort],[data-newarena],[data-arena],[data-newstay],[data-editstay],[data-delstay],[data-closemodal],[data-overlay],[data-saverun],[data-savenote],[data-savearena],[data-savestay],[data-type],[data-cat],[data-atype],[data-star],[data-ada],[data-gotostay]');
   if(!t) return;
 
   if(t.hasAttribute('data-nav')){ S.view=t.getAttribute('data-nav'); S.modal=null; render(); return; }
 
   // runs
-  if(t.hasAttribute('data-newrun')){ S.form={id:uid(),date:'',event:'',arena:'',time:'',videoLink:'',notes:''}; S.modal={kind:'run',editing:false}; render(); return; }
-  if(t.hasAttribute('data-editrun')){ var r=S.runs.find(function(x){return x.id===t.getAttribute('data-editrun');}); S.form=Object.assign({},r); S.modal={kind:'run',editing:true}; render(); return; }
+  if(t.hasAttribute('data-newrun')){ S.form={id:uid(),date:'',event:'',arena:'',arenaType:'outdoor',category:'jackpot',time:'',earnings:'',videoLink:'',notes:''}; S.modal={kind:'run',editing:false}; render(); return; }
+  if(t.hasAttribute('data-editrun')){ var r=S.runs.find(function(x){return x.id===t.getAttribute('data-editrun');}); S.form=Object.assign({arenaType:arenaType(r.arena)||'outdoor'},r); S.modal={kind:'run',editing:true}; render(); return; }
   if(t.hasAttribute('data-delrun')){ S.runs=S.runs.filter(function(x){return x.id!==t.getAttribute('data-delrun');}); persist(); render(); return; }
   if(t.hasAttribute('data-runsort')){ S.runSort=S.runSort==='date-desc'?'date-asc':S.runSort==='date-asc'?'time-asc':'date-desc'; render(); return; }
+  if(t.hasAttribute('data-cat')){ S.form.category=t.getAttribute('data-cat'); render(); return; }
   if(t.hasAttribute('data-saverun')){
     var f=S.form; if(!f.event||!f.arena) return;
-    var ex=S.runs.some(function(x){return x.id===f.id;});
-    S.runs = ex? S.runs.map(function(x){return x.id===f.id?f:x;}) : S.runs.concat([f]);
+    var run={id:f.id,date:f.date,event:f.event,arena:f.arena,category:f.category,time:f.time,earnings:Number(f.earnings)||0,videoLink:f.videoLink,notes:f.notes};
+    var ex=S.runs.some(function(x){return x.id===run.id;});
+    S.runs = ex? S.runs.map(function(x){return x.id===run.id?run:x;}) : S.runs.concat([run]);
+    // remember the arena's indoor/outdoor type
+    var cur=S.arenaInfo[f.arena]||{type:'',notes:''};
+    if(f.arenaType) cur.type=f.arenaType;
+    S.arenaInfo[f.arena]=cur;
     persist(); S.modal=null; render(); return;
   }
 
   // arenas
-  if(t.hasAttribute('data-newarena')){ S.form={name:''}; S.modal={kind:'arenaNew'}; render(); return; }
-  if(t.hasAttribute('data-arena')){ var nm=t.getAttribute('data-arena'); S.form={note:S.arenaNotes[nm]||''}; S.modal={kind:'arenaDetail',name:nm}; render(); return; }
-  if(t.hasAttribute('data-savenote')){ S.arenaNotes[S.modal.name]=S.form.note; persist(); S.modal=null; render(); return; }
-  if(t.hasAttribute('data-savearena')){ var n=(S.form.name||'').trim(); if(!n) return; if(!(n in S.arenaNotes)) S.arenaNotes[n]=''; persist(); S.modal=null; render(); return; }
+  if(t.hasAttribute('data-newarena')){ S.form={name:'',type:'outdoor'}; S.modal={kind:'arenaNew'}; render(); return; }
+  if(t.hasAttribute('data-arena')){ var nm=t.getAttribute('data-arena'); S.form={note:arenaNotesOf(nm),type:arenaType(nm)}; S.modal={kind:'arenaDetail',name:nm}; render(); return; }
+  if(t.hasAttribute('data-savenote')){ S.arenaInfo[S.modal.name]={type:S.form.type||'',notes:S.form.note||''}; persist(); S.modal=null; render(); return; }
+  if(t.hasAttribute('data-savearena')){ var n=(S.form.name||'').trim(); if(!n) return; S.arenaInfo[n]={type:S.form.type||'',notes:arenaNotesOf(n)}; persist(); S.modal=null; render(); return; }
+  if(t.hasAttribute('data-gotostay')){ S.modal=null; S.view='travel'; render(); return; }
 
   // travel
-  if(t.hasAttribute('data-newstay')){ S.form={id:uid(),startDate:'',endDate:'',type:'hotel',name:'',ada:false,rating:0,notes:''}; S.modal={kind:'travel',editing:false}; render(); return; }
-  if(t.hasAttribute('data-editstay')){ var s=S.travel.find(function(x){return x.id===t.getAttribute('data-editstay');}); S.form=Object.assign({},s); S.modal={kind:'travel',editing:true}; render(); return; }
+  if(t.hasAttribute('data-newstay')){ S.form={id:uid(),startDate:'',endDate:'',type:'hotel',name:'',arena:'',ada:false,rating:0,notes:''}; S.modal={kind:'travel',editing:false}; render(); return; }
+  if(t.hasAttribute('data-editstay')){ var s=S.travel.find(function(x){return x.id===t.getAttribute('data-editstay');}); S.form=Object.assign({arena:''},s); S.modal={kind:'travel',editing:true}; render(); return; }
   if(t.hasAttribute('data-delstay')){ S.travel=S.travel.filter(function(x){return x.id!==t.getAttribute('data-delstay');}); persist(); render(); return; }
   if(t.hasAttribute('data-type')){ S.form.type=t.getAttribute('data-type'); render(); return; }
+  if(t.hasAttribute('data-atype')){ S.form.arenaType=t.getAttribute('data-atype'); S.form.type=t.getAttribute('data-atype'); render(); return; }
   if(t.hasAttribute('data-star')){ S.form.rating=Number(t.getAttribute('data-star')); render(); return; }
   if(t.hasAttribute('data-ada')){ S.form.ada=!S.form.ada; render(); return; }
   if(t.hasAttribute('data-savestay')){
@@ -471,13 +561,16 @@ document.addEventListener('click',function(e){
   if(t.hasAttribute('data-closemodal')||t.hasAttribute('data-overlay')){ S.modal=null; render(); return; }
 });
 
-// text inputs update the working form without re-rendering (keeps focus)
-document.addEventListener('input',function(e){
+// text inputs / selects update the working form without a full re-render (keeps focus)
+function syncField(e){
   var el=e.target.closest('[data-f]'); if(!el||!S.form) return;
   S.form[el.getAttribute('data-f')]=el.value;
-});
+}
+document.addEventListener('input',syncField);
 document.addEventListener('change',function(e){
-  var el=e.target.closest('[data-runfilter]'); if(el){ S.runFilter=el.value; render(); }
+  var cf=e.target.closest('[data-catfilter]'); if(cf){ S.runCat=cf.value; render(); return; }
+  var af=e.target.closest('[data-runfilter]'); if(af){ S.runFilter=af.value; render(); return; }
+  syncField(e);
 });
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&S.modal){ S.modal=null; render(); }
