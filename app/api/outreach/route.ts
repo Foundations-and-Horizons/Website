@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       to,
       subject,
       html: body.replace(/\n/g, "<br />"),
-      reply_to: "stephen.cook@foundationsandhorizons.com",
+      replyTo: "stephen.cook@foundationsandhorizons.com",
     });
 
     // Log as activity in the deal timeline
