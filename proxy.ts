@@ -7,7 +7,6 @@ const GATE_BYPASS = ["/gate", "/api/gate", "/dashboard", "/_next", "/favicon", "
 // Next.js 16: the former `middleware` convention is now `proxy`.
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  let supabaseResponse = NextResponse.next({ request });
 
   // Demo access gate — protect all public pages behind an access code
   if (!GATE_BYPASS.some((p) => pathname.startsWith(p))) {
@@ -19,11 +18,18 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  // Only run Supabase auth logic for dashboard routes
+  if (!pathname.startsWith("/dashboard")) {
+    return NextResponse.next({ request });
+  }
+
   // When public access is enabled, skip the auth gate entirely so the
   // dashboard is reachable without logging in. See lib/access.ts.
   if (isDashboardPublic()) {
-    return supabaseResponse;
+    return NextResponse.next({ request });
   }
+
+  let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -50,10 +56,9 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isDashboard = request.nextUrl.pathname.startsWith("/dashboard");
-  const isLoginPage = request.nextUrl.pathname === "/dashboard/login";
+  const isLoginPage = pathname === "/dashboard/login";
 
-  if (isDashboard && !isLoginPage && !user) {
+  if (!isLoginPage && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard/login";
     return NextResponse.redirect(url);
