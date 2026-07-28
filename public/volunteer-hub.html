@@ -544,7 +544,9 @@ const DB = {
       ['Nina Patel','Deliveries','Active',140, null, 1, 310],
       ['Sam Rivera','Warehouse','Active',40, null, 0, 20],
       ['Olivia Brooks','Outreach','Active',40, null, 0, 6],
-      ['Wei Chen','Warehouse','Inactive',300, null, 3, 400]
+      ['Wei Chen','Warehouse','Inactive',300, null, 3, 400],
+      ['Jasmine Carter','Outreach','Active',180, null, 3, -3],
+      ['Marcus Webb','Outreach','Active',95, null, 1, 7]
     ];
     const volByName={};
     vs.forEach((v,i)=>{
@@ -604,7 +606,7 @@ const DB = {
     const stAssts={Monday:'Tom Becker',Tuesday:'Nathan Cole',Wednesday:'Nina Patel',Thursday:'Tom Becker',Friday:'Nathan Cole'};
     ['Monday','Tuesday','Wednesday','Thursday','Friday'].forEach(day=>{
       if(stDrivers[day]) this.insert('delivery_standing',{day_of_week:day,role:'Driver',volunteer_id:volByName[stDrivers[day]]});
-      if(stAssts[day])  this.insert('delivery_standing',{day_of_week:day,role:'Assistant',volunteer_id:volByName[stAssts[day]]});
+      if(stAssts[day])  this.insert('delivery_standing',{day_of_week:day,role:'Driver 2',volunteer_id:volByName[stAssts[day]]});
     });
 
     // staff
@@ -619,7 +621,9 @@ const DB = {
       {name,event_date:dateStr,event_time:time,lines,location:loc,notes:'',bags_prepared:bags,total_volunteers:vols,cancelled:!!cancelled,created_at:at(30)});
     mk('Community Outreach Day', past(12),'9:00 AM',2,'Main Warehouse',420,18,false);
     mk('Back-to-School Supply Drive', past(5),'10:00 AM',3,'Main Warehouse',610,26,false);
-    mk('Corporate Partner Day', future(2),'10:00 AM',2,'Main Warehouse',null,null,false);
+    mk('Volunteer Appreciation Lunch', future(1),'12:00 PM',2,'Main Warehouse',null,null,false);
+    mk('Community Needs Assessment', future(3),'2:00 PM',3,'North Site',null,null,false);
+    mk('Corporate Partner Day', future(9),'10:00 AM',2,'Main Warehouse',null,null,false);
     mk('Neighborhood Resource Fair', future(4),'5:30 PM',2,'North Site',null,null,false);
     mk('Youth Volunteer Day', future(11),'4:00 PM',1,'Main Warehouse',null,null,false);
     mk('Holiday Donation Sort', future(18),'9:00 AM',4,'Main Warehouse',null,null,false);
@@ -814,14 +818,14 @@ function standingVol(day,role){ const s=DB.find('delivery_standing',x=>x.day_of_
 function overrideName(day,role){ const c=DB.find('delivery_confirmations',x=>x.week_start_date===weekStartIso()&&x.notes===day+'|'+role)[0]; return c?c.confirmed_name:null; }
 function volName(id){ const v=DB.all('volunteers').find(x=>x.id==id); return v?v.name:null; }
 function currentDelivery(day){
-  const dO=overrideName(day,'Driver'), aO=overrideName(day,'Assistant');
-  const dS=volName(standingVol(day,'Driver')), aS=volName(standingVol(day,'Assistant'));
-  return { driver:dO||dS||'—', driverSet:!!dO, assistant:aO||aS||'—', asstSet:!!aO };
+  const dO=overrideName(day,'Driver'), aO=overrideName(day,'Driver 2');
+  const dS=volName(standingVol(day,'Driver')), aS=volName(standingVol(day,'Driver 2'));
+  return { driver:dO||dS||'—', driverSet:!!dO, driver2:aO||aS||'—', asstSet:!!aO };
 }
 function deliveriesThisWeekHtml(){
-  return `<div class="tbl-wrap"><table><thead><tr><th>Day</th><th>Driver</th><th>Assistant</th></tr></thead><tbody>
+  return `<div class="tbl-wrap"><table><thead><tr><th>Day</th><th>Driver 1</th><th>Driver 2</th></tr></thead><tbody>
   ${DELIV_DAYS.map(d=>{ const x=currentDelivery(d);
-    return `<tr><td><b>${d.slice(0,3)}</b></td><td>${esc(x.driver)}${x.driverSet?' <span class="badge b-active">✓</span>':''}</td><td>${esc(x.assistant)}${x.asstSet?' <span class="badge b-active">✓</span>':''}</td></tr>`;}).join('')}
+    return `<tr><td><b>${d.slice(0,3)}</b></td><td>${esc(x.driver)}${x.driverSet?' <span class="badge b-active">✓</span>':''}</td><td>${esc(x.driver2)}${x.asstSet?' <span class="badge b-active">✓</span>':''}</td></tr>`;}).join('')}
   </tbody></table></div>`;
 }
 
@@ -1166,13 +1170,13 @@ RENDER.delivery=function(){
     </div>`;
   };
   $('#page-delivery').innerHTML=`
-    <div class="page-head"><div><h1>Deliveries</h1><p>Assign a driver &amp; assistant for each weekday · 🔒 locks someone in for every week</p></div></div>
+    <div class="page-head"><div><h1>Deliveries</h1><p>Assign Driver 1 &amp; Driver 2 for each weekday · 🔒 locks someone in for every week</p></div></div>
     <div class="card"><h2>This Week <span class="sub">week of ${fmtDate(mon)}</span></h2>
-      <div class="tbl-wrap"><table class="deliv-table"><thead><tr><th class="wh-day">Day</th><th>Driver</th><th>Assistant</th><th></th></tr></thead><tbody>
+      <div class="tbl-wrap"><table class="deliv-table"><thead><tr><th class="wh-day">Day</th><th>Driver 1</th><th>Driver 2</th><th></th></tr></thead><tbody>
       ${DELIV_DAYS.map(d=>{ const x=currentDelivery(d);
-        return `<tr><td class="wh-day">${d}</td><td>${cell(d,'Driver')}</td><td>${cell(d,'Assistant')}</td><td>${(x.driverSet||x.asstSet)?`<button class="btn sm" onclick="clearWeek('${d}')">Reset week</button>`:'<span class="muted" style="font-size:12px">standing</span>'}</td></tr>`;}).join('')}
+        return `<tr><td class="wh-day">${d}</td><td>${cell(d,'Driver')}</td><td>${cell(d,'Driver 2')}</td><td>${(x.driverSet||x.asstSet)?`<button class="btn sm" onclick="clearWeek('${d}')">Reset week</button>`:'<span class="muted" style="font-size:12px">standing</span>'}</td></tr>`;}).join('')}
       </tbody></table></div>
-      <p class="muted" style="font-size:12.5px;margin-top:12px">Changing a name sets it for <b>this week only</b> (a one-off sub — shows a ✓ and a Reset). Click <b>🔒</b> to make someone the standing driver/assistant for that weekday, every week going forward.</p>
+      <p class="muted" style="font-size:12.5px;margin-top:12px">Changing a name sets it for <b>this week only</b> (a one-off sub — shows a ✓ and a Reset). Click <b>🔒</b> to make someone the standing Driver 1/Driver 2 for that weekday, every week going forward.</p>
     </div>`;
 };
 function setDeliv(day,role,name){ const ws=weekStartIso();
@@ -1196,7 +1200,7 @@ function lockDeliv(day,role){
   RENDER.delivery();
 }
 function clearWeek(day){ const ws=weekStartIso();
-  DB.remove('delivery_confirmations',c=>c.week_start_date===ws&&(c.notes===day+'|Driver'||c.notes===day+'|Assistant'));
+  DB.remove('delivery_confirmations',c=>c.week_start_date===ws&&(c.notes===day+'|Driver'||c.notes===day+'|Driver 2'));
   RENDER.delivery(); }
 
 /* ============================================================================
