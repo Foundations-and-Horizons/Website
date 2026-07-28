@@ -145,7 +145,6 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .b-active{background:var(--green-light);color:var(--green-text)}
 .b-inactive{background:#eef1f4;color:#64748b}
 .b-leave{background:var(--amber-light);color:var(--amber-text)}
-.b-summer{background:var(--amber-light);color:var(--amber-text)}
 .lvl{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.02em}
 .level-icon{background:linear-gradient(135deg,#F6D365,#FDA085);color:#7a4a10}
 .level-legend{background:#EDE9FE;color:#4C1D95}
@@ -543,7 +542,7 @@ const DB = {
       ['Julia Santos','Warehouse','Active',560, 3, 4, 44],
       ['Ethan Ward','Outreach','Active',800, null, 3, 12],
       ['Nina Patel','Deliveries','Active',140, null, 1, 310],
-      ['Sam Rivera','Warehouse','Summer Break',40, null, 0, 20],
+      ['Sam Rivera','Warehouse','Active',40, null, 0, 20],
       ['Olivia Brooks','Outreach','Active',40, null, 0, 6],
       ['Wei Chen','Warehouse','Inactive',300, null, 3, 400]
     ];
@@ -566,7 +565,7 @@ const DB = {
         signed_in_at:at(startYrs*365||400,9),signed_out_at:null,hours_credited:prior,notes:'Prior service (imported)',created_at:at(400)});
       // recent activity (skip inactive)
       if(status!=='Inactive'){
-        const weeks = status==='Summer Break'?2:12;
+        const weeks = 12;
         for(let w=0; w<weeks; w++){
           if((i+w)%3===0) continue; // vary cadence
           this.insert('sign_ins',{volunteer_id:row.id,volunteer_type_id:typeId[type],
@@ -618,12 +617,12 @@ const DB = {
     // pack events
     const mk=(name,dateStr,time,lines,loc,bags,vols,cancelled)=>this.insert('pack_events',
       {name,event_date:dateStr,event_time:time,lines,location:loc,notes:'',bags_prepared:bags,total_volunteers:vols,cancelled:!!cancelled,created_at:at(30)});
-    mk('Community Event Night', past(12),'6:00 PM',2,'Main Warehouse',420,18,false);
-    mk('Saturday Morning Event', past(5),'9:00 AM',3,'Main Warehouse',610,26,false);
-    mk('Corporate Volunteer Event', future(2),'10:00 AM',2,'Main Warehouse',null,null,false);
-    mk('Neighborhood Event', future(4),'5:30 PM',2,'North Site',null,null,false);
-    mk('Youth Group Event', future(11),'4:00 PM',1,'Main Warehouse',null,null,false);
-    mk('Weekend Mega Event', future(18),'9:00 AM',4,'Main Warehouse',null,null,false);
+    mk('Community Outreach Day', past(12),'9:00 AM',2,'Main Warehouse',420,18,false);
+    mk('Back-to-School Supply Drive', past(5),'10:00 AM',3,'Main Warehouse',610,26,false);
+    mk('Corporate Partner Day', future(2),'10:00 AM',2,'Main Warehouse',null,null,false);
+    mk('Neighborhood Resource Fair', future(4),'5:30 PM',2,'North Site',null,null,false);
+    mk('Youth Volunteer Day', future(11),'4:00 PM',1,'Main Warehouse',null,null,false);
+    mk('Holiday Donation Sort', future(18),'9:00 AM',4,'Main Warehouse',null,null,false);
 
     // signups for upcoming events
     const up=this.all('pack_events').filter(e=>e.event_date>=iso(new Date()) && !e.cancelled);
@@ -831,15 +830,14 @@ function deliveriesThisWeekHtml(){
    ============================================================================ */
 let VOL_FILTER='all', VOL_SEARCH='', VOL_VIEW='cards', VOL_SKILL='';
 RENDER.volunteers=function(){
-  const filters=[['all','All'],['Active','Active'],['Inactive','Inactive'],['Summer Break','☀ Summer'],
+  const filters=[['all','All'],['Active','Active'],['Inactive','Inactive'],
     ['Deliveries','Deliveries'],['Warehouse','Warehouse'],['Admin','Admin'],['Outreach','Outreach']];
   const skills=DB.allSkills();
   $('#page-volunteers').innerHTML=`
     <div class="page-head"><div><h1>Volunteers</h1><p>${DB.all('volunteers').length} on the roster</p></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn sm" onclick="toggleVolView()">${VOL_VIEW==='cards'?'☰ List':'▦ Cards'}</button>
-        <button class="btn" data-tier="3" onclick="pauseAll()">☀ Pause Active</button>
-        <button class="btn" data-tier="3" onclick="resumeAll()">Resume All</button>
+
         <button class="btn primary" data-tier="2" onclick="editVolunteer(null)">+ Add Volunteer</button>
       </div></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
@@ -860,7 +858,7 @@ function volMatches(v){
     const inSkill=DB.skillsOf(v.id).some(s=>s.name.toLowerCase().includes(q));
     if(!inName && !inSkill) return false; }
   if(VOL_FILTER==='all') return true;
-  if(['Active','Inactive','Summer Break','On Leave'].includes(VOL_FILTER)) return v.status===VOL_FILTER;
+  if(['Active','Inactive','On Leave'].includes(VOL_FILTER)) return v.status===VOL_FILTER;
   const t=DB.primaryType(v.id); return t && t.name===VOL_FILTER;
 }
 function drawVols(){
@@ -869,7 +867,7 @@ function drawVols(){
   if(!list.length){ box.innerHTML='<div class="empty">No volunteers match.</div>'; return; }
   if(VOL_VIEW==='cards'){
     box.innerHTML=`<div class="vol-grid">${list.map(v=>{ const h=DB.lifetimeHours(v.id); const t=DB.primaryType(v.id);
-      const stCls={'Active':'b-active','Inactive':'b-inactive','Summer Break':'b-summer','On Leave':'b-leave'}[v.status];
+      const stCls={'Active':'b-active','Inactive':'b-inactive','On Leave':'b-leave'}[v.status]||'b-inactive';
       return `<div class="vol-card" onclick="viewVolunteer(${v.id})">
         <div class="top"><div class="avatar" style="${avatarStyle(v)}">${v.photo_url?'':initials(v.name)}</div>
           <div><div class="nm">${esc(v.name)}</div><div class="meta">${levelBadge(h)}</div></div></div>
@@ -887,12 +885,6 @@ function drawVols(){
     </tbody></table></div>`;
   }
 }
-function pauseAll(){
-  const affected=['Deliveries','Warehouse','Admin','Outreach'];
-  let n=0; DB.all('volunteers').forEach(v=>{ if(v.status==='Active'){ const t=DB.primaryType(v.id); if(t&&affected.includes(t.name)){ DB.update('volunteers',v.id,{status:'Summer Break'}); n++; } }});
-  toast(`Paused ${n} volunteers for summer`); RENDER.volunteers();
-}
-function resumeAll(){ let n=0; DB.all('volunteers').forEach(v=>{ if(v.status==='Summer Break'){ DB.update('volunteers',v.id,{status:'Active'}); n++; }}); toast(`Resumed ${n} volunteers`); RENDER.volunteers(); }
 
 function viewVolunteer(id){
   const v=DB.all('volunteers').find(x=>x.id==id); const h=DB.lifetimeHours(id); const t=DB.primaryType(id);
@@ -946,7 +938,7 @@ function editVolunteer(id){
     <div class="body">
       <div class="field"><label>Name</label><input id="f_name" value="${esc(v.name)}"></div>
       <div class="row3">
-        <div class="field"><label>Status</label><select id="f_status">${['Active','Inactive','On Leave','Summer Break'].map(s=>`<option ${v.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+        <div class="field"><label>Status</label><select id="f_status">${['Active','Inactive','On Leave'].map(s=>`<option ${v.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
         <div class="field"><label>Birthday</label><input id="f_bday" type="date" value="${v.birthday||''}"></div>
         <div class="field"><label>Date Started</label><input id="f_start" type="date" value="${v.date_started||''}"></div>
       </div>
@@ -991,15 +983,13 @@ function printCertificate(id){
 RENDER.signin=function(){
   const vols=DB.all('volunteers');
   const active=vols.filter(v=>v.status==='Active').sort((a,b)=>a.name<b.name?-1:1);
-  const summer=vols.filter(v=>v.status==='Summer Break').sort((a,b)=>a.name<b.name?-1:1);
   $('#page-signin').innerHTML=`
     <div class="page-head"><div><h1>Volunteer Sign-In</h1><p>Kiosk mode — volunteers sign in on arrival</p></div></div>
     <div class="two-col">
       <div class="card"><h2>Sign In</h2>
         <div class="field"><label>Choose your name</label>
           <select id="si_vol"><option value="">— select —</option>
-            <optgroup label="Active">${active.map(v=>`<option value="${v.id}">${esc(v.name)}</option>`).join('')}</optgroup>
-            ${summer.length?`<optgroup label="Summer Break">${summer.map(v=>`<option value="${v.id}">${esc(v.name)}</option>`).join('')}</optgroup>`:''}
+            ${active.map(v=>`<option value="${v.id}">${esc(v.name)}</option>`).join('')}
           </select></div>
         <button class="btn primary" style="width:100%;justify-content:center;padding:13px" onclick="doSignIn()">Sign In →</button>
         <div id="si_result" style="margin-top:16px"></div>
@@ -1165,7 +1155,7 @@ function delPack(id){ if(!confirm('Delete this event?'))return; DB.remove('pack_
    ============================================================================ */
 RENDER.delivery=function(){
   const mon=weekStartIso();
-  const vols=DB.all('volunteers').filter(v=>v.status==='Active'||v.status==='Summer Break').sort((a,b)=>a.name<b.name?-1:1);
+  const vols=DB.all('volunteers').filter(v=>v.status==='Active').sort((a,b)=>a.name<b.name?-1:1);
   const opts=(sel)=>`<option value="">— none —</option>`+vols.map(v=>`<option ${sel===v.name?'selected':''} value="${esc(v.name)}">${esc(v.name)}</option>`).join('');
   const cell=(day,role)=>{
     const ov=overrideName(day,role); const stName=volName(standingVol(day,role));
@@ -1215,7 +1205,7 @@ function clearWeek(day){ const ws=weekStartIso();
 let WH_TAB='Warehouse';
 RENDER.warehouse=function(){
   $('#page-warehouse').innerHTML=`
-    <div class="page-head"><div><h1>Warehouse</h1><p>Standing weekly schedule (Summer Break hidden)</p></div></div>
+    <div class="page-head"><div><h1>Warehouse</h1><p>Standing weekly schedule</p></div></div>
     <div class="card">${whTable(WH_TAB)}</div>`;
 };
 function whTable(kind){
@@ -1224,7 +1214,7 @@ function whTable(kind){
   const typeIds=DB.all('volunteer_types').filter(t=>typeNames.includes(t.name)).map(t=>t.id);
   const rows=days.map(d=>{
     const scheds=DB.find('volunteer_schedules',s=>s.day_of_week===d&&typeIds.includes(s.type_id));
-    const vs=scheds.map(s=>DB.all('volunteers').find(v=>v.id==s.volunteer_id)).filter(v=>v&&v.status!=='Summer Break'&&v.status!=='Inactive');
+    const vs=scheds.map(s=>DB.all('volunteers').find(v=>v.id==s.volunteer_id)).filter(v=>v&&v.status!=='Inactive');
     const chips=vs.length?vs.map(v=>`<span class="wh-chip"><span class="dot" style="background:hsl(${hueFromName(v.name)},55%,52%)">${initials(v.name)}</span>${esc(v.name)}</span>`).join(''):'<span class="wh-empty">No one scheduled</span>';
     return `<tr><td class="wh-day">${d}</td><td><div class="wh-people">${chips}</div></td></tr>`;
   }).join('');
