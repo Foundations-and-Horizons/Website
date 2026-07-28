@@ -2,34 +2,15 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isDashboardPublic } from "@/lib/access";
 
-const GATE_BYPASS = ["/gate", "/api/gate", "/dashboard", "/_next", "/favicon", "/api/"];
-
 // Next.js 16: the former `middleware` convention is now `proxy`.
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // Demo access gate — protect all public pages behind an access code
-  if (!GATE_BYPASS.some((p) => pathname.startsWith(p))) {
-    const hasAccess = request.cookies.get("fh_demo_access")?.value === "1";
-    if (!hasAccess) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/gate";
-      return NextResponse.redirect(url);
-    }
-  }
-
-  // Only run Supabase auth logic for dashboard routes
-  if (!pathname.startsWith("/dashboard")) {
-    return NextResponse.next({ request });
-  }
+  let supabaseResponse = NextResponse.next({ request });
 
   // When public access is enabled, skip the auth gate entirely so the
   // dashboard is reachable without logging in. See lib/access.ts.
   if (isDashboardPublic()) {
-    return NextResponse.next({ request });
+    return supabaseResponse;
   }
-
-  let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -56,9 +37,10 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isLoginPage = pathname === "/dashboard/login";
+  const isDashboard = request.nextUrl.pathname.startsWith("/dashboard");
+  const isLoginPage = request.nextUrl.pathname === "/dashboard/login";
 
-  if (!isLoginPage && !user) {
+  if (isDashboard && !isLoginPage && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard/login";
     return NextResponse.redirect(url);
@@ -74,5 +56,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/dashboard/:path*"],
 };

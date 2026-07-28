@@ -63,14 +63,12 @@ export default function VolunteerManagementPage() {
             A purpose-built platform that gives your nonprofit complete visibility into volunteer
             hours, schedules, and impact — so you can run your program with confidence.
           </p>
-          <a
-            href="/volunteer-hub"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/contact"
             className="inline-block bg-white text-[#2a3db4] px-10 py-4 font-semibold hover:bg-blue-50 transition-colors"
           >
-            Try the Interactive Demo →
-          </a>
+            Schedule a Discovery Call →
+          </Link>
         </div>
       </section>
 
@@ -117,22 +115,19 @@ export default function VolunteerManagementPage() {
         </div>
       </section>
 
-      {/* Demo Request */}
-      {/* Live demo CTA */}
+      {/* CTA */}
       <section className="py-14 px-4 bg-[#2a3db4] text-white text-center">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">See It Live — Right Now</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to See It in Action?</h2>
           <p className="text-blue-100 mb-8 text-lg">
-            Explore the full platform in your browser. No login required — real features, real data, zero setup.
+            Schedule a discovery call and we'll walk you through exactly how FoundationWorks Volunteers would work for your organization.
           </p>
-          <a
-            href="/volunteer-hub"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/contact"
             className="inline-block bg-white text-[#2a3db4] font-bold px-10 py-4 rounded hover:bg-blue-50 transition-colors text-lg"
           >
-            Try the Interactive Demo →
-          </a>
+            Schedule a Discovery Call →
+          </Link>
         </div>
       </section>
 
