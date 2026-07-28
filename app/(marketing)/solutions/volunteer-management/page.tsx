@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 export const metadata = {
   title: "FoundationWorks Volunteers | Foundations & Horizons",
@@ -72,67 +71,6 @@ export default function VolunteerManagementPage() {
           >
             Try the Interactive Demo →
           </a>
-        </div>
-      </section>
-
-      {/* Screenshots */}
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">See It in Action</h2>
-          <p className="text-center text-gray-500 mb-12 max-w-xl mx-auto">
-            A clean, modern interface built specifically for nonprofit volunteer programs.
-          </p>
-          <div className="space-y-8">
-            {/* Dashboard screenshot */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-              <div className="bg-gray-100 px-4 py-2 flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-400"/>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"/>
-                <div className="w-3 h-3 rounded-full bg-green-400"/>
-                <span className="ml-3 text-xs text-gray-400 font-mono">volunteer-hub — Dashboard</span>
-              </div>
-              <Image
-                src="/screenshots/volunteer-dashboard.png"
-                alt="Volunteer Hub Dashboard"
-                width={1200}
-                height={700}
-                className="w-full"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-                <div className="bg-gray-100 px-4 py-2 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400"/>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"/>
-                  <div className="w-3 h-3 rounded-full bg-green-400"/>
-                  <span className="ml-3 text-xs text-gray-400 font-mono">Pack Schedule</span>
-                </div>
-                <Image
-                  src="/screenshots/volunteer-schedule.png"
-                  alt="Pack Schedule"
-                  width={700}
-                  height={500}
-                  className="w-full"
-                />
-              </div>
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-                <div className="bg-gray-100 px-4 py-2 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400"/>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"/>
-                  <div className="w-3 h-3 rounded-full bg-green-400"/>
-                  <span className="ml-3 text-xs text-gray-400 font-mono">Volunteer Roster</span>
-                </div>
-                <Image
-                  src="/screenshots/volunteer-cards.png"
-                  alt="Volunteer Roster"
-                  width={700}
-                  height={500}
-                  className="w-full"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
