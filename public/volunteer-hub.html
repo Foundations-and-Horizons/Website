@@ -156,13 +156,10 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .level-newcomer{background:#F1F5F9;color:#64748B}
 
 .type-badge{padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
-.type-delivery-driver{background:#E3F0FB;color:#0C447C}
-.type-delivery-assistant{background:#EDEBFB;color:#3B2E9C}
-.type-warehouse-am,.type-warehouse-pm{background:#E6F7F5;color:#12655E}
-.type-processing{background:#FDF1DF;color:#8A560F}
-.type-pack-host-lead{background:#FCEBEB;color:#A32D2D}
-.type-pack-host{background:#FDF1DF;color:#8A560F}
+.type-deliveries{background:#E3F0FB;color:#0C447C}
+.type-warehouse{background:#E6F7F5;color:#12655E}
 .type-admin{background:#ECFDF5;color:#166534}
+.type-outreach{background:#FDF4FF;color:#7E22CE}
 
 /* ---- volunteer cards ---- */
 .vol-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -518,38 +515,37 @@ const DB = {
 
     // types
     const types=[
-      ['Delivery Driver',3,1],['Delivery Assistant',3,2],['Warehouse AM',3,3],['Warehouse PM',3,4],
-      ['Processing',3,5],['Event Lead',3,6],['Event Host',3,7],['Admin',2,8]
+      ['Deliveries',3,1],['Warehouse',3,2],['Admin',2,3],['Outreach',3,4]
     ];
     const typeId={};
     types.forEach(([name,hps,so])=>{ const r=this.insert('volunteer_types',{name,hours_per_signin:hps,sort_order:so}); typeId[name]=r.id; });
 
     // volunteers  [name, type, status, priorHours, birthdayOffset(or null), startYearsAgo, startOffset]
     const vs=[
-      ['Maria Delgado','Delivery Driver','Active',1600, 2, 6, 3],
-      ['James Whitfield','Delivery Driver','Active',1080, null, 4, -5],
-      ['Aisha Rahman','Warehouse AM','Active',800, 4, 3, 9],
-      ['Tom Becker','Delivery Assistant','Active',560, null, 5, 40],
-      ['Priya Nair','Processing','Active',300, null, 2, 60],
-      ['Carlos Mendez','Warehouse PM','Active',1080, null, 4, 120],
+      ['Maria Delgado','Deliveries','Active',1600, 2, 6, 3],
+      ['James Whitfield','Deliveries','Active',1080, null, 4, -5],
+      ['Aisha Rahman','Warehouse','Active',800, 4, 3, 9],
+      ['Tom Becker','Deliveries','Active',560, null, 5, 40],
+      ['Priya Nair','Warehouse','Active',300, null, 2, 60],
+      ['Carlos Mendez','Warehouse','Active',1080, null, 4, 120],
       ['Linda Foster','Admin','Active',800, null, 7, 200],
-      ["Kevin O'Brien",'Delivery Driver','Active',560, 6, 3, 15],
-      ['Sofia Rossi','Event Lead','Active',300, null, 2, 5],
-      ['David Kim','Event Host','Active',140, null, 1, 220],
-      ['Emma Thompson','Warehouse AM','Active',800, null, 3, 33],
-      ['Nathan Cole','Delivery Assistant','Active',300, null, 2, 77],
-      ['Grace Liu','Processing','Active',140, 1, 1, 300],
-      ['Marcus Johnson','Warehouse PM','Active',560, null, 4, 150],
-      ['Hannah Berg','Event Host','Active',40, null, 0, 25],
-      ['Omar Haddad','Delivery Driver','Active',1080, null, 5, 90],
+      ["Kevin O'Brien",'Deliveries','Active',560, 6, 3, 15],
+      ['Sofia Rossi','Outreach','Active',300, null, 2, 5],
+      ['David Kim','Outreach','Active',140, null, 1, 220],
+      ['Emma Thompson','Warehouse','Active',800, null, 3, 33],
+      ['Nathan Cole','Deliveries','Active',300, null, 2, 77],
+      ['Grace Liu','Warehouse','Active',140, 1, 1, 300],
+      ['Marcus Johnson','Warehouse','Active',560, null, 4, 150],
+      ['Hannah Berg','Outreach','Active',40, null, 0, 25],
+      ['Omar Haddad','Deliveries','Active',1080, null, 5, 90],
       ['Rachel Green','Admin','Active',300, null, 2, 8],
-      ['Ben Carter','Warehouse AM','Active',140, null, 1, 260],
-      ['Julia Santos','Processing','Active',560, 3, 4, 44],
-      ['Ethan Ward','Event Lead','Active',800, null, 3, 12],
-      ['Nina Patel','Delivery Assistant','Active',140, null, 1, 310],
-      ['Sam Rivera','Warehouse PM','Summer Break',40, null, 0, 20],
-      ['Olivia Brooks','Event Host','Active',40, null, 0, 6],
-      ['Wei Chen','Processing','Inactive',300, null, 3, 400]
+      ['Ben Carter','Warehouse','Active',140, null, 1, 260],
+      ['Julia Santos','Warehouse','Active',560, 3, 4, 44],
+      ['Ethan Ward','Outreach','Active',800, null, 3, 12],
+      ['Nina Patel','Deliveries','Active',140, null, 1, 310],
+      ['Sam Rivera','Warehouse','Summer Break',40, null, 0, 20],
+      ['Olivia Brooks','Outreach','Active',40, null, 0, 6],
+      ['Wei Chen','Warehouse','Inactive',300, null, 3, 400]
     ];
     const volByName={};
     vs.forEach((v,i)=>{
@@ -593,15 +589,14 @@ const DB = {
 
     // schedules (warehouse/processing standing days)
     const days=['Monday','Tuesday','Wednesday','Thursday','Friday'];
-    const sched=[['Aisha Rahman','Warehouse AM',['Monday','Wednesday','Friday']],
-      ['Emma Thompson','Warehouse AM',['Tuesday','Thursday']],
-      ['Ben Carter','Warehouse AM',['Monday','Friday']],
-      ['Carlos Mendez','Warehouse PM',['Monday','Tuesday','Wednesday']],
-      ['Marcus Johnson','Warehouse PM',['Thursday','Friday']],
-      ['Priya Nair','Processing',['Monday','Wednesday']],
-      ['Julia Santos','Processing',['Tuesday','Thursday']],
-      ['Grace Liu','Processing',['Friday']],
-      ['Wei Chen','Processing',['Monday']]];
+    const sched=[['Aisha Rahman','Warehouse',['Monday','Wednesday','Friday']],
+      ['Emma Thompson','Warehouse',['Tuesday','Thursday']],
+      ['Ben Carter','Warehouse',['Monday','Friday']],
+      ['Carlos Mendez','Warehouse',['Monday','Tuesday','Wednesday']],
+      ['Marcus Johnson','Warehouse',['Thursday','Friday']],
+      ['Priya Nair','Warehouse',['Monday','Wednesday']],
+      ['Julia Santos','Warehouse',['Tuesday','Thursday']],
+      ['Grace Liu','Warehouse',['Friday']]];
     sched.forEach(([n,type,dd])=>dd.forEach((d,k)=>this.insert('volunteer_schedules',
       {volunteer_id:volByName[n],type_id:typeId[type],day_of_week:d,position:type,sort_order:k})));
 
@@ -837,8 +832,7 @@ function deliveriesThisWeekHtml(){
 let VOL_FILTER='all', VOL_SEARCH='', VOL_VIEW='cards', VOL_SKILL='';
 RENDER.volunteers=function(){
   const filters=[['all','All'],['Active','Active'],['Inactive','Inactive'],['Summer Break','☀ Summer'],
-    ['Delivery Driver','Drivers'],['Delivery Assistant','Assistants'],['Warehouse AM','Warehouse'],
-    ['Event Lead','Event Leads'],['Event Host','Event Hosts'],['Processing','Processing'],['Admin','Admin']];
+    ['Deliveries','Deliveries'],['Warehouse','Warehouse'],['Admin','Admin'],['Outreach','Outreach']];
   const skills=DB.allSkills();
   $('#page-volunteers').innerHTML=`
     <div class="page-head"><div><h1>Volunteers</h1><p>${DB.all('volunteers').length} on the roster</p></div>
@@ -894,7 +888,7 @@ function drawVols(){
   }
 }
 function pauseAll(){
-  const affected=['Delivery Driver','Delivery Assistant','Warehouse AM','Warehouse PM','Processing','Admin'];
+  const affected=['Deliveries','Warehouse','Admin','Outreach'];
   let n=0; DB.all('volunteers').forEach(v=>{ if(v.status==='Active'){ const t=DB.primaryType(v.id); if(t&&affected.includes(t.name)){ DB.update('volunteers',v.id,{status:'Summer Break'}); n++; } }});
   toast(`Paused ${n} volunteers for summer`); RENDER.volunteers();
 }
@@ -1128,8 +1122,8 @@ function packCard(e){
     <div style="text-align:center;min-width:54px"><div style="font-size:26px;font-weight:800;color:var(--primary)">${d.getDate()}</div><div class="meta muted">${d.toLocaleDateString('en-US',{month:'short'})}</div></div>
     <div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><b style="font-size:15px">${esc(e.name)}</b><div class="meta muted">${DOW[d.getDay()]} · ${e.event_time||''} · ${e.lines} volunteer spot${e.lines>1?'s':''} · ${esc(e.location||'')}</div></div>${status}</div>
       <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
-        <span class="type-badge ${lead?'type-pack-host-lead':'type-processing'}">Lead: ${lead?esc(vName(lead.volunteer_id)):'open'}</span>
-        ${Array.from({length:e.lines}).map((_,i)=>`<span class="type-badge type-pack-host">Volunteer ${i+1}: ${hosts[i]?esc(vName(hosts[i].volunteer_id)):'open'}</span>`).join('')}
+        <span class="type-badge type-outreach">Lead: ${lead?esc(vName(lead.volunteer_id)):'open'}</span>
+        ${Array.from({length:e.lines}).map((_,i)=>`<span class="type-badge type-warehouse">Volunteer ${i+1}: ${hosts[i]?esc(vName(hosts[i].volunteer_id)):'open'}</span>`).join('')}
       </div>
       ${e.bags_prepared?`<div class="meta muted" style="margin-top:8px">📦 ${impactLine(e.bags_prepared)} · ${e.total_volunteers||0} volunteers</div>`:''}
     </div>
@@ -1221,13 +1215,12 @@ function clearWeek(day){ const ws=weekStartIso();
 let WH_TAB='Warehouse';
 RENDER.warehouse=function(){
   $('#page-warehouse').innerHTML=`
-    <div class="page-head"><div><h1>Warehouse &amp; Processing</h1><p>Standing weekly schedule (Summer Break hidden)</p></div></div>
-    <div class="tabs"><button class="tab ${WH_TAB==='Warehouse'?'active':''}" onclick="WH_TAB='Warehouse';RENDER.warehouse()">Warehouse</button><button class="tab ${WH_TAB==='Processing'?'active':''}" onclick="WH_TAB='Processing';RENDER.warehouse()">Processing</button></div>
+    <div class="page-head"><div><h1>Warehouse</h1><p>Standing weekly schedule (Summer Break hidden)</p></div></div>
     <div class="card">${whTable(WH_TAB)}</div>`;
 };
 function whTable(kind){
   const days=['Monday','Tuesday','Wednesday','Thursday','Friday'];
-  const typeNames = kind==='Warehouse'?['Warehouse AM','Warehouse PM']:['Processing'];
+  const typeNames=['Warehouse'];
   const typeIds=DB.all('volunteer_types').filter(t=>typeNames.includes(t.name)).map(t=>t.id);
   const rows=days.map(d=>{
     const scheds=DB.find('volunteer_schedules',s=>s.day_of_week===d&&typeIds.includes(s.type_id));
@@ -1255,8 +1248,8 @@ RENDER.packsignup=function(){
       const d=new Date(e.event_date+'T00:00:00');
       return `<div class="card" style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:center"><div><b style="font-size:15px">${esc(e.name)}</b><div class="meta muted">${DOW[d.getDay()]}, ${fmtDate(e.event_date)} · ${e.event_time||''}</div></div></div>
         <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          ${lead?`<span class="type-badge type-pack-host-lead">Lead: ${esc(vName(lead.volunteer_id))}</span>`:`<button class="btn sm" onclick="signupSlot(${e.id},'Event Lead')">+ Event Lead</button>`}
-          ${Array.from({length:e.lines}).map((_,i)=>hosts[i]?`<span class="type-badge type-pack-host">Volunteer: ${esc(vName(hosts[i].volunteer_id))}</span>`:`<button class="btn sm" onclick="signupSlot(${e.id},'Volunteer')">+ Volunteer</button>`).join('')}
+          ${lead?`<span class="type-badge type-outreach">Lead: ${esc(vName(lead.volunteer_id))}</span>`:`<button class="btn sm" onclick="signupSlot(${e.id},'Event Lead')">+ Event Lead</button>`}
+          ${Array.from({length:e.lines}).map((_,i)=>hosts[i]?`<span class="type-badge type-warehouse">Volunteer: ${esc(vName(hosts[i].volunteer_id))}</span>`:`<button class="btn sm" onclick="signupSlot(${e.id},'Volunteer')">+ Volunteer</button>`).join('')}
         </div></div>`;
     }).join(''):'<div class="card"><div class="empty">No open events this month.</div></div>')}`;
 };
@@ -1627,8 +1620,8 @@ const JOB_TEMPLATES={
     quals:'At least 16 years old\nComfortable standing and being active for the length of a shift\nEnthusiastic and reliable\nAble to work as part of a team',
     benefits:'Be part of memorable community events\nMeet other volunteers and community members\nFlexible, sign-up-when-you-can scheduling\nVolunteer hours documented on request',
     notes:'Wear comfortable clothing and closed-toe shoes.'},
-  driver:{label:'Delivery Driver', title:'Delivery Driver', reports_to:'Operations Lead', location:'',
-    summary:'Our Delivery Drivers get essential goods where they need to go, safely and on schedule, directly supporting the people we serve.',
+  driver:{label:'Deliveries Volunteer', title:'Deliveries Volunteer', reports_to:'Operations Lead', location:'',
+    summary:'Our Deliveries volunteers get essential goods where they need to go, safely and on schedule, directly supporting the people we serve.',
     responsibilities:'Safely load, transport, and unload deliveries\nFollow assigned routes and delivery schedules\nRepresent the organization professionally with recipients and partners\nReport any vehicle or delivery issues promptly',
     time:'One shift per week (about 3 hours), on a set weekday that can be arranged.',
     quals:'Valid driver’s license and clean driving record\nAt least 18 years old\nComfortable lifting up to 30 lbs, bending, and standing\nDependable and punctual',
