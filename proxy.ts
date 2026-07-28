@@ -2,9 +2,22 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isDashboardPublic } from "@/lib/access";
 
+const GATE_BYPASS = ["/gate", "/api/gate", "/dashboard", "/_next", "/favicon", "/api/"];
+
 // Next.js 16: the former `middleware` convention is now `proxy`.
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
   let supabaseResponse = NextResponse.next({ request });
+
+  // Demo access gate — protect all public pages behind an access code
+  if (!GATE_BYPASS.some((p) => pathname.startsWith(p))) {
+    const hasAccess = request.cookies.get("fh_demo_access")?.value === "1";
+    if (!hasAccess) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/gate";
+      return NextResponse.redirect(url);
+    }
+  }
 
   // When public access is enabled, skip the auth gate entirely so the
   // dashboard is reachable without logging in. See lib/access.ts.
@@ -56,5 +69,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
