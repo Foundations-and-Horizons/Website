@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFileSync } from "fs";
-import { join } from "path";
+
+export const runtime = "nodejs";
 
 export async function GET(req: NextRequest) {
   const hasAccess = req.cookies.get("fh_demo_access")?.value === "1";
   if (!hasAccess) {
     return NextResponse.redirect(new URL("/gate", req.url));
   }
+
+  const { readFileSync } = await import("fs");
+  const { join } = await import("path");
 
   try {
     const html = readFileSync(join(process.cwd(), "public", "volunteer-hub.html"), "utf-8");
