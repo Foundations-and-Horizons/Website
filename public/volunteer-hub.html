@@ -391,10 +391,10 @@ window.LOGO_SVG = `
 /* ---------------------------- CONFIG --------------------------------------- */
 const CONFIG = {
   ORG_NAME: 'Foundations & Horizons',
-  MISSION: 'Nourishing our neighbors — packing and delivering food to families in need across the community.',
+  MISSION: 'Nourishing our neighbors — preparing and delivering food to families in need across the community.',
   APP_PASSWORD: 'demo',
   HOURLY_VALUE: 34.79,          // Independent Sector volunteer value (edit annually)
-  BAGS_PER_MEAL: 7,             // 1 bag packed = 7 meals
+  BAGS_PER_MEAL: 7,             // 1 bag prepared = 7 meals
   FTE_HOURS: 2080               // hours in one full-time employee-year
 };
 
@@ -423,7 +423,7 @@ const MILESTONES=[100,250,500,750,1000,1500];
 /* Brand resolution order: baked BRAND_OVERRIDE (in an exported demo) > saved
    localStorage edits > CONFIG defaults. Lets you brand a demo and export it.  */
 const BRAND_DEFAULT={ org:CONFIG.ORG_NAME, mission:CONFIG.MISSION, primary:'#1C86D5', secondary:'#4A4A4A', logo:null,
-  outputLabel:'Bags packed', secondaryEnabled:true, secondaryLabel:'Meals', secondaryMultiplier:7, deliveriesEnabled:true };
+  outputLabel:'Bags prepared', secondaryEnabled:true, secondaryLabel:'Meals', secondaryMultiplier:7, deliveriesEnabled:true };
 function resolveBrand(){
   const baked = window.BRAND_OVERRIDE || null;
   let saved=null; try{ saved=JSON.parse(localStorage.getItem('fh_brand')||'null'); }catch(e){}
@@ -519,7 +519,7 @@ const DB = {
     // types
     const types=[
       ['Delivery Driver',3,1],['Delivery Assistant',3,2],['Warehouse AM',3,3],['Warehouse PM',3,4],
-      ['Processing',3,5],['Pack Host Lead',3,6],['Pack Host',3,7],['Admin',2,8]
+      ['Processing',3,5],['Event Lead',3,6],['Event Host',3,7],['Admin',2,8]
     ];
     const typeId={};
     types.forEach(([name,hps,so])=>{ const r=this.insert('volunteer_types',{name,hours_per_signin:hps,sort_order:so}); typeId[name]=r.id; });
@@ -534,21 +534,21 @@ const DB = {
       ['Carlos Mendez','Warehouse PM','Active',1080, null, 4, 120],
       ['Linda Foster','Admin','Active',800, null, 7, 200],
       ["Kevin O'Brien",'Delivery Driver','Active',560, 6, 3, 15],
-      ['Sofia Rossi','Pack Host Lead','Active',300, null, 2, 5],
-      ['David Kim','Pack Host','Active',140, null, 1, 220],
+      ['Sofia Rossi','Event Lead','Active',300, null, 2, 5],
+      ['David Kim','Event Host','Active',140, null, 1, 220],
       ['Emma Thompson','Warehouse AM','Active',800, null, 3, 33],
       ['Nathan Cole','Delivery Assistant','Active',300, null, 2, 77],
       ['Grace Liu','Processing','Active',140, 1, 1, 300],
       ['Marcus Johnson','Warehouse PM','Active',560, null, 4, 150],
-      ['Hannah Berg','Pack Host','Active',40, null, 0, 25],
+      ['Hannah Berg','Event Host','Active',40, null, 0, 25],
       ['Omar Haddad','Delivery Driver','Active',1080, null, 5, 90],
       ['Rachel Green','Admin','Active',300, null, 2, 8],
       ['Ben Carter','Warehouse AM','Active',140, null, 1, 260],
       ['Julia Santos','Processing','Active',560, 3, 4, 44],
-      ['Ethan Ward','Pack Host Lead','Active',800, null, 3, 12],
+      ['Ethan Ward','Event Lead','Active',800, null, 3, 12],
       ['Nina Patel','Delivery Assistant','Active',140, null, 1, 310],
       ['Sam Rivera','Warehouse PM','Summer Break',40, null, 0, 20],
-      ['Olivia Brooks','Pack Host','Active',40, null, 0, 6],
+      ['Olivia Brooks','Event Host','Active',40, null, 0, 6],
       ['Wei Chen','Processing','Inactive',300, null, 3, 400]
     ];
     const volByName={};
@@ -622,13 +622,13 @@ const DB = {
 
     // pack events
     const mk=(name,dateStr,time,lines,loc,bags,vols,cancelled)=>this.insert('pack_events',
-      {name,event_date:dateStr,event_time:time,lines,location:loc,notes:'',bags_packed:bags,total_volunteers:vols,cancelled:!!cancelled,created_at:at(30)});
-    mk('Community Pack Night', past(12),'6:00 PM',2,'Main Warehouse',420,18,false);
-    mk('Saturday Morning Pack', past(5),'9:00 AM',3,'Main Warehouse',610,26,false);
-    mk('Corporate Volunteer Pack', future(2),'10:00 AM',2,'Main Warehouse',null,null,false);
-    mk('Neighborhood Pack', future(4),'5:30 PM',2,'North Site',null,null,false);
-    mk('Youth Group Pack', future(11),'4:00 PM',1,'Main Warehouse',null,null,false);
-    mk('Weekend Mega Pack', future(18),'9:00 AM',4,'Main Warehouse',null,null,false);
+      {name,event_date:dateStr,event_time:time,lines,location:loc,notes:'',bags_prepared:bags,total_volunteers:vols,cancelled:!!cancelled,created_at:at(30)});
+    mk('Community Event Night', past(12),'6:00 PM',2,'Main Warehouse',420,18,false);
+    mk('Saturday Morning Event', past(5),'9:00 AM',3,'Main Warehouse',610,26,false);
+    mk('Corporate Volunteer Event', future(2),'10:00 AM',2,'Main Warehouse',null,null,false);
+    mk('Neighborhood Event', future(4),'5:30 PM',2,'North Site',null,null,false);
+    mk('Youth Group Event', future(11),'4:00 PM',1,'Main Warehouse',null,null,false);
+    mk('Weekend Mega Event', future(18),'9:00 AM',4,'Main Warehouse',null,null,false);
 
     // signups for upcoming events
     const up=this.all('pack_events').filter(e=>e.event_date>=iso(new Date()) && !e.cancelled);
@@ -677,7 +677,7 @@ const DB = {
     return a? this.all('volunteer_types').find(t=>t.id==a.type_id) : null; },
   totalHoursSince(isoDate){ return this.find('sign_ins',s=>s.signed_in_at.slice(0,10)>=isoDate).reduce((a,s)=>a+(+s.hours_credited||0),0); },
   totalHoursAll(){ return this.all('sign_ins').reduce((a,s)=>a+(+s.hours_credited||0),0); },
-  bagsSince(isoDate){ return this.all('pack_events').filter(e=>!e.cancelled && e.event_date>=isoDate).reduce((a,e)=>a+(+e.bags_packed||0),0); },
+  bagsSince(isoDate){ return this.all('pack_events').filter(e=>!e.cancelled && e.event_date>=isoDate).reduce((a,e)=>a+(+e.bags_prepared||0),0); },
   skillsOf(vid){ const ids=this.find('volunteer_skills',x=>x.volunteer_id==vid).map(x=>x.skill_id);
     return this.all('skills').filter(s=>ids.includes(s.id)).sort((a,b)=>a.sort_order-b.sort_order); },
   allSkills(){ return this.all('skills').sort((a,b)=>a.sort_order-b.sort_order); }
@@ -838,7 +838,7 @@ let VOL_FILTER='all', VOL_SEARCH='', VOL_VIEW='cards', VOL_SKILL='';
 RENDER.volunteers=function(){
   const filters=[['all','All'],['Active','Active'],['Inactive','Inactive'],['Summer Break','☀ Summer'],
     ['Delivery Driver','Drivers'],['Delivery Assistant','Assistants'],['Warehouse AM','Warehouse'],
-    ['Pack Host Lead','Pack Leads'],['Pack Host','Pack Hosts'],['Processing','Processing'],['Admin','Admin']];
+    ['Event Lead','Event Leads'],['Event Host','Event Hosts'],['Processing','Processing'],['Admin','Admin']];
   const skills=DB.allSkills();
   $('#page-volunteers').innerHTML=`
     <div class="page-head"><div><h1>Volunteers</h1><p>${DB.all('volunteers').length} on the roster</p></div>
@@ -1115,7 +1115,7 @@ RENDER.packs=function(){
       <b style="font-size:16px">${PACK_MONTH.toLocaleDateString('en-US',{month:'long',year:'numeric'})}</b>
       <div><button class="btn sm" onclick="PACK_MONTH=new Date();RENDER.packs()">Today</button> <button class="btn sm" onclick="shiftMonth(1)">Next →</button></div>
     </div>
-    <div style="margin-top:16px">${events.length?events.map(packCard).join(''):'<div class="empty card">No pack events this month.</div>'}</div>`;
+    <div style="margin-top:16px">${events.length?events.map(packCard).join(''):'<div class="empty card">No events this month.</div>'}</div>`;
 };
 function shiftMonth(d){ PACK_MONTH.setMonth(PACK_MONTH.getMonth()+d); RENDER.packs(); }
 function packCard(e){
@@ -1123,7 +1123,7 @@ function packCard(e){
   const signups=DB.find('pack_signups',s=>s.pack_event_id==e.id);
   const lead=signups.find(s=>s.role==='Event Lead'); const hosts=signups.filter(s=>s.role==='Volunteer');
   const vName=id=>DB.all('volunteers').find(v=>v.id==id)?.name||'?';
-  let status = e.cancelled?'<span class="badge b-inactive">Cancelled</span>' : past?(e.bags_packed?'<span class="badge b-active">Completed</span>':'<span class="badge b-leave">Needs Update</span>'):'<span class="badge" style="background:var(--primary-light);color:var(--primary-text)">Scheduled</span>';
+  let status = e.cancelled?'<span class="badge b-inactive">Cancelled</span>' : past?(e.bags_prepared?'<span class="badge b-active">Completed</span>':'<span class="badge b-leave">Needs Update</span>'):'<span class="badge" style="background:var(--primary-light);color:var(--primary-text)">Scheduled</span>';
   return `<div class="card" style="display:flex;gap:16px;align-items:flex-start;margin-bottom:12px">
     <div style="text-align:center;min-width:54px"><div style="font-size:26px;font-weight:800;color:var(--primary)">${d.getDate()}</div><div class="meta muted">${d.toLocaleDateString('en-US',{month:'short'})}</div></div>
     <div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><b style="font-size:15px">${esc(e.name)}</b><div class="meta muted">${DOW[d.getDay()]} · ${e.event_time||''} · ${e.lines} volunteer spot${e.lines>1?'s':''} · ${esc(e.location||'')}</div></div>${status}</div>
@@ -1131,7 +1131,7 @@ function packCard(e){
         <span class="type-badge ${lead?'type-pack-host-lead':'type-processing'}">Lead: ${lead?esc(vName(lead.volunteer_id)):'open'}</span>
         ${Array.from({length:e.lines}).map((_,i)=>`<span class="type-badge type-pack-host">Volunteer ${i+1}: ${hosts[i]?esc(vName(hosts[i].volunteer_id)):'open'}</span>`).join('')}
       </div>
-      ${e.bags_packed?`<div class="meta muted" style="margin-top:8px">📦 ${impactLine(e.bags_packed)} · ${e.total_volunteers||0} volunteers</div>`:''}
+      ${e.bags_prepared?`<div class="meta muted" style="margin-top:8px">📦 ${impactLine(e.bags_prepared)} · ${e.total_volunteers||0} volunteers</div>`:''}
     </div>
     <button class="btn sm" data-tier="2" onclick="editPack(${e.id})">Edit</button></div>`;
 }
@@ -1141,7 +1141,7 @@ function toggleSignups(mk){ let r=DB.find('pack_signup_months',x=>x.month_key===
   RENDER.packs(); }
 function whatsappLink(){ navigator.clipboard?.writeText(`${CONFIG.ORG_NAME} — sign up to volunteer at an upcoming event! ${location.href.replace('volunteer_hub','#eventsignup')}`); toast('Signup message copied to clipboard'); }
 function editPack(id){
-  const e=id?DB.all('pack_events').find(x=>x.id==id):{name:'',event_date:new Date().toISOString().slice(0,10),event_time:'10:00 AM',lines:2,location:'Main Warehouse',notes:'',bags_packed:'',total_volunteers:'',cancelled:false};
+  const e=id?DB.all('pack_events').find(x=>x.id==id):{name:'',event_date:new Date().toISOString().slice(0,10),event_time:'10:00 AM',lines:2,location:'Main Warehouse',notes:'',bags_prepared:'',total_volunteers:'',cancelled:false};
   openModal(`
     <div class="head"><h3>${id?'Edit':'Add'} Event</h3><button class="x" onclick="closeModal()">×</button></div>
     <div class="body">
@@ -1152,7 +1152,7 @@ function editPack(id){
         <div class="field"><label>Volunteer spots</label><input id="p_lines" type="number" min="1" value="${e.lines}"></div>
       </div>
       <div class="field"><label>Location</label><input id="p_loc" value="${esc(e.location||'')}"></div>
-      ${id?`<div class="row2"><div class="field"><label>${esc(BRAND.outputLabel)}</label><input id="p_bags" type="number" value="${e.bags_packed||''}"></div><div class="field"><label>Total volunteers</label><input id="p_vols" type="number" value="${e.total_volunteers||''}"></div></div>
+      ${id?`<div class="row2"><div class="field"><label>${esc(BRAND.outputLabel)}</label><input id="p_bags" type="number" value="${e.bags_prepared||''}"></div><div class="field"><label>Total volunteers</label><input id="p_vols" type="number" value="${e.total_volunteers||''}"></div></div>
       <div class="field"><label><input type="checkbox" id="p_cancel" ${e.cancelled?'checked':''}> Cancelled</label></div>`:''}
       <div class="field"><label>Notes</label><textarea id="p_notes">${esc(e.notes||'')}</textarea></div>
     </div>
@@ -1160,8 +1160,8 @@ function editPack(id){
 }
 function savePack(id){
   const data={name:$('#p_name').value.trim(),event_date:$('#p_date').value,event_time:$('#p_time').value,lines:+$('#p_lines').value||1,location:$('#p_loc').value,notes:$('#p_notes').value};
-  if(id){ data.bags_packed=$('#p_bags').value?+$('#p_bags').value:null; data.total_volunteers=$('#p_vols').value?+$('#p_vols').value:null; data.cancelled=$('#p_cancel').checked; DB.update('pack_events',id,data); }
-  else DB.insert('pack_events',{...data,bags_packed:null,total_volunteers:null,cancelled:false,created_at:new Date().toISOString()});
+  if(id){ data.bags_prepared=$('#p_bags').value?+$('#p_bags').value:null; data.total_volunteers=$('#p_vols').value?+$('#p_vols').value:null; data.cancelled=$('#p_cancel').checked; DB.update('pack_events',id,data); }
+  else DB.insert('pack_events',{...data,bags_prepared:null,total_volunteers:null,cancelled:false,created_at:new Date().toISOString()});
   closeModal(); toast('Saved'); RENDER.packs();
 }
 function delPack(id){ if(!confirm('Delete this event?'))return; DB.remove('pack_events',e=>e.id==id); DB.remove('pack_signups',s=>s.pack_event_id==id); closeModal(); RENDER.packs(); }
@@ -1541,13 +1541,13 @@ RENDER.settings=function(){
       </div>
       <div>
         <div class="card"><h2>📈 Impact Metrics <span class="sub">what each event produces</span></h2>
-          <div class="field"><label>Primary output label</label><input value="${esc(BRAND.outputLabel)}" oninput="brandSet('outputLabel',this.value)" placeholder="e.g. Bags packed, Trees planted, Meals served"></div>
+          <div class="field"><label>Primary output label</label><input value="${esc(BRAND.outputLabel)}" oninput="brandSet('outputLabel',this.value)" placeholder="e.g. Bags prepared, Trees planted, Meals served"></div>
           <label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;margin-bottom:10px"><input type="checkbox" ${BRAND.secondaryEnabled!==false?'checked':''} onchange="brandSet('secondaryEnabled',this.checked);RENDER.settings()" style="width:auto"> Also show a derived secondary metric</label>
           ${BRAND.secondaryEnabled!==false?`<div class="row2">
             <div class="field"><label>Secondary label</label><input value="${esc(BRAND.secondaryLabel)}" oninput="brandSet('secondaryLabel',this.value)"></div>
             <div class="field"><label>Multiplier (secondary = output × this)</label><input type="number" step="0.1" value="${BRAND.secondaryMultiplier}" oninput="brandSet('secondaryMultiplier',+this.value||0)"></div>
           </div>`:''}
-          <p class="muted" style="font-size:12px">Example: output "Bags packed" × 7 = "Meals." A trail org might set "Trees planted" and turn the secondary off.</p>
+          <p class="muted" style="font-size:12px">Example: output "Bags prepared" × 7 = "Meals." A trail org might set "Trees planted" and turn the secondary off.</p>
         </div>
         <div class="card"><h2>🧩 Modules</h2>
           <label style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px"><input type="checkbox" ${BRAND.deliveriesEnabled!==false?'checked':''} onchange="brandSet('deliveriesEnabled',this.checked);applyBrand()" style="width:auto"> Deliveries module</label>
