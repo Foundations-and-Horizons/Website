@@ -1,13 +1,9 @@
 "use server";
 
-// Server Actions for the Rodeo Road Log. Every mutating action re-verifies the
-// family-password session before touching data (Server Actions are reachable by
-// direct POST, so auth must live here, not only in the page).
-
 import { redirect } from "next/navigation";
 import { signIn, signOut, requireAuth } from "@/lib/rodeo/auth";
 import * as db from "@/lib/rodeo/db";
-import type { ArenaType, Run, Stay } from "@/lib/rodeo/types";
+import type { ArenaType, Horse, Run, Stay } from "@/lib/rodeo/types";
 
 export type LoginState = { error: string | null };
 
@@ -55,4 +51,14 @@ export async function saveArenaAction(
 ): Promise<void> {
   await requireAuth();
   await db.upsertArena(name, type, notes);
+}
+
+export async function saveHorseAction(horse: Horse): Promise<void> {
+  await requireAuth();
+  await db.upsertHorse(horse);
+}
+
+export async function deleteHorseAction(name: string): Promise<void> {
+  await requireAuth();
+  await db.deleteHorse(name);
 }

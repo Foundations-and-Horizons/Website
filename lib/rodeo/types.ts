@@ -3,6 +3,7 @@
 export type Category = "jackpot" | "college";
 export type StayType = "hotel" | "campground";
 export type ArenaType = "" | "indoor" | "outdoor";
+export type Ground = "" | "Hard" | "Deep" | "Sloppy" | "Freshly dragged" | "Good";
 
 export interface Run {
   id: string;
@@ -12,8 +13,15 @@ export interface Run {
   category: Category;
   time: string; // seconds, kept as string for the input field ("" when blank)
   earnings: number; // dollars won
+  entryFee: number; // dollars paid to enter
   videoLink: string;
   notes: string;
+  horse: string;
+  placement: string;
+  barrel1Notes: string;
+  barrel2Notes: string;
+  barrel3Notes: string;
+  ground: Ground;
 }
 
 export interface Stay {
@@ -35,8 +43,14 @@ export interface ArenaInfo {
 
 export type ArenaMap = Record<string, ArenaInfo>;
 
+export interface Horse {
+  name: string;
+  notes: string;
+}
+
 export interface RodeoData {
   runs: Run[];
   stays: Stay[];
   arenas: ArenaMap;
+  horses: Horse[];
 }

@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   description: "Track barrel-racing runs, arenas, and travel.",
 };
 
-// Reads cookies, so this route always renders per-request.
 export const dynamic = "force-dynamic";
 
 export default async function RodeoPage() {
@@ -25,6 +24,7 @@ export default async function RodeoPage() {
       initialRuns={data.runs}
       initialStays={data.stays}
       initialArenas={data.arenas}
+      initialHorses={data.horses}
     />
   );
 }

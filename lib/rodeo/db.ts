@@ -1,18 +1,11 @@
 // Server-only data access for the Rodeo Road Log.
-//
-// Reuses the site's existing Supabase env (NEXT_PUBLIC_SUPABASE_URL +
-// SUPABASE_SERVICE_ROLE_KEY). All access goes through the service-role key on
-// the server, guarded by the family-password check in the Server Actions —
-// the rodeo_* tables have RLS enabled with no policies, so the public anon
-// key cannot touch them.
-//
-// If the env isn't configured (e.g. local dev without secrets), reads return
-// empty data and writes throw a clear error, so the UI still renders.
 
 import type {
   ArenaMap,
   ArenaType,
   Category,
+  Ground,
+  Horse,
   RodeoData,
   Run,
   Stay,
@@ -44,8 +37,15 @@ type RunRow = {
   category: string;
   run_time: number | null;
   earnings: number | null;
+  entry_fee: number | null;
   video_link: string | null;
   notes: string | null;
+  horse: string | null;
+  placement: string | null;
+  barrel1_notes: string | null;
+  barrel2_notes: string | null;
+  barrel3_notes: string | null;
+  ground: string | null;
 };
 
 function rowToRun(r: RunRow): Run {
@@ -57,8 +57,15 @@ function rowToRun(r: RunRow): Run {
     category: (r.category as Category) || "jackpot",
     time: r.run_time == null ? "" : String(r.run_time),
     earnings: Number(r.earnings) || 0,
+    entryFee: Number(r.entry_fee) || 0,
     videoLink: r.video_link ?? "",
     notes: r.notes ?? "",
+    horse: r.horse ?? "",
+    placement: r.placement ?? "",
+    barrel1Notes: r.barrel1_notes ?? "",
+    barrel2Notes: r.barrel2_notes ?? "",
+    barrel3Notes: r.barrel3_notes ?? "",
+    ground: (r.ground as Ground) || "",
   };
 }
 
@@ -71,8 +78,15 @@ function runToRow(r: Run) {
     category: r.category,
     run_time: r.time === "" || r.time == null ? null : Number(r.time),
     earnings: Number(r.earnings) || 0,
+    entry_fee: Number(r.entryFee) || 0,
     video_link: r.videoLink || "",
     notes: r.notes || "",
+    horse: r.horse || "",
+    placement: r.placement || "",
+    barrel1_notes: r.barrel1Notes || "",
+    barrel2_notes: r.barrel2Notes || "",
+    barrel3_notes: r.barrel3Notes || "",
+    ground: r.ground || "",
   };
 }
 
@@ -119,14 +133,15 @@ function stayToRow(s: Stay) {
 // ── reads ────────────────────────────────────────────────────────────────────
 
 export async function fetchAll(): Promise<RodeoData> {
-  const empty: RodeoData = { runs: [], stays: [], arenas: {} };
+  const empty: RodeoData = { runs: [], stays: [], arenas: {}, horses: [] };
   const supabase = await getClient();
   if (!supabase) return empty;
 
-  const [runsRes, staysRes, arenasRes] = await Promise.all([
+  const [runsRes, staysRes, arenasRes, horsesRes] = await Promise.all([
     supabase.from("rodeo_runs").select("*"),
     supabase.from("rodeo_stays").select("*"),
     supabase.from("rodeo_arenas").select("*"),
+    supabase.from("rodeo_horses").select("*"),
   ]);
 
   const runs = (runsRes.data as RunRow[] | null)?.map(rowToRun) ?? [];
@@ -140,7 +155,11 @@ export async function fetchAll(): Promise<RodeoData> {
       notes: a.notes ?? "",
     };
   }
-  return { runs, stays, arenas };
+  const horses: Horse[] = (horsesRes.data as
+    | { name: string; notes: string | null }[]
+    | null)?.map((h) => ({ name: h.name, notes: h.notes ?? "" })) ?? [];
+
+  return { runs, stays, arenas, horses };
 }
 
 // ── writes ───────────────────────────────────────────────────────────────────
@@ -197,6 +216,20 @@ export async function upsertArena(
   const { error } = await supabase
     .from("rodeo_arenas")
     .upsert({ name, type, notes });
+  if (error) throw new Error(error.message);
+}
+
+export async function upsertHorse(horse: Horse): Promise<void> {
+  const supabase = requireClient(await getClient());
+  const { error } = await supabase
+    .from("rodeo_horses")
+    .upsert({ name: horse.name, notes: horse.notes });
+  if (error) throw new Error(error.message);
+}
+
+export async function deleteHorse(name: string): Promise<void> {
+  const supabase = requireClient(await getClient());
+  const { error } = await supabase.from("rodeo_horses").delete().eq("name", name);
   if (error) throw new Error(error.message);
 }
 
