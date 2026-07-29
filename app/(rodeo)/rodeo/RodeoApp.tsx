@@ -7,106 +7,72 @@ import {
   saveStayAction,
   deleteStayAction,
   saveArenaAction,
+  saveHorseAction,
+  deleteHorseAction,
   logoutAction,
 } from "./actions";
 import type {
   ArenaMap,
   ArenaType,
   Category,
+  Ground,
+  Horse,
   Run,
   Stay,
   StayType,
 } from "@/lib/rodeo/types";
 
-/* ── icons (lucide-style) ─────────────────────────────────────────────────── */
+/* ── icons ─────────────────────────────────────────────────────────────────── */
 const ICON: Record<string, string> = {
   home: '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
-  timer:
-    '<line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/>',
-  mappin:
-    '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
-  hotel:
-    '<path d="M10 22v-6.57"/><path d="M12 11h.01"/><path d="M12 7h.01"/><path d="M14 15.43V22"/><path d="M15 16a5 5 0 0 0-6 0"/><path d="M16 11h.01"/><path d="M16 7h.01"/><path d="M8 11h.01"/><path d="M8 7h.01"/><rect x="4" y="2" width="16" height="20" rx="2"/>',
+  timer: '<line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/>',
+  mappin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+  hotel: '<path d="M10 22v-6.57"/><path d="M12 11h.01"/><path d="M12 7h.01"/><path d="M14 15.43V22"/><path d="M15 16a5 5 0 0 0-6 0"/><path d="M16 11h.01"/><path d="M16 7h.01"/><path d="M8 11h.01"/><path d="M8 7h.01"/><rect x="4" y="2" width="16" height="20" rx="2"/>',
   tent: '<path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/>',
-  video:
-    '<path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>',
+  video: '<path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>',
   plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
   x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
   star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-  accessibility:
-    '<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-3.72-6.5"/>',
+  accessibility: '<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-3.72-6.5"/>',
   chevron: '<path d="m9 18 6-6-6-6"/>',
-  trash:
-    '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
-  pencil:
-    '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
+  trash: '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
+  pencil: '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
   sort: '<path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>',
   flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
-  building:
-    '<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>',
-  trophy:
-    '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
-  logout:
-    '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>',
+  building: '<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>',
+  trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+  logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>',
+  horse: '<path d="M19 5c0-1-1-2-2-2h-1l-1-1H9L8 3H7C6 3 5 4 5 5v1L3 8v4l2 1v5h2v-3h10v3h2v-5l2-1V8l-2-2V5z"/><path d="M9 12h6"/>',
 };
-function Icon({
-  name,
-  size = 18,
-  color = "currentColor",
-  fill = "none",
-}: {
-  name: string;
-  size?: number;
-  color?: string;
-  fill?: string;
-}) {
+function Icon({ name, size = 18, color = "currentColor", fill = "none" }: { name: string; size?: number; color?: string; fill?: string }) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill={fill}
-      stroke={color}
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      dangerouslySetInnerHTML={{ __html: ICON[name] }}
-    />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: ICON[name] || "" }} />
   );
 }
 
 /* ── helpers ──────────────────────────────────────────────────────────────── */
 let seq = 0;
-function uid() {
-  return "id" + Date.now().toString(36) + (seq++).toString(36);
-}
+function uid() { return "id" + Date.now().toString(36) + (seq++).toString(36); }
 function fmtTime(sec: string | number) {
   if (sec === "" || sec == null || isNaN(Number(sec))) return "--";
   return Number(sec).toFixed(2);
 }
-function fmtMoney(n: number) {
-  return "$" + (Number(n) || 0).toLocaleString(undefined, { maximumFractionDigits: 0 });
-}
+function fmtMoney(n: number) { return "$" + (Number(n) || 0).toLocaleString(undefined, { maximumFractionDigits: 0 }); }
 function fmtDate(d: string) {
   if (!d) return "";
   const dt = new Date(d + "T00:00:00");
   if (isNaN(dt.getTime())) return d;
   return dt.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 }
-function catLabel(c: Category) {
-  return c === "college" ? "College Rodeo" : "Jackpot";
-}
-function catClass(c: Category) {
-  return c === "college" ? "gold" : "rustc";
-}
+function catLabel(c: Category) { return c === "college" ? "College Rodeo" : "Jackpot"; }
+function catClass(c: Category) { return c === "college" ? "gold" : "rustc"; }
+const GROUND_OPTIONS: Ground[] = ["Hard", "Deep", "Sloppy", "Freshly dragged", "Good"];
 
-/* ── styles (scoped under .rr-root) ───────────────────────────────────────── */
-const STAR =
-  "<polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/>";
+/* ── styles ───────────────────────────────────────────────────────────────── */
+const STAR = "<polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/>";
 const starSvg = `<svg xmlns='http://www.w3.org/2000/svg' width='104' height='104' viewBox='0 0 104 104'><g fill='#FFF6E6' fill-opacity='0.11'><g transform='translate(9,13) scale(0.52)'>${STAR}</g><g transform='translate(66,40) scale(0.8)'>${STAR}</g><g transform='translate(40,78) scale(0.44)'>${STAR}</g></g></svg>`;
-const noiseSvg =
-  "<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(#l)' opacity='0.4'/></svg>";
+const noiseSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(#l)' opacity='0.4'/></svg>";
 const starUri = `data:image/svg+xml,${encodeURIComponent(starSvg)}`;
 const noiseUri = `data:image/svg+xml,${encodeURIComponent(noiseSvg)}`;
 
@@ -134,7 +100,7 @@ const CSS = `
 .rr-root .tab{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;font-size:14px;font-weight:700;color:#C9BFAE;transition:background .15s,color .15s;}
 .rr-root .tab.active{background:var(--rust);color:var(--cream);}
 .rr-root .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 16px;margin-top:-32px;position:relative;z-index:10;}
-@media(min-width:640px){.rr-root .stats{grid-template-columns:repeat(4,1fr);}}
+@media(min-width:640px){.rr-root .stats{grid-template-columns:repeat(3,1fr);}}
 .rr-root .pill{display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(217,154,61,.2);border-radius:18px;padding:14px 10px;box-shadow:0 6px 18px rgba(42,33,27,.12);}
 .rr-root .pill .num{font-family:var(--fm);font-size:22px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums;line-height:1;}
 .rr-root .pill .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--leather);margin-top:4px;text-align:center;}
@@ -146,7 +112,7 @@ const CSS = `
 .rr-root .hero p{margin:8px 0 0;color:#E9DEC9;font-size:15px;max-width:34ch;}
 @media(min-width:640px){.rr-root .hero h1{font-size:64px;}}
 .rr-root .navgrid{display:grid;gap:12px;padding:24px 16px 48px;}
-@media(min-width:640px){.rr-root .navgrid{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:640px){.rr-root .navgrid{grid-template-columns:repeat(4,1fr);}}
 .rr-root .navcard{display:flex;align-items:center;gap:16px;border-radius:18px;padding:16px;text-align:left;box-shadow:0 3px 10px rgba(42,33,27,.1);transition:box-shadow .15s,transform .15s;}
 .rr-root .navcard:hover{box-shadow:0 10px 24px rgba(42,33,27,.18);transform:translateY(-2px);}
 .rr-root .navcard .badge{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex:none;}
@@ -166,10 +132,11 @@ const CSS = `
 .rr-root .chip.gold{background:rgba(217,154,61,.28);color:#7d5a17;}
 .rr-root .chip.rustc{background:rgba(190,75,35,.18);color:var(--rust);}
 .rr-root .chip.money{background:rgba(62,124,79,.2);color:var(--money);}
+.rr-root .chip.slate{background:rgba(92,58,33,.12);color:var(--leather);}
 .rr-root .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
 .rr-root .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;font-weight:700;font-size:14px;padding:9px 16px;color:#fff;transition:filter .15s;white-space:nowrap;flex:none;}
 .rr-root .btn:hover{filter:brightness(1.06);}
-.rr-root .btn.rust{background:var(--rust);}.rr-root .btn.denim{background:var(--denim);}.rr-root .btn.teal{background:var(--teal);}
+.rr-root .btn.rust{background:var(--rust);}.rr-root .btn.denim{background:var(--denim);}.rr-root .btn.teal{background:var(--teal);}.rr-root .btn.gold{background:var(--gold);}
 .rr-root .btn-block{width:100%;padding:13px;border-radius:999px;font-weight:800;font-size:15px;color:#fff;border:none;}
 .rr-root .icon-btn{padding:7px;border-radius:999px;background:var(--cream);display:inline-flex;}
 .rr-root .selectlike{font-size:14px;border-radius:999px;padding:7px 13px;border:2px solid rgba(217,154,61,.4);background:#fff;color:var(--leather);}
@@ -188,10 +155,11 @@ const CSS = `
 .rr-root .inp{width:100%;padding:10px 12px;border-radius:10px;border:2px solid rgba(217,154,61,.5);background:#fff;font-size:15px;color:var(--charcoal);}
 .rr-root textarea.inp{min-height:72px;resize:vertical;}
 .rr-root .seg{display:flex;gap:8px;flex-wrap:wrap;}
-.rr-root .seg button{flex:1;min-width:120px;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-weight:700;font-size:14px;border:2px solid rgba(92,58,33,.25);background:#fff;color:var(--leather);}
+.rr-root .seg button{flex:1;min-width:100px;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-weight:700;font-size:14px;border:2px solid rgba(92,58,33,.25);background:#fff;color:var(--leather);}
 .rr-root .seg.teal button.on{background:var(--teal);color:#fff;border-color:var(--teal);}
 .rr-root .seg.denim button.on{background:var(--denim);color:#fff;border-color:var(--denim);}
 .rr-root .seg.rust button.on{background:var(--rust);color:#fff;border-color:var(--rust);}
+.rr-root .seg.gold button.on{background:var(--gold);color:#fff;border-color:var(--gold);}
 .rr-root .stars{display:flex;gap:4px;}
 .rr-root .stars button{padding:2px;}
 .rr-root .toggle{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:12px;font-weight:700;font-size:14px;border:2px solid rgba(61,90,115,.35);background:#fff;color:var(--leather);}
@@ -202,6 +170,12 @@ const CSS = `
 .rr-root .line2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .rr-root .substay{display:flex;align-items:center;gap:8px;background:var(--cream);border-radius:12px;padding:8px 12px;}
 .rr-root .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:40;background:var(--rust);color:#fff;font-size:14px;font-weight:600;padding:10px 16px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:90vw;}
+.rr-root .barrel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.rr-root .barrel-box{background:var(--cream);border-radius:10px;padding:8px 10px;}
+.rr-root .barrel-box .b-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--leather);margin-bottom:4px;}
+.rr-root .horse-card{display:flex;align-items:center;gap:12px;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(42,33,27,.1);}
+.rr-root .horse-card,.rr-root .horse-card .hbadge{background-color:var(--card);background-image:url("${noiseUri}");background-blend-mode:soft-light;}
+.rr-root .horse-card .hbadge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;background:var(--gold);}
 `;
 
 /* ── form types ───────────────────────────────────────────────────────────── */
@@ -214,8 +188,15 @@ type RunForm = {
   category: Category;
   time: string;
   earnings: string;
+  entryFee: string;
   videoLink: string;
   notes: string;
+  horse: string;
+  placement: string;
+  barrel1Notes: string;
+  barrel2Notes: string;
+  barrel3Notes: string;
+  ground: Ground;
 };
 type StayForm = {
   id: string;
@@ -230,17 +211,20 @@ type StayForm = {
 };
 type ArenaDetailForm = { note: string; type: ArenaType };
 type ArenaNewForm = { name: string; type: ArenaType };
+type HorseForm = { name: string; notes: string; isEditing: boolean };
 type Modal =
   | { kind: "run"; editing: boolean }
   | { kind: "arenaDetail"; name: string }
   | { kind: "arenaNew" }
   | { kind: "travel"; editing: boolean }
+  | { kind: "horse" }
   | null;
 
 const TABS: [string, string, string][] = [
   ["home", "Home", "home"],
   ["runs", "Runs", "timer"],
   ["arenas", "Arenas", "mappin"],
+  ["horses", "Horses", "horse"],
   ["travel", "Travel", "hotel"],
 ];
 
@@ -248,22 +232,27 @@ export default function RodeoApp({
   initialRuns,
   initialStays,
   initialArenas,
+  initialHorses,
   initialView = "home",
 }: {
   initialRuns: Run[];
   initialStays: Stay[];
   initialArenas: ArenaMap;
+  initialHorses: Horse[];
   initialView?: string;
 }) {
   const [view, setView] = useState<string>(initialView);
   const [runs, setRuns] = useState<Run[]>(initialRuns);
   const [stays, setStays] = useState<Stay[]>(initialStays);
   const [arenaInfo, setArenaInfo] = useState<ArenaMap>(initialArenas);
+  const [horses, setHorses] = useState<Horse[]>(initialHorses);
   const [modal, setModal] = useState<Modal>(null);
-  const [form, setForm] = useState<RunForm | StayForm | ArenaDetailForm | ArenaNewForm | null>(null);
+  const [form, setForm] = useState<RunForm | StayForm | ArenaDetailForm | ArenaNewForm | HorseForm | null>(null);
   const [runFilter, setRunFilter] = useState("all");
   const [runCat, setRunCat] = useState("all");
+  const [runHorse, setRunHorse] = useState("all");
   const [runSort, setRunSort] = useState("date-desc");
+  const [homeHorse, setHomeHorse] = useState("all");
   const [err, setErr] = useState<string | null>(null);
 
   const arenas = useMemo(() => {
@@ -273,64 +262,56 @@ export default function RodeoApp({
     return Array.from(set).sort();
   }, [runs, arenaInfo]);
 
+  const horseNames = useMemo(() => horses.map((h) => h.name).sort(), [horses]);
+
   const arenaType = (name: string): ArenaType => arenaInfo[name]?.type || "";
   const arenaNotesOf = (name: string): string => arenaInfo[name]?.notes || "";
-  const bestByType = (type: ArenaType) => {
+
+  const bestByType = (type: ArenaType, horse = "all") => {
     const t = runs
-      .filter((r) => arenaType(r.arena) === type)
+      .filter((r) => arenaType(r.arena) === type && (horse === "all" || r.horse === horse))
       .map((r) => Number(r.time))
       .filter((n) => !isNaN(n) && n > 0);
     return t.length ? Math.min(...t) : null;
   };
+
+  const thisYear = new Date().getFullYear().toString();
   const totalWon = runs.reduce((s, r) => s + (Number(r.earnings) || 0), 0);
+  const netSeason = runs
+    .filter((r) => r.date?.startsWith(thisYear))
+    .reduce((s, r) => s + (Number(r.earnings) || 0) - (Number(r.entryFee) || 0), 0);
+
   const staysForArena = (name: string) => stays.filter((s) => s.arena === name);
 
   async function persist(fn: () => Promise<void>, revert: () => void) {
-    try {
-      await fn();
-    } catch (e) {
+    try { await fn(); } catch (e) {
       revert();
-      setErr(
-        e instanceof Error && e.message !== "Unauthorized"
-          ? e.message
-          : "Couldn't save — check your connection and try again."
-      );
+      setErr(e instanceof Error && e.message !== "Unauthorized" ? e.message : "Couldn't save — check your connection and try again.");
     }
   }
 
-  function closeModal() {
-    setModal(null);
-    setForm(null);
-  }
+  function closeModal() { setModal(null); setForm(null); }
 
   /* ── run handlers ── */
   function newRun() {
     setForm({
-      id: uid(),
-      date: "",
-      event: "",
-      arena: "",
-      arenaType: "outdoor",
-      category: "jackpot",
-      time: "",
-      earnings: "",
-      videoLink: "",
-      notes: "",
+      id: uid(), date: "", event: "", arena: "", arenaType: "outdoor", category: "jackpot",
+      time: "", earnings: "", entryFee: "", videoLink: "", notes: "",
+      horse: horses.length === 1 ? horses[0].name : "",
+      placement: "", barrel1Notes: "", barrel2Notes: "", barrel3Notes: "", ground: "",
     });
     setModal({ kind: "run", editing: false });
   }
   function editRun(r: Run) {
     setForm({
-      id: r.id,
-      date: r.date,
-      event: r.event,
-      arena: r.arena,
-      arenaType: arenaType(r.arena) || "outdoor",
-      category: r.category,
-      time: r.time,
-      earnings: r.earnings ? String(r.earnings) : "",
-      videoLink: r.videoLink,
-      notes: r.notes,
+      id: r.id, date: r.date, event: r.event, arena: r.arena,
+      arenaType: arenaType(r.arena) || "outdoor", category: r.category,
+      time: r.time, earnings: r.earnings ? String(r.earnings) : "",
+      entryFee: r.entryFee ? String(r.entryFee) : "",
+      videoLink: r.videoLink, notes: r.notes,
+      horse: r.horse, placement: r.placement,
+      barrel1Notes: r.barrel1Notes, barrel2Notes: r.barrel2Notes, barrel3Notes: r.barrel3Notes,
+      ground: r.ground,
     });
     setModal({ kind: "run", editing: true });
   }
@@ -338,33 +319,24 @@ export default function RodeoApp({
     const f = form as RunForm;
     if (!f.event || !f.arena) return;
     const run: Run = {
-      id: f.id,
-      date: f.date,
-      event: f.event,
-      arena: f.arena,
-      category: f.category,
-      time: f.time,
+      id: f.id, date: f.date, event: f.event, arena: f.arena,
+      category: f.category, time: f.time,
       earnings: Number(f.earnings) || 0,
-      videoLink: f.videoLink,
-      notes: f.notes,
+      entryFee: Number(f.entryFee) || 0,
+      videoLink: f.videoLink, notes: f.notes,
+      horse: f.horse, placement: f.placement,
+      barrel1Notes: f.barrel1Notes, barrel2Notes: f.barrel2Notes, barrel3Notes: f.barrel3Notes,
+      ground: f.ground,
     };
     const prevRuns = runs;
     const prevArenas = arenaInfo;
     const existingNotes = arenaNotesOf(run.arena);
-    setRuns((rs) => (rs.some((r) => r.id === run.id) ? rs.map((r) => (r.id === run.id ? run : r)) : [...rs, run]));
-    if (f.arenaType) {
-      setArenaInfo((a) => ({ ...a, [run.arena]: { type: f.arenaType, notes: existingNotes } }));
-    }
+    setRuns((rs) => rs.some((r) => r.id === run.id) ? rs.map((r) => r.id === run.id ? run : r) : [...rs, run]);
+    if (f.arenaType) setArenaInfo((a) => ({ ...a, [run.arena]: { type: f.arenaType, notes: existingNotes } }));
     closeModal();
     persist(
-      async () => {
-        await saveRunAction(run);
-        if (f.arenaType) await saveArenaAction(run.arena, f.arenaType, existingNotes);
-      },
-      () => {
-        setRuns(prevRuns);
-        setArenaInfo(prevArenas);
-      }
+      async () => { await saveRunAction(run); if (f.arenaType) await saveArenaAction(run.arena, f.arenaType, existingNotes); },
+      () => { setRuns(prevRuns); setArenaInfo(prevArenas); }
     );
   }
   function removeRun(id: string) {
@@ -374,14 +346,8 @@ export default function RodeoApp({
   }
 
   /* ── arena handlers ── */
-  function openArena(name: string) {
-    setForm({ note: arenaNotesOf(name), type: arenaType(name) });
-    setModal({ kind: "arenaDetail", name });
-  }
-  function newArena() {
-    setForm({ name: "", type: "outdoor" });
-    setModal({ kind: "arenaNew" });
-  }
+  function openArena(name: string) { setForm({ note: arenaNotesOf(name), type: arenaType(name) }); setModal({ kind: "arenaDetail", name }); }
+  function newArena() { setForm({ name: "", type: "outdoor" }); setModal({ kind: "arenaNew" }); }
   function saveArenaDetail() {
     if (modal?.kind !== "arenaDetail") return;
     const f = form as ArenaDetailForm;
@@ -402,31 +368,37 @@ export default function RodeoApp({
     persist(() => saveArenaAction(name, f.type, notes), () => setArenaInfo(prev));
   }
 
+  /* ── horse handlers ── */
+  function newHorse() { setForm({ name: "", notes: "", isEditing: false }); setModal({ kind: "horse" }); }
+  function editHorse(h: Horse) { setForm({ name: h.name, notes: h.notes, isEditing: true }); setModal({ kind: "horse" }); }
+  function saveHorse() {
+    const f = form as HorseForm;
+    const name = (f.name || "").trim();
+    if (!name) return;
+    const horse: Horse = { name, notes: f.notes };
+    const prev = horses;
+    setHorses((hs) => hs.some((h) => h.name === name) ? hs.map((h) => h.name === name ? horse : h) : [...hs, horse]);
+    closeModal();
+    persist(() => saveHorseAction(horse), () => setHorses(prev));
+  }
+  function removeHorse(name: string) {
+    const prev = horses;
+    setHorses((hs) => hs.filter((h) => h.name !== name));
+    persist(() => deleteHorseAction(name), () => setHorses(prev));
+  }
+
   /* ── stay handlers ── */
   function newStay() {
-    setForm({
-      id: uid(),
-      startDate: "",
-      endDate: "",
-      type: "hotel",
-      name: "",
-      arena: "",
-      ada: false,
-      rating: 0,
-      notes: "",
-    });
+    setForm({ id: uid(), startDate: "", endDate: "", type: "hotel", name: "", arena: "", ada: false, rating: 0, notes: "" });
     setModal({ kind: "travel", editing: false });
   }
-  function editStay(s: Stay) {
-    setForm({ ...s });
-    setModal({ kind: "travel", editing: true });
-  }
+  function editStay(s: Stay) { setForm({ ...s }); setModal({ kind: "travel", editing: true }); }
   function saveStay() {
     const f = form as StayForm;
     if (!f.name) return;
     const stay: Stay = { ...f };
     const prev = stays;
-    setStays((ss) => (ss.some((s) => s.id === stay.id) ? ss.map((s) => (s.id === stay.id ? stay : s)) : [...ss, stay]));
+    setStays((ss) => ss.some((s) => s.id === stay.id) ? ss.map((s) => s.id === stay.id ? stay : s) : [...ss, stay]);
     closeModal();
     persist(() => saveStayAction(stay).then(() => undefined), () => setStays(prev));
   }
@@ -437,72 +409,55 @@ export default function RodeoApp({
   }
 
   function upd<T>(patch: Partial<T>) {
-    setForm(
-      (f) =>
-        ({ ...(f as object), ...patch }) as unknown as
-          | RunForm
-          | StayForm
-          | ArenaDetailForm
-          | ArenaNewForm
-    );
+    setForm((f) => ({ ...(f as object), ...patch }) as unknown as RunForm | StayForm | ArenaDetailForm | ArenaNewForm | HorseForm);
   }
 
-  /* ── views ── */
-  const nav = (id: string) => {
-    setView(id);
-    closeModal();
-  };
+  const nav = (id: string) => { setView(id); closeModal(); };
 
-  const topBar = (current: string) => {
-    return (
-      <div className="topbar">
-        <div className="brand" onClick={() => nav("home")}>
-          RODEO ROAD LOG
-        </div>
-        <div className="tabs">
-          {TABS.map(([id, label, ic]) => {
-            const on = current === id;
-            return (
-              <button key={id} className={"tab" + (on ? " active" : "")} onClick={() => nav(id)}>
-                <Icon name={ic} size={15} color={on ? "#F3EBDC" : "#C9BFAE"} />
-                <span className="hide-sm">{label}</span>
-              </button>
-            );
-          })}
-          <form action={logoutAction} style={{ display: "flex" }}>
-            <button className="tab" type="submit" title="Sign out" aria-label="Sign out">
-              <Icon name="logout" size={15} color="#C9BFAE" />
+  const topBar = (current: string) => (
+    <div className="topbar">
+      <div className="brand" onClick={() => nav("home")}>RODEO ROAD LOG</div>
+      <div className="tabs">
+        {TABS.map(([id, label, ic]) => {
+          const on = current === id;
+          return (
+            <button key={id} className={"tab" + (on ? " active" : "")} onClick={() => nav(id)}>
+              <Icon name={ic} size={15} color={on ? "#F3EBDC" : "#C9BFAE"} />
+              <span className="hide-sm">{label}</span>
             </button>
-          </form>
-        </div>
+          );
+        })}
+        <form action={logoutAction} style={{ display: "flex" }}>
+          <button className="tab" type="submit" title="Sign out" aria-label="Sign out">
+            <Icon name="logout" size={15} color="#C9BFAE" />
+          </button>
+        </form>
       </div>
-    );
-  }
+    </div>
+  );
 
-  const pill = ({ label, value, ic, color }: { label: string; value: ReactNode; ic: string; color?: string }) => {
-    return (
-      <div className="pill">
-        <Icon name={ic} size={20} color="var(--rust)" />
-        <div className="num" style={color ? { color } : undefined}>
-          {value}
-        </div>
-        <div className="lbl">{label}</div>
-      </div>
-    );
-  }
+  const pill = ({ label, value, ic, color }: { label: string; value: ReactNode; ic: string; color?: string }) => (
+    <div className="pill">
+      <Icon name={ic} size={20} color="var(--rust)" />
+      <div className="num" style={color ? { color } : undefined}>{value}</div>
+      <div className="lbl">{label}</div>
+    </div>
+  );
 
-  const bo = bestByType("outdoor");
-  const bi = bestByType("indoor");
+  const bo = bestByType("outdoor", homeHorse);
+  const bi = bestByType("indoor", homeHorse);
 
   const homeCards: [string, string, string, string, string][] = [
     ["runs", "Log a run", "Times, category, winnings", "timer", "var(--rust)"],
     ["arenas", "Arenas", "Indoor/outdoor & notes", "mappin", "var(--denim)"],
+    ["horses", "Horses", "Manage your horses", "horse", "var(--gold)"],
     ["travel", "On the road", "Hotels & campgrounds", "hotel", "var(--teal)"],
   ];
 
   const filteredRuns = runs
     .filter((r) => runFilter === "all" || r.arena === runFilter)
     .filter((r) => runCat === "all" || r.category === runCat)
+    .filter((r) => runHorse === "all" || r.horse === runHorse)
     .sort((a, b) => {
       if (runSort === "date-desc") return (b.date || "").localeCompare(a.date || "");
       if (runSort === "date-asc") return (a.date || "").localeCompare(b.date || "");
@@ -520,15 +475,9 @@ export default function RodeoApp({
 
   const typeChip = (t: ArenaType) =>
     t === "outdoor" ? (
-      <span className="chip teal">
-        <Icon name="sun" size={11} color="var(--teal)" />
-        Outdoor
-      </span>
+      <span className="chip teal"><Icon name="sun" size={11} color="var(--teal)" />Outdoor</span>
     ) : t === "indoor" ? (
-      <span className="chip denim">
-        <Icon name="building" size={11} color="var(--denim)" />
-        Indoor
-      </span>
+      <span className="chip denim"><Icon name="building" size={11} color="var(--denim)" />Indoor</span>
     ) : null;
 
   return (
@@ -546,12 +495,24 @@ export default function RodeoApp({
               <p>Every run, every arena, every stop on the road — in one place.</p>
             </div>
           </div>
+
+          {horseNames.length > 1 && (
+            <div style={{ padding: "12px 16px 0", display: "flex", justifyContent: "flex-end" }}>
+              <select className="selectlike" value={homeHorse} onChange={(e) => setHomeHorse(e.target.value)}>
+                <option value="all">All horses</option>
+                {horseNames.map((h) => <option key={h} value={h}>{h}</option>)}
+              </select>
+            </div>
+          )}
+
           <div className="stats">
-            {pill({ label: "Runs logged", value: runs.length, ic: "flag" })}
+            {pill({ label: "Runs logged", value: runs.filter(r => homeHorse === "all" || r.horse === homeHorse).length, ic: "flag" })}
             {pill({ label: "Total won", value: fmtMoney(totalWon), ic: "trophy", color: "var(--money)" })}
+            {pill({ label: `Net ${thisYear}`, value: fmtMoney(netSeason), ic: "star", color: netSeason >= 0 ? "var(--money)" : "var(--rust)" })}
             {pill({ label: "Best outdoor", value: bo ? fmtTime(bo) : "--", ic: "sun" })}
             {pill({ label: "Best indoor", value: bi ? fmtTime(bi) : "--", ic: "building" })}
           </div>
+
           <div className="navgrid">
             {homeCards.map(([id, t, s, ic, color]) => (
               <button key={id} className="navcard" onClick={() => nav(id)}>
@@ -582,19 +543,16 @@ export default function RodeoApp({
                 </select>
                 <select className="selectlike" value={runFilter} onChange={(e) => setRunFilter(e.target.value)} style={{ minWidth: 0 }}>
                   <option value="all">All arenas</option>
-                  {arenas.map((a) => (
-                    <option key={a} value={a}>
-                      {a}
-                    </option>
-                  ))}
+                  {arenas.map((a) => <option key={a} value={a}>{a}</option>)}
                 </select>
-                <button
-                  className="selectlike row gap2"
-                  style={{ whiteSpace: "nowrap", flex: "none" }}
-                  onClick={() =>
-                    setRunSort((s) => (s === "date-desc" ? "date-asc" : s === "date-asc" ? "time-asc" : "date-desc"))
-                  }
-                >
+                {horseNames.length > 0 && (
+                  <select className="selectlike" value={runHorse} onChange={(e) => setRunHorse(e.target.value)} style={{ minWidth: 0 }}>
+                    <option value="all">All horses</option>
+                    {horseNames.map((h) => <option key={h} value={h}>{h}</option>)}
+                  </select>
+                )}
+                <button className="selectlike row gap2" style={{ whiteSpace: "nowrap", flex: "none" }}
+                  onClick={() => setRunSort((s) => s === "date-desc" ? "date-asc" : s === "date-asc" ? "time-asc" : "date-desc")}>
                   <Icon name="sort" size={13} color="var(--leather)" />
                   {sortLbl}
                 </button>
@@ -618,22 +576,23 @@ export default function RodeoApp({
                 <div key={r.id} className="card">
                   <div className="row between" style={{ alignItems: "flex-start" }}>
                     <div style={{ paddingRight: 8 }}>
-                      <div className="fd" style={{ fontSize: 20, fontWeight: 800, lineHeight: 1.05 }}>
-                        {r.event}
-                      </div>
-                      <div className="muted" style={{ fontSize: 12, marginTop: 2 }}>
-                        {fmtDate(r.date)}
-                      </div>
+                      <div className="fd" style={{ fontSize: 20, fontWeight: 800, lineHeight: 1.05 }}>{r.event}</div>
+                      <div className="muted" style={{ fontSize: 12, marginTop: 2 }}>{fmtDate(r.date)}</div>
                       <div className="chips">
                         <span className={"chip " + catClass(r.category)}>{catLabel(r.category)}</span>
                         <span className="chip denim">
-                          <Icon name="mappin" size={11} color="var(--denim)" />
-                          {r.arena}
+                          <Icon name="mappin" size={11} color="var(--denim)" />{r.arena}
                         </span>
+                        {r.horse && (
+                          <span className="chip gold">
+                            <Icon name="horse" size={11} color="#7d5a17" />{r.horse}
+                          </span>
+                        )}
+                        {r.placement && <span className="chip slate">{r.placement}</span>}
+                        {r.ground && <span className="chip slate">{r.ground}</span>}
                         {Number(r.earnings) > 0 && (
                           <span className="chip money">
-                            <Icon name="trophy" size={11} color="var(--money)" />
-                            Won {fmtMoney(r.earnings)}
+                            <Icon name="trophy" size={11} color="var(--money)" />Won {fmtMoney(r.earnings)}
                           </span>
                         )}
                       </div>
@@ -643,16 +602,26 @@ export default function RodeoApp({
                       <div className="tny">seconds</div>
                     </div>
                   </div>
+
+                  {(r.barrel1Notes || r.barrel2Notes || r.barrel3Notes) && (
+                    <div className="barrel-grid" style={{ marginTop: 10 }}>
+                      {[r.barrel1Notes, r.barrel2Notes, r.barrel3Notes].map((n, i) => n ? (
+                        <div key={i} className="barrel-box">
+                          <div className="b-lbl">B{i + 1}</div>
+                          <div style={{ fontSize: 13 }}>{n}</div>
+                        </div>
+                      ) : null)}
+                    </div>
+                  )}
+
                   {r.notes && <div style={{ fontSize: 14, marginTop: 10 }}>{r.notes}</div>}
+
                   <div className="row between" style={{ marginTop: 12 }}>
                     {r.videoLink ? (
                       <a className="chip teal" href={r.videoLink} target="_blank" rel="noreferrer">
-                        <Icon name="video" size={12} color="var(--teal)" />
-                        Watch run
+                        <Icon name="video" size={12} color="var(--teal)" />Watch run
                       </a>
-                    ) : (
-                      <span />
-                    )}
+                    ) : <span />}
                     <div className="row gap2">
                       <button className="icon-btn" onClick={() => editRun(r)} aria-label="Edit run">
                         <Icon name="pencil" size={14} color="var(--leather)" />
@@ -676,8 +645,7 @@ export default function RodeoApp({
             <div className="row between" style={{ marginBottom: 12 }}>
               <div className="title">Arenas</div>
               <button className="btn denim" onClick={newArena}>
-                <Icon name="plus" size={16} color="#fff" />
-                Add arena
+                <Icon name="plus" size={16} color="#fff" />Add arena
               </button>
             </div>
             {arenaStats.length === 0 && (
@@ -694,36 +662,76 @@ export default function RodeoApp({
                 return (
                   <button key={a.name} className="card" style={{ textAlign: "left" }} onClick={() => openArena(a.name)}>
                     <div className="row between" style={{ alignItems: "flex-start" }}>
-                      <div className="fd" style={{ fontSize: 20, fontWeight: 800, lineHeight: 1.05, paddingRight: 8 }}>
-                        {a.name}
-                      </div>
+                      <div className="fd" style={{ fontSize: 20, fontWeight: 800, lineHeight: 1.05, paddingRight: 8 }}>{a.name}</div>
                       <Icon name="mappin" size={16} color="var(--denim)" />
                     </div>
                     <div className="chips">
                       {typeChip(a.type) || <span className="chip gold">Set indoor/outdoor</span>}
                       {nStays > 0 && (
                         <span className="chip teal">
-                          <Icon name="hotel" size={11} color="var(--teal)" />
-                          {nStays} stay{nStays === 1 ? "" : "s"}
+                          <Icon name="hotel" size={11} color="var(--teal)" />{nStays} stay{nStays === 1 ? "" : "s"}
                         </span>
                       )}
                     </div>
                     <div className="row gap4" style={{ marginTop: 8, fontSize: 14 }}>
-                      <span className="muted">
-                        {a.count} run{a.count === 1 ? "" : "s"}
-                      </span>
-                      {a.best !== null && (
-                        <span className="fm" style={{ fontWeight: 700, color: "var(--rust)" }}>
-                          Best {fmtTime(a.best)}
-                        </span>
-                      )}
+                      <span className="muted">{a.count} run{a.count === 1 ? "" : "s"}</span>
+                      {a.best !== null && <span className="fm" style={{ fontWeight: 700, color: "var(--rust)" }}>Best {fmtTime(a.best)}</span>}
                     </div>
-                    {note && (
-                      <div className="line2 muted" style={{ fontSize: 12, marginTop: 8 }}>
-                        {note}
-                      </div>
-                    )}
+                    {note && <div className="line2 muted" style={{ fontSize: 12, marginTop: 8 }}>{note}</div>}
                   </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {view === "horses" && (
+        <div>
+          {topBar("horses")}
+          <div className="wrap">
+            <div className="row between" style={{ marginBottom: 12 }}>
+              <div className="title">Horses</div>
+              <button className="btn gold" onClick={newHorse}>
+                <Icon name="plus" size={16} color="#fff" />Add horse
+              </button>
+            </div>
+            {horses.length === 0 && (
+              <div className="empty">
+                <Icon name="horse" size={32} color="var(--leather)" />
+                <div className="title">No horses yet</div>
+                <div>Add a horse to start filtering runs by who ran.</div>
+              </div>
+            )}
+            <div className="list">
+              {horses.map((h) => {
+                const hruns = runs.filter((r) => r.horse === h.name);
+                const htimes = hruns.map((r) => Number(r.time)).filter((n) => !isNaN(n) && n > 0);
+                const hbest = htimes.length ? Math.min(...htimes) : null;
+                const hwon = hruns.reduce((s, r) => s + (Number(r.earnings) || 0), 0);
+                return (
+                  <div key={h.name} className="horse-card">
+                    <div className="hbadge">
+                      <Icon name="horse" size={22} color="#fff" />
+                    </div>
+                    <div className="grow">
+                      <div className="fd" style={{ fontSize: 20 }}>{h.name}</div>
+                      <div className="row gap2 wrapf" style={{ marginTop: 4 }}>
+                        <span className="chip slate">{hruns.length} run{hruns.length === 1 ? "" : "s"}</span>
+                        {hbest !== null && <span className="chip rustc">Best {fmtTime(hbest)}</span>}
+                        {hwon > 0 && <span className="chip money"><Icon name="trophy" size={10} color="var(--money)" />Won {fmtMoney(hwon)}</span>}
+                      </div>
+                      {h.notes && <div className="muted" style={{ fontSize: 13, marginTop: 6 }}>{h.notes}</div>}
+                    </div>
+                    <div className="row gap2">
+                      <button className="icon-btn" onClick={() => editHorse(h)} aria-label="Edit horse">
+                        <Icon name="pencil" size={14} color="var(--leather)" />
+                      </button>
+                      <button className="icon-btn" onClick={() => removeHorse(h.name)} aria-label="Delete horse">
+                        <Icon name="trash" size={14} color="var(--rust)" />
+                      </button>
+                    </div>
+                  </div>
                 );
               })}
             </div>
@@ -738,8 +746,7 @@ export default function RodeoApp({
             <div className="row between" style={{ marginBottom: 12 }}>
               <div className="title">On the Road</div>
               <button className="btn teal" onClick={newStay}>
-                <Icon name="plus" size={16} color="#fff" />
-                Log a stay
+                <Icon name="plus" size={16} color="#fff" />Log a stay
               </button>
             </div>
             {sortedStays.length === 0 && (
@@ -756,13 +763,10 @@ export default function RodeoApp({
                     <div style={{ paddingRight: 8 }}>
                       <div className="row gap2">
                         <Icon name={t.type === "hotel" ? "hotel" : "tent"} size={15} color="var(--teal)" />
-                        <div className="fd" style={{ fontSize: 20, fontWeight: 800, lineHeight: 1.05 }}>
-                          {t.name}
-                        </div>
+                        <div className="fd" style={{ fontSize: 20, fontWeight: 800, lineHeight: 1.05 }}>{t.name}</div>
                       </div>
                       <div className="muted" style={{ fontSize: 12, marginTop: 2 }}>
-                        {fmtDate(t.startDate)}
-                        {t.endDate && t.endDate !== t.startDate ? ` – ${fmtDate(t.endDate)}` : ""}
+                        {fmtDate(t.startDate)}{t.endDate && t.endDate !== t.startDate ? ` – ${fmtDate(t.endDate)}` : ""}
                       </div>
                     </div>
                     <div className="row" style={{ gap: 2 }}>
@@ -772,18 +776,8 @@ export default function RodeoApp({
                     </div>
                   </div>
                   <div className="chips">
-                    {t.arena && (
-                      <span className="chip denim">
-                        <Icon name="mappin" size={11} color="var(--denim)" />
-                        {t.arena}
-                      </span>
-                    )}
-                    {t.ada && (
-                      <span className="chip denim">
-                        <Icon name="accessibility" size={11} color="var(--denim)" />
-                        ADA room
-                      </span>
-                    )}
+                    {t.arena && <span className="chip denim"><Icon name="mappin" size={11} color="var(--denim)" />{t.arena}</span>}
+                    {t.ada && <span className="chip denim"><Icon name="accessibility" size={11} color="var(--denim)" />ADA room</span>}
                   </div>
                   {t.notes && <div style={{ fontSize: 14, marginTop: 8 }}>{t.notes}</div>}
                   <div className="row" style={{ justifyContent: "flex-end", gap: 8, marginTop: 12 }}>
@@ -806,16 +800,15 @@ export default function RodeoApp({
       {modal?.kind === "arenaDetail" && form && arenaDetailModal()}
       {modal?.kind === "arenaNew" && form && arenaNewModal()}
       {modal?.kind === "travel" && form && travelModal()}
+      {modal?.kind === "horse" && form && horseModal()}
 
       {err && (
-        <div className="toast" onClick={() => setErr(null)} role="alert">
-          {err} (tap to dismiss)
-        </div>
+        <div className="toast" onClick={() => setErr(null)} role="alert">{err} (tap to dismiss)</div>
       )}
     </div>
   );
 
-  /* ── modal components (closures over state) ── */
+  /* ── modal components ── */
   function shell(title: string, children: ReactNode) {
     return (
       <div className="overlay" onClick={closeModal}>
@@ -845,9 +838,7 @@ export default function RodeoApp({
           <label>Type</label>
           <div className="seg rust">
             {(["jackpot", "college"] as Category[]).map((o) => (
-              <button key={o} className={f.category === o ? "on" : ""} onClick={() => upd<RunForm>({ category: o })}>
-                {catLabel(o)}
-              </button>
+              <button key={o} className={f.category === o ? "on" : ""} onClick={() => upd<RunForm>({ category: o })}>{catLabel(o)}</button>
             ))}
           </div>
         </div>
@@ -858,32 +849,68 @@ export default function RodeoApp({
         <div className="field">
           <label>Arena</label>
           <input className="inp" list="rr-arena-sug" value={f.arena} onChange={(e) => upd<RunForm>({ arena: e.target.value })} placeholder="e.g. Weber County Fairgrounds" />
-          <datalist id="rr-arena-sug">
-            {arenas.map((a) => (
-              <option key={a} value={a} />
-            ))}
-          </datalist>
+          <datalist id="rr-arena-sug">{arenas.map((a) => <option key={a} value={a} />)}</datalist>
         </div>
         <div className="field">
           <label>Arena type</label>
           <div className="seg denim">
             {([["outdoor", "Outdoor", "sun"], ["indoor", "Indoor", "building"]] as [ArenaType, string, string][]).map(([v, lbl, ic]) => (
               <button key={v} className={f.arenaType === v ? "on" : ""} onClick={() => upd<RunForm>({ arenaType: v })}>
-                <Icon name={ic} size={15} />
-                {lbl}
+                <Icon name={ic} size={15} />{lbl}
               </button>
             ))}
           </div>
         </div>
+        {horseNames.length > 0 && (
+          <div className="field">
+            <label>Horse</label>
+            <select className="inp" value={f.horse} onChange={(e) => upd<RunForm>({ horse: e.target.value })}>
+              <option value="">— select —</option>
+              {horseNames.map((h) => <option key={h} value={h}>{h}</option>)}
+            </select>
+          </div>
+        )}
         <div className="field">
           <label>Time (seconds)</label>
           <input className="inp" type="number" step="0.01" inputMode="decimal" value={f.time} onChange={(e) => upd<RunForm>({ time: e.target.value })} placeholder="17.23" />
         </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div className="field">
+            <label>Money won</label>
+            <div className="prefix">
+              <span>$</span>
+              <input className="inp" type="number" step="1" inputMode="numeric" value={f.earnings} onChange={(e) => upd<RunForm>({ earnings: e.target.value })} placeholder="0" />
+            </div>
+          </div>
+          <div className="field">
+            <label>Entry fee</label>
+            <div className="prefix">
+              <span>$</span>
+              <input className="inp" type="number" step="1" inputMode="numeric" value={f.entryFee} onChange={(e) => upd<RunForm>({ entryFee: e.target.value })} placeholder="0" />
+            </div>
+          </div>
+        </div>
         <div className="field">
-          <label>Money won (leave 0 if none)</label>
-          <div className="prefix">
-            <span>$</span>
-            <input className="inp" type="number" step="1" inputMode="numeric" value={f.earnings} onChange={(e) => upd<RunForm>({ earnings: e.target.value })} placeholder="0" />
+          <label>Placement</label>
+          <input className="inp" value={f.placement} onChange={(e) => upd<RunForm>({ placement: e.target.value })} placeholder="e.g. 2nd 1D, Did Not Place" />
+        </div>
+        <div className="field">
+          <label>Ground conditions</label>
+          <div className="seg gold">
+            {GROUND_OPTIONS.map((g) => (
+              <button key={g} className={f.ground === g ? "on" : ""} onClick={() => upd<RunForm>({ ground: f.ground === g ? "" : g })}>{g}</button>
+            ))}
+          </div>
+        </div>
+        <div className="field">
+          <label>Barrel notes</label>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8 }}>
+            {(["barrel1Notes", "barrel2Notes", "barrel3Notes"] as const).map((k, i) => (
+              <div key={k}>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em", color: "var(--leather)", marginBottom: 4 }}>Barrel {i + 1}</div>
+                <input className="inp" style={{ fontSize: 13, padding: "8px 10px" }} value={f[k]} onChange={(e) => upd<RunForm>({ [k]: e.target.value })} placeholder="e.g. wide" />
+              </div>
+            ))}
           </div>
         </div>
         <div className="field">
@@ -892,120 +919,108 @@ export default function RodeoApp({
         </div>
         <div className="field">
           <label>Notes</label>
-          <textarea className="inp" value={f.notes} onChange={(e) => upd<RunForm>({ notes: e.target.value })} placeholder="Wide first turn, watch the gate..." />
+          <textarea className="inp" value={f.notes} onChange={(e) => upd<RunForm>({ notes: e.target.value })} placeholder="General notes about the run..." />
         </div>
-        <button className="btn-block" style={{ background: "var(--rust)" }} onClick={saveRun}>
-          Save run
-        </button>
+        <button className="btn-block" style={{ background: "var(--rust)" }} onClick={saveRun}>Save run</button>
       </>
     );
-  };
+  }
+
+  function horseModal() {
+    const f = form as HorseForm;
+    return shell(
+      f.isEditing ? "Edit horse" : "Add a horse",
+      <>
+        <div className="field">
+          <label>Name</label>
+          <input className="inp" value={f.name} onChange={(e) => upd<HorseForm>({ name: e.target.value })} placeholder="e.g. Lena" readOnly={f.isEditing} />
+        </div>
+        <div className="field">
+          <label>Notes (optional)</label>
+          <textarea className="inp" value={f.notes} onChange={(e) => upd<HorseForm>({ notes: e.target.value })} placeholder="Feed quirks, box behavior, anything useful..." />
+        </div>
+        <button className="btn-block" style={{ background: "var(--gold)" }} onClick={saveHorse}>Save horse</button>
+      </>
+    );
+  }
 
   function arenaDetailModal() {
     if (modal?.kind !== "arenaDetail") return null;
     const f = form as ArenaDetailForm;
     const name = modal.name;
-    const here = runs
-      .filter((r) => r.arena === name)
-      .sort((a, b) => (Number(a.time) || 999) - (Number(b.time) || 999));
+    const here = runs.filter((r) => r.arena === name).sort((a, b) => (Number(a.time) || 999) - (Number(b.time) || 999));
     const arenaStays = staysForArena(name);
-    return shell(
-      name,
-      <>
-        <div className="field">
-          <label>Indoor or outdoor</label>
-          <div className="seg denim">
-            {([["outdoor", "Outdoor", "sun"], ["indoor", "Indoor", "building"]] as [ArenaType, string, string][]).map(([v, lbl, ic]) => (
-              <button key={v} className={f.type === v ? "on" : ""} onClick={() => upd<ArenaDetailForm>({ type: v })}>
-                <Icon name={ic} size={15} />
-                {lbl}
-              </button>
-            ))}
-          </div>
+    return shell(name, <>
+      <div className="field">
+        <label>Indoor or outdoor</label>
+        <div className="seg denim">
+          {([["outdoor", "Outdoor", "sun"], ["indoor", "Indoor", "building"]] as [ArenaType, string, string][]).map(([v, lbl, ic]) => (
+            <button key={v} className={f.type === v ? "on" : ""} onClick={() => upd<ArenaDetailForm>({ type: v })}>
+              <Icon name={ic} size={15} />{lbl}
+            </button>
+          ))}
         </div>
-        <div className="field">
-          <label>Times here, fastest first</label>
-          <div className="list" style={{ gap: 8 }}>
-            {here.length === 0 && <div className="muted" style={{ fontSize: 14 }}>No runs logged here yet.</div>}
-            {here.map((r) => (
-              <div key={r.id} className="row between substay">
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 700 }}>{r.event}</div>
-                  <div className="muted" style={{ fontSize: 12 }}>
-                    {fmtDate(r.date)} · {catLabel(r.category)}
-                  </div>
-                </div>
-                <div className="fm" style={{ fontWeight: 700, color: "var(--rust)" }}>
-                  {fmtTime(r.time)}
+      </div>
+      <div className="field">
+        <label>Times here, fastest first</label>
+        <div className="list" style={{ gap: 8 }}>
+          {here.length === 0 && <div className="muted" style={{ fontSize: 14 }}>No runs logged here yet.</div>}
+          {here.map((r) => (
+            <div key={r.id} className="row between substay">
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700 }}>{r.event}</div>
+                <div className="muted" style={{ fontSize: 12 }}>
+                  {fmtDate(r.date)} · {catLabel(r.category)}{r.horse ? ` · ${r.horse}` : ""}
                 </div>
               </div>
-            ))}
-          </div>
+              <div className="fm" style={{ fontWeight: 700, color: "var(--rust)" }}>{fmtTime(r.time)}</div>
+            </div>
+          ))}
         </div>
-        <div className="field">
-          <label>Where we stayed</label>
-          <div className="list" style={{ gap: 8 }}>
-            {arenaStays.length === 0 && (
-              <div className="muted" style={{ fontSize: 14 }}>
-                No stays saved for this arena yet — add one on the Travel screen and pick this arena.
+      </div>
+      <div className="field">
+        <label>Where we stayed</label>
+        <div className="list" style={{ gap: 8 }}>
+          {arenaStays.length === 0 && <div className="muted" style={{ fontSize: 14 }}>No stays saved for this arena yet.</div>}
+          {arenaStays.map((s) => (
+            <div key={s.id} className="substay">
+              <Icon name={s.type === "hotel" ? "hotel" : "tent"} size={15} color="var(--teal)" />
+              <div className="grow">
+                <div style={{ fontSize: 14, fontWeight: 700 }}>{s.name}</div>
+                <div className="muted" style={{ fontSize: 12 }}>{fmtDate(s.startDate)}</div>
               </div>
-            )}
-            {arenaStays.map((s) => (
-              <div key={s.id} className="substay">
-                <Icon name={s.type === "hotel" ? "hotel" : "tent"} size={15} color="var(--teal)" />
-                <div className="grow">
-                  <div style={{ fontSize: 14, fontWeight: 700 }}>{s.name}</div>
-                  <div className="muted" style={{ fontSize: 12 }}>
-                    {fmtDate(s.startDate)}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-        <div className="field">
-          <label>Tips &amp; tricks for this arena</label>
-          <textarea
-            className="inp"
-            style={{ minHeight: 90 }}
-            value={f.note}
-            onChange={(e) => upd<ArenaDetailForm>({ note: e.target.value })}
-            placeholder="e.g. Ground is deep near barrel 3, take it wider..."
-          />
-        </div>
-        <button className="btn-block" style={{ background: "var(--denim)" }} onClick={saveArenaDetail}>
-          Save arena
-        </button>
-      </>
-    );
-  };
+      </div>
+      <div className="field">
+        <label>Tips &amp; tricks for this arena</label>
+        <textarea className="inp" style={{ minHeight: 90 }} value={f.note} onChange={(e) => upd<ArenaDetailForm>({ note: e.target.value })} placeholder="e.g. Ground is deep near barrel 3, take it wider..." />
+      </div>
+      <button className="btn-block" style={{ background: "var(--denim)" }} onClick={saveArenaDetail}>Save arena</button>
+    </>);
+  }
 
   function arenaNewModal() {
     const f = form as ArenaNewForm;
-    return shell(
-      "Add an arena",
-      <>
-        <div className="field">
-          <label>Arena name</label>
-          <input className="inp" value={f.name} onChange={(e) => upd<ArenaNewForm>({ name: e.target.value })} placeholder="e.g. Utah State Fairpark" />
+    return shell("Add an arena", <>
+      <div className="field">
+        <label>Arena name</label>
+        <input className="inp" value={f.name} onChange={(e) => upd<ArenaNewForm>({ name: e.target.value })} placeholder="e.g. Utah State Fairpark" />
+      </div>
+      <div className="field">
+        <label>Indoor or outdoor</label>
+        <div className="seg denim">
+          {([["outdoor", "Outdoor", "sun"], ["indoor", "Indoor", "building"]] as [ArenaType, string, string][]).map(([v, lbl, ic]) => (
+            <button key={v} className={f.type === v ? "on" : ""} onClick={() => upd<ArenaNewForm>({ type: v })}>
+              <Icon name={ic} size={15} />{lbl}
+            </button>
+          ))}
         </div>
-        <div className="field">
-          <label>Indoor or outdoor</label>
-          <div className="seg denim">
-            {([["outdoor", "Outdoor", "sun"], ["indoor", "Indoor", "building"]] as [ArenaType, string, string][]).map(([v, lbl, ic]) => (
-              <button key={v} className={f.type === v ? "on" : ""} onClick={() => upd<ArenaNewForm>({ type: v })}>
-                <Icon name={ic} size={15} />
-                {lbl}
-              </button>
-            ))}
-          </div>
-        </div>
-        <button className="btn-block" style={{ background: "var(--denim)" }} onClick={addArena}>
-          Add arena
-        </button>
-      </>
-    );
-  };
+      </div>
+      <button className="btn-block" style={{ background: "var(--denim)" }} onClick={addArena}>Add arena</button>
+    </>);
+  }
 
   function travelModal() {
     const f = form as StayForm;
@@ -1017,8 +1032,7 @@ export default function RodeoApp({
           <div className="seg teal">
             {(["hotel", "campground"] as StayType[]).map((o) => (
               <button key={o} className={f.type === o ? "on" : ""} style={{ textTransform: "capitalize" }} onClick={() => upd<StayForm>({ type: o })}>
-                <Icon name={o === "hotel" ? "hotel" : "tent"} size={15} />
-                {o}
+                <Icon name={o === "hotel" ? "hotel" : "tent"} size={15} />{o}
               </button>
             ))}
           </div>
@@ -1031,11 +1045,7 @@ export default function RodeoApp({
           <label>Arena this stay was for</label>
           <select className="inp" value={f.arena} onChange={(e) => upd<StayForm>({ arena: e.target.value })}>
             <option value="">— none —</option>
-            {arenas.map((a) => (
-              <option key={a} value={a}>
-                {a}
-              </option>
-            ))}
+            {arenas.map((a) => <option key={a} value={a}>{a}</option>)}
           </select>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -1061,18 +1071,15 @@ export default function RodeoApp({
         <div className="field">
           <label>ADA accessible room</label>
           <button className={"toggle" + (f.ada ? " on" : "")} onClick={() => upd<StayForm>({ ada: !f.ada })}>
-            <Icon name="accessibility" size={16} />
-            {f.ada ? "Yes" : "No"}
+            <Icon name="accessibility" size={16} />{f.ada ? "Yes" : "No"}
           </button>
         </div>
         <div className="field">
           <label>Notes</label>
           <textarea className="inp" value={f.notes} onChange={(e) => upd<StayForm>({ notes: e.target.value })} placeholder="Pet-friendly, close to arena, noisy AC..." />
         </div>
-        <button className="btn-block" style={{ background: "var(--teal)" }} onClick={saveStay}>
-          Save stay
-        </button>
+        <button className="btn-block" style={{ background: "var(--teal)" }} onClick={saveStay}>Save stay</button>
       </>
     );
-  };
+  }
 }
