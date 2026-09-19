@@ -1,165 +1,47 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Consulting | Foundations & Horizons",
+  title: "How We Help | Foundations & Horizons",
+  description: "A listening-first approach to helping nonprofits strengthen operations, leadership, systems, and capacity.",
 };
 
-const services = [
-  {
-    title: "Strategic Planning Facilitation",
-    idealFor: "Leadership teams that lack clarity on vision, direction, or measurable goals.",
-    timeline: "4–6 weeks",
-    accent: "#2a3db4",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-      </svg>
-    ),
-    deliverables: [
-      "Facilitation of 1–2 planning sessions",
-      "A 12–18 month strategic plan",
-      "Clear objectives, key results, and timeline",
-      "Stakeholder input summary (if applicable)",
-    ],
-  },
-  {
-    title: "Leadership & OKR Alignment",
-    idealFor: "Nonprofit leadership teams that need to unify around shared goals and ensure strategy translates into measurable results.",
-    timeline: "4–6 weeks",
-    accent: "#1e3a8a",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    deliverables: [
-      "Facilitated leadership alignment sessions",
-      "Organizational OKRs for the next 12–18 months",
-      "Role clarity mapping (who owns what)",
-      "Leadership accountability framework",
-      "90-day action plan with quarterly OKR review",
-    ],
-  },
-  {
-    title: "Program Operations Scaling",
-    idealFor: "Organizations preparing to expand a program's reach, funding, or geographic footprint.",
-    timeline: "4–6 weeks",
-    accent: "#1d4ed8",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-      </svg>
-    ),
-    deliverables: [
-      "Infrastructure and staffing review",
-      "Efficiency improvements and bottleneck reduction",
-      "Capacity and scalability planning",
-      "Custom growth action plan",
-    ],
-  },
-  {
-    title: "Operational Assessment & Optimization",
-    idealFor: "Nonprofits that are disorganized, growing quickly, or struggling with internal inefficiencies.",
-    timeline: "3–4 weeks",
-    accent: "#1e40af",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-      </svg>
-    ),
-    deliverables: [
-      "Full audit of current workflows and systems",
-      "Gap analysis and inefficiency identification",
-      "30–60-day implementation roadmap",
-    ],
-  },
+const examples = [
+  { title: "Operational clarity", text: "Understand how work actually moves through the organization, where it gets stuck, and what needs to change first." },
+  { title: "Systems & process design", text: "Turn informal, fragile, or person-dependent work into clear processes people can understand, use, own, and improve." },
+  { title: "Leadership & alignment", text: "Create clearer priorities, roles, goals, and decision-making so leadership can move together." },
+  { title: "Program operations", text: "Strengthen the infrastructure behind programs so growth does not simply multiply the chaos underneath them." },
+  { title: "Capacity & sustainability", text: "Look honestly at what the organization is carrying and redesign work before the people carrying it break." },
+  { title: "Implementation", text: "When the answer is known, help turn the plan into something real — with practical tools, documentation, training, and follow-through." },
 ];
 
 export default function ServicesPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-[#2a3db4] text-white py-20 px-4 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">Consulting</h1>
-          <p className="text-blue-100 text-lg leading-relaxed">
-            Built around your organization&apos;s actual challenges — not a generic playbook applied the same way to every client.
+      <section className="bg-[#16265f] text-white py-24 px-4">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-200 mb-5">How We Help</p>
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">Start with the organization. Not a package.</h1>
+          <p className="text-blue-100 text-lg md:text-xl leading-relaxed max-w-3xl">
+            There is no universal nonprofit operating model. We listen first, understand what is actually happening, and then determine which combination of ideas, services, education, and tools will help.
           </p>
         </div>
       </section>
 
-      {/* Problem intro */}
-      <section className="py-14 px-4 bg-white border-b border-gray-100">
+      <section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
-          <p className="text-sm font-semibold tracking-widest text-[#2a3db4] uppercase mb-3 text-center">Who This Is For</p>
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Nonprofits That Are Ready to Stop Reacting and Start Building</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">The Process</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Listen. Understand. Build.</h2>
+          <div className="space-y-8">
             {[
-              { problem: "You&apos;re growing but the systems can&apos;t keep up.", solution: "Program Operations Scaling" },
-              { problem: "Leadership isn&apos;t aligned on goals or priorities.", solution: "Leadership & OKR Alignment" },
-              { problem: "You don&apos;t have a clear plan — or the one you have isn&apos;t driving decisions.", solution: "Strategic Planning Facilitation" },
-              { problem: "Internal processes are inconsistent or breaking down.", solution: "Operational Assessment & Optimization" },
-              { problem: "Your team is burning out and you don&apos;t know where to start.", solution: "Operational Assessment & Optimization" },
-              { problem: "You want to grow but don&apos;t know what needs to change first.", solution: "Strategic Planning Facilitation" },
-            ].map((item) => (
-              <div key={item.problem} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                <div className="w-2 h-2 rounded-full bg-[#2a3db4] shrink-0 mt-2" />
-                <p className="text-gray-700 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: item.problem }} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((s) => (
-              <div
-                key={s.title}
-                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden group border border-gray-100 hover:border-blue-200"
-              >
-                {/* Accent bar */}
-                <div className="h-1.5 w-full" style={{ backgroundColor: s.accent }} />
-
-                <div className="p-8">
-                  {/* Icon + Title + Timeline */}
-                  <div className="flex items-start justify-between mb-5">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="p-2.5 rounded-lg text-white shrink-0"
-                        style={{ backgroundColor: s.accent }}
-                      >
-                        {s.icon}
-                      </div>
-                      <h2 className="text-lg font-bold text-gray-900 leading-snug">{s.title}</h2>
-                    </div>
-                    <span className="ml-4 shrink-0 text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full whitespace-nowrap">
-                      {s.timeline}
-                    </span>
-                  </div>
-
-                  {/* Ideal For */}
-                  <div className="bg-blue-50 border-l-4 border-[#2a3db4] rounded-r-lg px-4 py-3 mb-6">
-                    <p className="text-xs font-semibold text-[#2a3db4] uppercase tracking-wide mb-1">Ideal For</p>
-                    <p className="text-gray-700 text-sm leading-relaxed">{s.idealFor}</p>
-                  </div>
-
-                  {/* Deliverables */}
-                  <div>
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">What You Get</p>
-                    <ul className="space-y-2">
-                      {s.deliverables.map((d) => (
-                        <li key={d} className="flex items-start gap-2.5 text-sm text-gray-700">
-                          <svg className="w-4 h-4 mt-0.5 shrink-0 text-[#2a3db4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                          </svg>
-                          {d}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              ["01", "Listen", "Tell us what is happening. What works, what does not, what your team is carrying, and what you want the organization to be able to do."],
+              ["02", "Understand", "We map the system behind the symptoms — programs, people, workflows, capacity, handoffs, information, and decisions."],
+              ["03", "Build", "Only after we understand the problem do we decide what belongs in the toolbox: a clearer process, leadership work, training, a practical resource, technology, or some combination."],
+            ].map(([number, title, text]) => (
+              <div key={number} className="grid grid-cols-[56px_1fr] gap-5 items-start">
+                <div className="w-14 h-14 bg-[#2a3db4] text-white flex items-center justify-center font-bold">{number}</div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{text}</p>
                 </div>
               </div>
             ))}
@@ -167,19 +49,32 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 px-4 bg-[#2a3db4] text-white text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold mb-4">Not sure which service is right for you?</h2>
-          <p className="text-blue-100 mb-8 text-lg">
-            Let&apos;s have a conversation. We&apos;ll help you identify where to start.
+      <section className="py-20 px-4 bg-gray-50 border-y border-gray-100">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">What That Can Look Like</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">The toolbox changes with the problem.</h2>
+            <p className="text-gray-600">These are examples of the work. They are not rigid packages.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {examples.map((item) => (
+              <div key={item.title} className="bg-white border border-gray-200 p-7">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-5">The goal is not better operations for their own sake.</h2>
+          <p className="text-lg text-gray-600 leading-relaxed mb-8">
+            Operations are the baseline. The point of strengthening them is to give the people and programs inside the organization a stronger platform from which to carry out the mission.
           </p>
-          <Link
-            href="/contact"
-            className="inline-block bg-white text-[#2a3db4] font-bold px-10 py-4 rounded hover:bg-blue-50 transition-colors"
-          >
-            Schedule a Strategy Call
-          </Link>
+          <p className="text-2xl font-semibold text-[#2a3db4] mb-8">Systems, not heroics.</p>
+          <Link href="/contact" className="inline-block bg-[#2a3db4] text-white px-9 py-4 font-semibold hover:bg-[#1e2e8a]">Start with a Conversation</Link>
         </div>
       </section>
     </>
