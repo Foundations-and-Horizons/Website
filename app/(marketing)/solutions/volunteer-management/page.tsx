@@ -1,78 +1,20 @@
 import Link from "next/link";
 
-export const metadata = {
-  title: "FoundationWorks Volunteers | Foundations & Horizons",
-  description: "A customizable volunteer-management tool designed around how nonprofit volunteer programs actually work.",
-};
+export const metadata = { title: "FoundationWorks Volunteers | See What Your Volunteer Program Could Feel Like", description: "Explore a volunteer-management approach built around nonprofit workflows, volunteer self-service, visibility, and recognition." };
 
-const features = [
-  ["Volunteer profiles & roles", "Keep volunteer information, roles, participation, and history organized in one place."],
-  ["Scheduling & sign-up", "Give volunteers an easier way to find opportunities and sign up while reducing administrative work."],
-  ["Self-service participation", "Shift routine updates and participation tasks toward volunteers themselves where it makes sense."],
-  ["Hours & reporting", "Capture service activity and produce useful reports without rebuilding spreadsheets every month."],
-  ["Recognition & milestones", "Make contributions visible so recognition becomes a repeatable part of the volunteer program."],
-  ["Program visibility", "Give volunteer leaders a clearer view of participation, capacity, and what needs attention."],
+const features=[
+["Self-service that actually helps","Let volunteers find opportunities, sign up, manage participation, and keep routine information current without staff acting as the middleman."],
+["A clearer day for managers","See participation, schedules, activity, and what needs attention without assembling the story from inboxes and spreadsheets."],
+["Recognition built into the work","Surface hours, milestones, consistency, and contribution so appreciation does not depend on somebody remembering later."],
+["Information in one useful place","Keep the volunteer record connected to roles, participation, history, and the information your program actually needs."],
+["Workflows that match the program","The system should reflect how your nonprofit organizes people and opportunities—not somebody else's assumptions."],
+["Reporting without rebuilding it","Turn activity into usable operational information instead of reconstructing reports every time someone asks a question."]
 ];
 
-export default function VolunteerManagementPage() {
-  return (
-    <>
-      <section className="bg-[#16265f] text-white py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-200 mb-5">A FoundationWorks Tool</p>
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">Volunteer management without making volunteers harder to manage.</h1>
-          <p className="text-blue-100 text-lg md:text-xl leading-relaxed max-w-3xl mb-9">
-            FoundationWorks Volunteers is a customizable system designed to make volunteer programs easier to run, easier for volunteers to participate in, and easier for nonprofit leaders to understand.
-          </p>
-          <Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold hover:bg-blue-50">Talk Through Your Volunteer Program</Link>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <div className="max-w-3xl mb-12">
-            <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">Built Around the Work</p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">The point is not more features. The point is less friction.</h2>
-            <p className="text-gray-600 text-lg leading-relaxed">The system starts with how your volunteer program actually operates. Then we configure the right pieces around your roles, workflows, participation model, reporting needs, and recognition practices.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map(([title, text]) => (
-              <div key={title} className="border border-gray-200 p-7">
-                <h3 className="font-bold text-gray-900 mb-3">{title}</h3>
-                <p className="text-gray-600 leading-relaxed">{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-gray-50 border-y border-gray-100">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">How It Starts</p>
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">We do not start with the software.</h2>
-          <div className="space-y-7">
-            {[
-              ["Listen", "Understand your volunteers, staff, current tools, pain points, and goals."],
-              ["Design", "Determine what the system actually needs to do and what should stay out of it."],
-              ["Build", "Configure the system around your organization rather than asking your organization to conform to the system."],
-              ["Train & hand over", "Get your team comfortable using it and keep ownership with the nonprofit."],
-            ].map(([title, text], i) => (
-              <div key={title} className="grid grid-cols-[44px_1fr] gap-4">
-                <div className="w-11 h-11 bg-[#2a3db4] text-white flex items-center justify-center font-bold">{i + 1}</div>
-                <div><h3 className="font-bold text-gray-900 mb-1">{title}</h3><p className="text-gray-600 leading-relaxed">{text}</p></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 px-4 bg-[#2a3db4] text-white text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">Is volunteer management becoming a bottleneck?</h2>
-          <p className="text-blue-100 mb-8">Tell us how your program works today. We&apos;ll start by listening.</p>
-          <Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold hover:bg-blue-50">Start a Conversation</Link>
-        </div>
-      </section>
-    </>
-  );
-}
+export default function VolunteerManagementPage(){return <>
+<section className="bg-[#101d4b] text-white py-28 px-5"><div className="max-w-7xl mx-auto"><p className="uppercase tracking-[.2em] text-blue-200 text-sm font-semibold mb-5">FoundationWorks Volunteers</p><h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.02] max-w-5xl mb-7">Imagine a volunteer program that doesn't need staff to hold every piece together.</h1><p className="text-xl md:text-2xl text-blue-100 max-w-3xl leading-relaxed mb-10">Give volunteers more ownership. Give managers more visibility. Build recognition into the system. Reduce the administrative work between people and the mission.</p><div className="flex flex-col sm:flex-row gap-4"><Link href="/Volunteer-demo" className="bg-white text-[#2a3db4] px-8 py-4 font-semibold text-center">Try the Volunteer Demo</Link><Link href="/contact" className="border border-white/60 px-8 py-4 font-semibold text-center">Talk About Your Program</Link></div></div></section>
+<section className="py-24 px-5 bg-white"><div className="max-w-7xl mx-auto"><div className="max-w-4xl mb-14"><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">Picture the Difference</p><h2 className="text-4xl md:text-6xl font-bold text-gray-950 mb-6">Less chasing. More participation.</h2><p className="text-xl text-gray-600">A good volunteer system should make life easier on both sides of the relationship.</p></div><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">{features.map(([t,d])=><div key={t} className="p-8 border border-gray-200 bg-gray-50 hover:-translate-y-1 hover:shadow-lg transition-all"><div className="text-[#2a3db4] text-2xl mb-7">↗</div><h3 className="text-2xl font-bold text-gray-950 mb-3">{t}</h3><p className="text-gray-600 leading-relaxed">{d}</p></div>)}</div></div></section>
+<section className="py-24 px-5 bg-[#eef2ff]"><div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-center"><div><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">Don't Just Read About It</p><h2 className="text-4xl md:text-5xl font-bold text-gray-950 mb-6">Click around. Imagine your people in it.</h2><p className="text-xl text-gray-600 leading-relaxed mb-5">The demo is intentionally a generalized nonprofit experience. It is there to help you feel what volunteer self-service, clearer management, and built-in recognition can look like.</p><p className="text-xl font-semibold text-gray-900 mb-8">Then imagine what we could shape around your organization.</p><Link href="/Volunteer-demo" className="inline-block bg-[#2a3db4] text-white px-9 py-4 font-semibold">Enter the Demo →</Link></div><div className="bg-white border border-blue-100 shadow-xl p-8"><p className="text-sm uppercase tracking-[.18em] text-[#2a3db4] mb-6">While You're Exploring, Ask Yourself</p><div className="space-y-5">{["What could volunteers handle themselves?","What are staff repeatedly doing by hand?","What information do managers wish they could see instantly?","Where does recognition currently fall through the cracks?","What would we change if this were built around us?"].map((x,i)=><div key={x} className="flex gap-4"><span className="text-[#2a3db4] font-bold">0{i+1}</span><p className="text-lg font-semibold text-gray-900">{x}</p></div>)}</div></div></div></section>
+<section className="py-24 px-5 bg-white"><div className="max-w-5xl mx-auto"><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">Not a One-Size-Fits-All Product</p><h2 className="text-4xl md:text-5xl font-bold text-gray-950 mb-10">Your version starts with your operation.</h2><div className="grid md:grid-cols-4 gap-6">{[["1","Listen","Volunteers, staff, pain points, goals, and the work as it really happens."],["2","Design","Decide what the system needs to do—and what it does not."],["3","Build","Shape the experience around your workflows and priorities."],["4","Equip","Train the team and make the system something people can actually own."]].map(([n,t,d])=><div key={n}><div className="h-12 w-12 bg-[#2a3db4] text-white flex items-center justify-center font-bold mb-5">{n}</div><h3 className="text-xl font-bold mb-2">{t}</h3><p className="text-gray-600 leading-relaxed">{d}</p></div>)}</div></div></section>
+<section className="py-24 px-5 bg-[#2a3db4] text-white text-center"><div className="max-w-3xl mx-auto"><h2 className="text-4xl md:text-5xl font-bold mb-6">What would this look like for your nonprofit?</h2><p className="text-xl text-blue-100 mb-9">You don't need a feature list. Tell us where volunteer management is creating friction, and we'll start there.</p><Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold">Start a Conversation</Link></div></section>
+</>}
