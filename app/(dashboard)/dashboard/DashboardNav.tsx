@@ -6,14 +6,15 @@ import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/dashboard", label: "Command Center", mark: "01", exact: true },
-  { href: "/dashboard/inquiries", label: "Inquiries", mark: "02" },
-  { href: "/dashboard/tasks", label: "Work Queue", mark: "03" },
-  { href: "/dashboard/deals", label: "Relationships", mark: "04" },
-  { href: "/dashboard/companies", label: "Organizations", mark: "05" },
-  { href: "/dashboard/contacts", label: "People", mark: "06" },
-  { href: "/dashboard/linkedin", label: "Visibility", mark: "07" },
-  { href: "/dashboard/books", label: "Book", mark: "08" },
-  { href: "/dashboard/finance", label: "Business Health", mark: "09" },
+  { href: "/dashboard/prospecting", label: "Prospecting", mark: "02" },
+  { href: "/dashboard/inquiries", label: "Inquiries", mark: "03" },
+  { href: "/dashboard/tasks", label: "Work Queue", mark: "04" },
+  { href: "/dashboard/deals", label: "Relationships", mark: "05" },
+  { href: "/dashboard/companies", label: "Organizations", mark: "06" },
+  { href: "/dashboard/contacts", label: "People", mark: "07" },
+  { href: "/dashboard/linkedin", label: "Visibility", mark: "08" },
+  { href: "/dashboard/books", label: "Book", mark: "09" },
+  { href: "/dashboard/finance", label: "Business Health", mark: "10" },
 ];
 
 export default function DashboardNav() {
