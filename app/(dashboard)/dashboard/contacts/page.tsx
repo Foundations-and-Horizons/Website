@@ -91,11 +91,11 @@ export default function ContactsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Contacts 👤</h1>
-          <p className="text-sm text-gray-400">The people behind every opportunity.</p>
+          <h1 className="text-2xl font-bold text-gray-900">People</h1>
+          <p className="text-sm text-gray-400">The relationships behind every opportunity.</p>
         </div>
-        <button onClick={openNew} className="bg-[#2a3db4] text-white text-sm px-5 py-2.5 rounded-lg hover:bg-[#1e2d8a] font-medium shadow transition-colors">
-          + Add Contact
+        <button onClick={openNew} className="bg-[#2448d8] text-white text-sm px-5 py-2.5 rounded-lg hover:bg-[#10213f] font-medium shadow transition-colors">
+          + Add Person
         </button>
       </div>
 
@@ -107,7 +107,7 @@ export default function ContactsPage() {
         </div>
         {(["A", "B", "C"] as const).map((tier) => (
           <button key={tier} onClick={() => setTierFilter(tierFilter === tier ? "" : tier)}
-            className={`rounded-xl border shadow-sm p-4 text-left transition-all ${tierFilter === tier ? "ring-2 ring-[#2a3db4]" : ""} ${tier === "A" ? "bg-green-50 border-green-200" : tier === "B" ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-200"}`}>
+            className={`rounded-xl border shadow-sm p-4 text-left transition-all ${tierFilter === tier ? "ring-2 ring-[#2448d8]" : ""} ${tier === "A" ? "bg-green-50 border-green-200" : tier === "B" ? "bg-blue-50 border-blue-200" : "bg-[#fcfbf8] border-gray-200"}`}>
             <p className={`text-xs font-semibold uppercase tracking-wide ${tier === "A" ? "text-green-600" : tier === "B" ? "text-blue-600" : "text-gray-500"}`}>Tier {tier}</p>
             <p className={`text-2xl font-bold mt-1 ${tier === "A" ? "text-green-700" : tier === "B" ? "text-blue-700" : "text-gray-700"}`}>{tierCounts[tier]}</p>
           </button>
@@ -118,13 +118,13 @@ export default function ContactsPage() {
       <div className="mb-4">
         <input value={search} onChange={(e) => setSearch(e.target.value)}
           placeholder="Search contacts by name, email, or company..."
-          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
       </div>
 
       {/* Table */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-xs text-gray-400 uppercase tracking-wide">
+          <thead className="bg-[#fcfbf8] text-xs text-gray-400 uppercase tracking-wide">
             <tr>
               <th className="text-left px-5 py-3">Name</th>
               <th className="text-left px-5 py-3">Company</th>
@@ -141,7 +141,7 @@ export default function ContactsPage() {
               </td></tr>
             )}
             {filtered.map((c) => (
-              <tr key={c.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={c.id} className="hover:bg-[#fcfbf8] transition-colors">
                 <td className="px-5 py-3">
                   <p className="font-semibold text-gray-900">{c.full_name}</p>
                   {c.title && <p className="text-xs text-gray-400">{c.title}</p>}
@@ -164,7 +164,7 @@ export default function ContactsPage() {
                     {c.linkedin_url && (
                       <a href={c.linkedin_url} target="_blank" rel="noreferrer" className="text-xs text-blue-500 hover:underline">in</a>
                     )}
-                    <button onClick={() => openEdit(c)} className="text-xs text-gray-400 hover:text-[#2a3db4]">Edit</button>
+                    <button onClick={() => openEdit(c)} className="text-xs text-gray-400 hover:text-[#2448d8]">Edit</button>
                     <button onClick={() => remove(c.id)} className="text-xs text-gray-300 hover:text-red-500">✕</button>
                   </div>
                 </td>
@@ -185,12 +185,12 @@ export default function ContactsPage() {
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">First Name</label>
                   <input value={form.first_name} onChange={(e) => setForm((f) => ({ ...f, first_name: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Last Name</label>
                   <input value={form.last_name} onChange={(e) => setForm((f) => ({ ...f, last_name: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -198,12 +198,12 @@ export default function ContactsPage() {
                   <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Title / Role</label>
                   <input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                     placeholder="Executive Director"
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Company</label>
                   <select value={form.company_id} onChange={(e) => setForm((f) => ({ ...f, company_id: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30">
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30">
                     <option value="">— none —</option>
                     {companies.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
@@ -213,19 +213,19 @@ export default function ContactsPage() {
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Email</label>
                   <input type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Phone</label>
                   <input value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">LinkedIn URL</label>
                 <input value={form.linkedin_url} onChange={(e) => setForm((f) => ({ ...f, linkedin_url: e.target.value }))}
                   placeholder="https://linkedin.com/in/..."
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -233,7 +233,7 @@ export default function ContactsPage() {
                   <div className="flex gap-2">
                     {(["A", "B", "C"] as const).map((t) => (
                       <button key={t} type="button" onClick={() => setForm((f) => ({ ...f, tier: f.tier === t ? "" : t }))}
-                        className={`flex-1 py-2 rounded-lg text-xs font-bold border transition-all ${form.tier === t ? (t === "A" ? "bg-green-500 text-white border-green-500" : t === "B" ? "bg-blue-500 text-white border-blue-500" : "bg-gray-500 text-white border-gray-500") : "border-gray-200 text-gray-500 hover:bg-gray-50"}`}>
+                        className={`flex-1 py-2 rounded-lg text-xs font-bold border transition-all ${form.tier === t ? (t === "A" ? "bg-green-500 text-white border-green-500" : t === "B" ? "bg-blue-500 text-white border-blue-500" : "bg-[#fcfbf8]0 text-white border-gray-500") : "border-gray-200 text-gray-500 hover:bg-[#fcfbf8]"}`}>
                         {t}
                       </button>
                     ))}
@@ -243,25 +243,25 @@ export default function ContactsPage() {
                   <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Source</label>
                   <input value={form.source} onChange={(e) => setForm((f) => ({ ...f, source: e.target.value }))}
                     placeholder="LinkedIn, referral..."
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Fit Notes</label>
                 <input value={form.fit_notes} onChange={(e) => setForm((f) => ({ ...f, fit_notes: e.target.value }))}
                   placeholder="Why they're a good fit..."
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Notes</label>
                 <textarea value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                   rows={3} placeholder="Context, background, history..."
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30 resize-none" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30 resize-none" />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => { setShowForm(false); setSelected(null); }} className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50">Cancel</button>
-              <button onClick={save} disabled={saving} className="flex-1 py-2.5 bg-[#2a3db4] text-white rounded-lg text-sm font-semibold hover:bg-[#1e2d8a] disabled:opacity-50">
+              <button onClick={() => { setShowForm(false); setSelected(null); }} className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-[#fcfbf8]">Cancel</button>
+              <button onClick={save} disabled={saving} className="flex-1 py-2.5 bg-[#2448d8] text-white rounded-lg text-sm font-semibold hover:bg-[#10213f] disabled:opacity-50">
                 {saving ? "Saving…" : selected ? "Update Contact" : "Add Contact"}
               </button>
             </div>
