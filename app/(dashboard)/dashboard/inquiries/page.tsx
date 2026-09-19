@@ -13,6 +13,7 @@ export default function InquiriesPage() {
   const [items, setItems] = useState<Inquiry[]>([]);
   const [selected, setSelected] = useState<Inquiry | null>(null);
   const [filter, setFilter] = useState("open");
+  const [converting, setConverting] = useState(false);
 
   async function load() {
     const { data } = await supabase.from("contact_submissions").select("*").order("created_at", { ascending: false });
@@ -24,6 +25,41 @@ export default function InquiriesPage() {
     await supabase.from("contact_submissions").update({ status, updated_at: new Date().toISOString() }).eq("id", id);
     setSelected((s) => s?.id === id ? { ...s, status } : s);
     load();
+  }
+
+  async function addToRelationships(inquiry: Inquiry) {
+    if (inquiry.status === "converted" || converting) return;
+    setConverting(true);
+    const fullName = `${inquiry.first_name} ${inquiry.last_name}`.trim();
+
+    let contactId: string | null = null;
+    const { data: existing } = await supabase.from("contacts").select("id").eq("email", inquiry.email).maybeSingle();
+    if (existing?.id) {
+      contactId = existing.id;
+    } else {
+      const { data: created } = await supabase.from("contacts").insert({
+        first_name: inquiry.first_name, last_name: inquiry.last_name, full_name: fullName,
+        email: inquiry.email, source: "Website inquiry", fit_notes: inquiry.subject, notes: inquiry.message,
+      }).select("id").single();
+      contactId = created?.id || null;
+    }
+
+    const { data: pipeline } = await supabase.from("pipelines").select("id").eq("key", "fh_relationships").single();
+    if (pipeline?.id) {
+      const { data: stage } = await supabase.from("pipeline_stages").select("id").eq("pipeline_id", pipeline.id).eq("key", "conversation").single();
+      const { data: deal } = await supabase.from("deals").insert({
+        title: `${fullName} — ${inquiry.subject}`, pipeline_id: pipeline.id, stage_id: stage?.id || null,
+        primary_contact_id: contactId, status: "open", next_action: "Reply to website inquiry",
+        next_action_due: new Date().toISOString().split("T")[0], notes: inquiry.message,
+      }).select("id").single();
+      if (deal?.id) await supabase.from("activities").insert({
+        deal_id: deal.id, contact_id: contactId, type: "system",
+        subject: "Website inquiry added to relationships", body: inquiry.subject,
+      });
+    }
+
+    await setStatus(inquiry.id, "converted");
+    setConverting(false);
   }
 
   const visible = items.filter((i) => filter === "all" ? true : filter === "open" ? i.status === "new" || i.status === "reviewed" : i.status === filter);
@@ -63,7 +99,7 @@ export default function InquiriesPage() {
             <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-gray-600">{selected.message}</p>
             <div className="mt-6 grid grid-cols-2 gap-2">
               <a href={`mailto:${selected.email}?subject=${encodeURIComponent("Re: " + selected.subject)}`} className="rounded-xl bg-[#2448d8] px-4 py-3 text-center text-sm font-bold text-white hover:bg-[#10213f]">Reply</a>
-              <button onClick={() => setStatus(selected.id,"converted")} className="rounded-xl border border-[#10213f]/10 px-4 py-3 text-sm font-bold text-[#10213f] hover:bg-[#f7f2e8]">Mark converted</button>
+              <button onClick={() => addToRelationships(selected)} disabled={selected.status === "converted" || converting} className="rounded-xl border border-[#10213f]/10 px-4 py-3 text-sm font-bold text-[#10213f] hover:bg-[#f7f2e8] disabled:opacity-40">{selected.status === "converted" ? "In relationships ✓" : converting ? "Adding…" : "Add to relationships"}</button>
               <button onClick={() => setStatus(selected.id,"reviewed")} className="rounded-xl border border-[#10213f]/10 px-4 py-2 text-xs font-semibold text-gray-500">Keep open</button>
               <button onClick={() => setStatus(selected.id,"closed")} className="rounded-xl border border-[#10213f]/10 px-4 py-2 text-xs font-semibold text-gray-400">Close</button>
             </div>
