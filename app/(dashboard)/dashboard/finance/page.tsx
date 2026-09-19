@@ -14,7 +14,7 @@ type Transaction = {
   created_at: string;
 };
 
-const INCOME_CATEGORIES = ["Consulting fees","Platform deployment fees","Support/retainer fees","Book royalties"];
+const INCOME_CATEGORIES = ["Operations project fees","Workshop fees","Speaking fees","Support/retainer fees","Book royalties","Other income"];
 const EXPENSE_CATEGORIES = ["Software/subscriptions","Hosting/domain","Marketing","Travel/mileage","Professional development","Equipment","Contract labor","Books/printing","Misc"];
 
 function exportCSV(rows: Transaction[]) {
