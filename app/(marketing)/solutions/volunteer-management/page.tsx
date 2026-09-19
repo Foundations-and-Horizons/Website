@@ -2,135 +2,77 @@ import Link from "next/link";
 
 export const metadata = {
   title: "FoundationWorks Volunteers | Foundations & Horizons",
+  description: "A customizable volunteer-management tool designed around how nonprofit volunteer programs actually work.",
 };
 
 const features = [
-  {
-    icon: "📊",
-    title: "Real-Time Impact Dashboard",
-    desc: "See total volunteer hours, estimated dollar value, and FTE equivalents at a glance — automatically calculated every session.",
-  },
-  {
-    icon: "📅",
-    title: "Pack & Event Scheduling",
-    desc: "Schedule packing events, assign roles (Pack Lead, Host, Assistants), and manage open signups with a clean calendar view.",
-  },
-  {
-    icon: "👥",
-    title: "Volunteer Profiles & Tracking",
-    desc: "Track every volunteer's hours, roles, and engagement level. Visual card grid with role badges and activity tiers (Seedling, Rising, Anchor).",
-  },
-  {
-    icon: "🚚",
-    title: "Delivery Management",
-    desc: "Assign drivers and assistants to delivery routes. Track weekly delivery schedules with driver/team pairings.",
-  },
-  {
-    icon: "🏢",
-    title: "Warehouse Operations",
-    desc: "Manage warehouse shifts, inventory packing, and team coordination all from one centralized hub.",
-  },
-  {
-    icon: "📱",
-    title: "Volunteer Self Sign-In",
-    desc: "Volunteers sign themselves in via a public portal — no admin overhead. Hours are logged automatically.",
-  },
-  {
-    icon: "🏆",
-    title: "Milestones & Anniversaries",
-    desc: "Automatically surface volunteer birthdays, service anniversaries, and milestone achievements to recognize your team.",
-  },
-  {
-    icon: "📈",
-    title: "Reports & Analytics",
-    desc: "Full reporting on volunteer activity, hours by time period, and organizational impact — ready to share with your board.",
-  },
+  ["Volunteer profiles & roles", "Keep volunteer information, roles, participation, and history organized in one place."],
+  ["Scheduling & sign-up", "Give volunteers an easier way to find opportunities and sign up while reducing administrative work."],
+  ["Self-service participation", "Shift routine updates and participation tasks toward volunteers themselves where it makes sense."],
+  ["Hours & reporting", "Capture service activity and produce useful reports without rebuilding spreadsheets every month."],
+  ["Recognition & milestones", "Make contributions visible so recognition becomes a repeatable part of the volunteer program."],
+  ["Program visibility", "Give volunteer leaders a clearer view of participation, capacity, and what needs attention."],
 ];
 
 export default function VolunteerManagementPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-[#2a3db4] to-[#1a2a8a] text-white py-24 px-4 text-center">
+      <section className="bg-[#16265f] text-white py-24 px-4">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-200 mb-5">A FoundationWorks Tool</p>
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">Volunteer management without making volunteers harder to manage.</h1>
+          <p className="text-blue-100 text-lg md:text-xl leading-relaxed max-w-3xl mb-9">
+            FoundationWorks Volunteers is a customizable system designed to make volunteer programs easier to run, easier for volunteers to participate in, and easier for nonprofit leaders to understand.
+          </p>
+          <Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold hover:bg-blue-50">Talk Through Your Volunteer Program</Link>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="max-w-3xl mb-12">
+            <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">Built Around the Work</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">The point is not more features. The point is less friction.</h2>
+            <p className="text-gray-600 text-lg leading-relaxed">The system starts with how your volunteer program actually operates. Then we configure the right pieces around your roles, workflows, participation model, reporting needs, and recognition practices.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map(([title, text]) => (
+              <div key={title} className="border border-gray-200 p-7">
+                <h3 className="font-bold text-gray-900 mb-3">{title}</h3>
+                <p className="text-gray-600 leading-relaxed">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-gray-50 border-y border-gray-100">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-block bg-white/10 text-blue-100 text-sm px-4 py-1 rounded-full mb-6 tracking-wide">
-            Custom-Built for Nonprofits
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            FoundationWorks Volunteers
-          </h1>
-          <p className="text-blue-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-            A purpose-built platform that gives your nonprofit complete visibility into volunteer
-            hours, schedules, and impact — so you can run your program with confidence.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block bg-white text-[#2a3db4] px-10 py-4 font-semibold hover:bg-blue-50 transition-colors"
-          >
-            Schedule a Discovery Call →
-          </Link>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20 px-4 bg-white" id="features">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">Everything You Need</h2>
-          <p className="text-center text-gray-500 mb-12 max-w-xl mx-auto">
-            Built from the ground up for food pantries, youth programs, and community nonprofits.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((f) => (
-              <div key={f.title} className="text-center p-4">
-                <div className="text-4xl mb-3">{f.icon}</div>
-                <h3 className="font-semibold text-gray-800 mb-2">{f.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-20 px-4 bg-[#2a3db4] text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Custom-Built for Your Organization</h2>
-          <p className="text-blue-100 text-lg mb-12 max-w-2xl mx-auto">
-            This isn&apos;t off-the-shelf software. Every deployment is configured specifically for
-            how your nonprofit operates.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">How It Starts</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">We do not start with the software.</h2>
+          <div className="space-y-7">
             {[
-              { step: "1", title: "Discovery Call", desc: "We learn how your volunteer program works — roles, schedules, reporting needs." },
-              { step: "2", title: "Custom Setup", desc: "We configure the platform to match your organization's structure and branding." },
-              { step: "3", title: "Go Live + Support", desc: "Your team is onboarded and supported as you launch." },
-            ].map((s) => (
-              <div key={s.step} className="bg-white/10 rounded-lg p-6">
-                <div className="text-3xl font-bold text-blue-200 mb-3">{s.step}</div>
-                <h3 className="text-lg font-semibold mb-2">{s.title}</h3>
-                <p className="text-blue-100 text-sm">{s.desc}</p>
+              ["Listen", "Understand your volunteers, staff, current tools, pain points, and goals."],
+              ["Design", "Determine what the system actually needs to do and what should stay out of it."],
+              ["Build", "Configure the system around your organization rather than asking your organization to conform to the system."],
+              ["Train & hand over", "Get your team comfortable using it and keep ownership with the nonprofit."],
+            ].map(([title, text], i) => (
+              <div key={title} className="grid grid-cols-[44px_1fr] gap-4">
+                <div className="w-11 h-11 bg-[#2a3db4] text-white flex items-center justify-center font-bold">{i + 1}</div>
+                <div><h3 className="font-bold text-gray-900 mb-1">{title}</h3><p className="text-gray-600 leading-relaxed">{text}</p></div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-14 px-4 bg-[#2a3db4] text-white text-center">
+      <section className="py-16 px-4 bg-[#2a3db4] text-white text-center">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">Ready to See It in Action?</h2>
-          <p className="text-blue-100 mb-8 text-lg">
-            Schedule a discovery call and we'll walk you through exactly how FoundationWorks Volunteers would work for your organization.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block bg-white text-[#2a3db4] font-bold px-10 py-4 rounded hover:bg-blue-50 transition-colors text-lg"
-          >
-            Schedule a Discovery Call →
-          </Link>
+          <h2 className="text-3xl font-bold mb-4">Is volunteer management becoming a bottleneck?</h2>
+          <p className="text-blue-100 mb-8">Tell us how your program works today. We&apos;ll start by listening.</p>
+          <Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold hover:bg-blue-50">Start a Conversation</Link>
         </div>
       </section>
-
     </>
   );
 }
