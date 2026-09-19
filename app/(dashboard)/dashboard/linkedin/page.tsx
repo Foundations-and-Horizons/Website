@@ -22,7 +22,7 @@ const TAG_COLORS: Record<string, string> = {
 function tagColor(tag: string | null) {
   if (!tag) return "border-gray-200";
   const key = Object.keys(TAG_COLORS).find((k) => tag.toLowerCase().includes(k));
-  return key ? TAG_COLORS[key] : "border-[#2a3db4]";
+  return key ? TAG_COLORS[key] : "border-[#2448d8]";
 }
 
 function startOfWeek() {
@@ -63,7 +63,7 @@ function WeeklyRing({ count, goal = 3 }: { count: number; goal?: number }) {
   const circ = 2 * Math.PI * r;
   const fill = Math.min(count / goal, 1);
   const dash = circ * fill;
-  const color = count >= goal ? "#16a34a" : count >= 2 ? "#2a3db4" : count >= 1 ? "#f59e0b" : "#e5e7eb";
+  const color = count >= goal ? "#16a34a" : count >= 2 ? "#2448d8" : count >= 1 ? "#f59e0b" : "#e5e7eb";
   return (
     <svg width={72} height={72} viewBox="0 0 72 72">
       <circle cx={36} cy={36} r={r} fill="none" stroke="#f3f4f6" strokeWidth={7} />
@@ -83,7 +83,7 @@ const COLUMNS = [
   { status: "posted" as const, label: "Live", emoji: "🚀", bg: "bg-green-50", border: "border-green-200", header: "text-green-700" },
 ];
 
-export default function LinkedInPage() {
+export default function VisibilityPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [editing, setEditing] = useState<Post | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -161,7 +161,7 @@ export default function LinkedInPage() {
         </div>
         <button
           onClick={() => { setEditing(null); setShowForm(true); }}
-          className="bg-[#2a3db4] text-white text-sm px-5 py-2.5 rounded-lg hover:bg-[#1e2d8a] transition-colors font-medium shadow"
+          className="bg-[#2448d8] text-white text-sm px-5 py-2.5 rounded-lg hover:bg-[#10213f] transition-colors font-medium shadow"
         >
           + Capture Idea
         </button>
@@ -228,7 +228,7 @@ export default function LinkedInPage() {
                 {colPosts.map((post) => (
                   <div
                     key={post.id}
-                    className={`bg-white rounded-xl shadow-sm hover:shadow-md transition-all border-l-4 ${tagColor(post.topic_tag)} p-4 group`}
+                    className={`bg-white rounded-2xl shadow-sm hover:shadow-md transition-all border-l-4 ${tagColor(post.topic_tag)} p-4 group`}
                   >
                     {post.topic_tag && (
                       <span className="text-xs font-semibold bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 mb-2 inline-block">
@@ -249,7 +249,7 @@ export default function LinkedInPage() {
                       {post.draft_text && (
                         <button
                           onClick={() => copyText(post.id, post.draft_text!)}
-                          className="text-xs border border-gray-200 rounded-lg px-2.5 py-1 hover:bg-gray-50 transition-colors"
+                          className="text-xs border border-gray-200 rounded-lg px-2.5 py-1 hover:bg-[#fcfbf8] transition-colors"
                         >
                           {copied === post.id ? "✅ Copied!" : "📋 Copy"}
                         </button>
@@ -268,7 +268,7 @@ export default function LinkedInPage() {
                       )}
                       <button
                         onClick={() => { setEditing(post); setShowForm(true); }}
-                        className="text-xs text-gray-400 hover:text-[#2a3db4] transition-colors ml-auto"
+                        className="text-xs text-gray-400 hover:text-[#2448d8] transition-colors ml-auto"
                       >
                         Edit
                       </button>
@@ -324,7 +324,7 @@ function PostForm({ post, onSave, onClose }: {
                   onClick={() => setForm((f) => ({ ...f, status: s }))}
                   className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
                     form.status === s
-                      ? "bg-[#2a3db4] text-white border-[#2a3db4]"
+                      ? "bg-[#2448d8] text-white border-[#2448d8]"
                       : "border-gray-200 text-gray-500 hover:border-gray-300"
                   }`}
                 >
@@ -339,7 +339,7 @@ function PostForm({ post, onSave, onClose }: {
               value={form.topic_tag}
               onChange={(e) => setForm((f) => ({ ...f, topic_tag: e.target.value }))}
               placeholder="e.g. operations, leadership, book, strategy"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30"
             />
           </div>
           <div>
@@ -352,7 +352,7 @@ function PostForm({ post, onSave, onClose }: {
               onChange={(e) => setForm((f) => ({ ...f, draft_text: e.target.value }))}
               rows={7}
               placeholder="Write your post here..."
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30 resize-none"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30 resize-none"
             />
           </div>
           {form.status === "posted" && (
@@ -362,18 +362,18 @@ function PostForm({ post, onSave, onClose }: {
                 type="date"
                 value={form.posted_date}
                 onChange={(e) => setForm((f) => ({ ...f, posted_date: e.target.value }))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30"
               />
             </div>
           )}
         </div>
         <div className="flex gap-3 mt-6">
-          <button onClick={onClose} className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+          <button onClick={onClose} className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-[#fcfbf8]">
             Cancel
           </button>
           <button
             onClick={() => onSave(post ? { ...form, id: post.id } : form)}
-            className="flex-1 py-2.5 bg-[#2a3db4] text-white rounded-lg text-sm font-semibold hover:bg-[#1e2d8a]"
+            className="flex-1 py-2.5 bg-[#2448d8] text-white rounded-lg text-sm font-semibold hover:bg-[#10213f]"
           >
             Save
           </button>
