@@ -127,7 +127,7 @@ export default function ContactsPage() {
           <thead className="bg-[#fcfbf8] text-xs text-gray-400 uppercase tracking-wide">
             <tr>
               <th className="text-left px-5 py-3">Name</th>
-              <th className="text-left px-5 py-3">Company</th>
+              <th className="text-left px-5 py-3">Organization</th>
               <th className="text-left px-5 py-3">Contact</th>
               <th className="text-left px-5 py-3">Tier</th>
               <th className="text-left px-5 py-3">Source</th>
@@ -178,8 +178,8 @@ export default function ContactsPage() {
       {showForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-lg font-bold mb-1">{selected ? "Edit Contact" : "Add Contact"} 👤</h2>
-            <p className="text-sm text-gray-400 mb-5">People move opportunities forward.</p>
+            <h2 className="text-lg font-bold mb-1">{selected ? "Edit Person" : "Add Person"}</h2>
+            <p className="text-sm text-gray-400 mb-5">Relationships move the work forward.</p>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -201,7 +201,7 @@ export default function ContactsPage() {
                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Company</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Organization</label>
                   <select value={form.company_id} onChange={(e) => setForm((f) => ({ ...f, company_id: e.target.value }))}
                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30">
                     <option value="">— none —</option>
