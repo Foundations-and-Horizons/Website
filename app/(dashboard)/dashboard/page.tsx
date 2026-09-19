@@ -268,7 +268,7 @@ export default async function DashboardHome() {
               <span>📋</span>
               <div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-[#2448d8]">Assistant Queue</p><h2 className="text-sm font-bold text-gray-800">Work already on the radar</h2></div>
             </div>
-            <span className="text-xs bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 font-medium">{openTasks?.length || 0} open</span>
+            <Link href="/dashboard/tasks" className="text-xs bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 font-medium hover:bg-[#f7f2e8]">{openTasks?.length || 0} open →</Link>
           </div>
           {todayTasks.length > 0 && (
             <div className="mb-3">
@@ -326,7 +326,7 @@ export default async function DashboardHome() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Move the business</p>
         <div className="flex flex-wrap gap-2">
-          <Link href="/dashboard/deals" className="flex items-center gap-2 bg-[#2448d8] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#10213f] font-medium transition-colors">
+          <Link href="/dashboard/tasks" className="flex items-center gap-2 bg-[#10213f] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#2448d8] font-medium transition-colors">\n            ✓ Work Queue\n          </Link>\n          <Link href="/dashboard/deals" className="flex items-center gap-2 bg-[#2448d8] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#10213f] font-medium transition-colors">
             🎯 Relationship Pipeline
           </Link>
           <Link href="/dashboard/contacts" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
