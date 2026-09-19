@@ -57,7 +57,7 @@ export default function CompaniesPage() {
   }
 
   async function remove(id: string) {
-    if (!confirm("Delete this company? All linked contacts and deals will be unlinked.")) return;
+    if (!confirm("Delete this organization? Linked people and opportunities will be unlinked.")) return;
     await supabase.from("companies").delete().eq("id", id);
     load();
   }
@@ -107,7 +107,7 @@ export default function CompaniesPage() {
         <table className="w-full text-sm">
           <thead className="bg-[#fcfbf8] text-xs text-gray-400 uppercase tracking-wide">
             <tr>
-              <th className="text-left px-5 py-3">Company</th>
+              <th className="text-left px-5 py-3">Organization</th>
               <th className="text-left px-5 py-3">Industry</th>
               <th className="text-left px-5 py-3">Location</th>
               <th className="text-left px-5 py-3">Contacts</th>
@@ -151,13 +151,13 @@ export default function CompaniesPage() {
       {showForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
-            <h2 className="text-lg font-bold mb-1">{selected ? "Edit Company" : "Add Company"} 🏢</h2>
-            <p className="text-sm text-gray-400 mb-5">Build your organization network.</p>
+            <h2 className="text-lg font-bold mb-1">{selected ? "Edit Organization" : "Add Organization"}</h2>
+            <p className="text-sm text-gray-400 mb-5">Keep the organizations around F&H clear and useful.</p>
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Name *</label>
                 <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                  placeholder="Acme Corporation"
+                  placeholder="Organization name"
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -204,7 +204,7 @@ export default function CompaniesPage() {
             <div className="flex gap-3 mt-6">
               <button onClick={() => { setShowForm(false); setSelected(null); }} className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-[#fcfbf8]">Cancel</button>
               <button onClick={save} disabled={!form.name || saving} className="flex-1 py-2.5 bg-[#2448d8] text-white rounded-lg text-sm font-semibold hover:bg-[#10213f] disabled:opacity-50">
-                {saving ? "Saving…" : selected ? "Update" : "Add Company"}
+                {saving ? "Saving…" : selected ? "Update" : "Add Organization"}
               </button>
             </div>
           </div>
