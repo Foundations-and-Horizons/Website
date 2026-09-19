@@ -84,7 +84,7 @@ export default function DealsPage() {
 
   const load = useCallback(async () => {
     const [{ data: pData }, { data: sData }, { data: dData }, { data: coData }, { data: ctData }] = await Promise.all([
-      supabase.from("pipelines").select("*").order("sort_order"),
+      supabase.from("pipelines").select("*").neq("key", "software").order("sort_order"),
       supabase.from("pipeline_stages").select("*").order("sort_order"),
       supabase.from("deals").select("*, companies(name), contacts(full_name)").order("updated_at", { ascending: false }),
       supabase.from("companies").select("id, name").order("name"),
