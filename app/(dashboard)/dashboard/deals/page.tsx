@@ -268,11 +268,11 @@ export default function DealsPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-5 shrink-0">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Pipeline</h1>
-            <p className="text-sm text-gray-400">Track every opportunity from first contact to close.</p>
+            <h1 className="text-2xl font-bold text-gray-900">Relationships</h1>
+            <p className="text-sm text-gray-400">Move the right relationships from first signal to meaningful work.</p>
           </div>
-          <button onClick={openNew} className="bg-[#2a3db4] text-white text-sm px-4 py-2 rounded-xl hover:bg-[#1e2d8a] font-semibold shadow-sm transition-all">
-            + New Deal
+          <button onClick={openNew} className="bg-[#2448d8] text-white text-sm px-4 py-2 rounded-xl hover:bg-[#10213f] font-semibold shadow-sm transition-all">
+            + New Opportunity
           </button>
         </div>
 
@@ -292,7 +292,7 @@ export default function DealsPage() {
           {[
             { label: "Open", value: openDeals, color: "text-gray-900" },
             { label: "Won", value: `${wonDeals} 🏆`, color: "text-green-600" },
-            { label: "Value", value: totalValue > 0 ? `$${totalValue.toLocaleString()}` : "—", color: "text-[#2a3db4]" },
+            { label: "Value", value: totalValue > 0 ? `$${totalValue.toLocaleString()}` : "—", color: "text-[#2448d8]" },
           ].map((s) => (
             <div key={s.label} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{s.label}</p>
@@ -305,10 +305,10 @@ export default function DealsPage() {
         <div className="flex gap-3 overflow-x-auto pb-4 flex-1 min-h-0">
           {pipelineStages.map((stage) => {
             const cards = deals.filter((d) => d.pipeline_id === activePipeline && d.stage_id === stage.id);
-            const stageColor = stage.is_won ? "#16a34a" : stage.is_lost ? "#dc2626" : (pipeline?.color || "#2a3db4");
+            const stageColor = stage.is_won ? "#16a34a" : stage.is_lost ? "#dc2626" : (pipeline?.color || "#2448d8");
             return (
               <div key={stage.id}
-                className="flex flex-col shrink-0 w-60 bg-gray-50 rounded-2xl border border-gray-200"
+                className="flex flex-col shrink-0 w-60 bg-[#fcfbf8] rounded-2xl border border-gray-200"
                 onDragOver={(e) => e.preventDefault()} onDrop={() => onDrop(stage.id)}>
                 <div className="px-3 pt-3 pb-2 flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
@@ -326,18 +326,18 @@ export default function DealsPage() {
                       <div key={deal.id} draggable
                         onDragStart={() => setDragging(deal.id)} onDragEnd={() => setDragging(null)}
                         onClick={() => openDeal(deal)}
-                        className={`bg-white rounded-xl border shadow-sm p-3 cursor-pointer hover:shadow-md transition-all group ${dragging === deal.id ? "opacity-40 scale-95" : ""} ${isSelected ? "ring-2 ring-[#2a3db4]" : "hover:border-gray-300"}`}
+                        className={`bg-white rounded-xl border shadow-sm p-3 cursor-pointer hover:shadow-md transition-all group ${dragging === deal.id ? "opacity-40 scale-95" : ""} ${isSelected ? "ring-2 ring-[#2448d8]" : "hover:border-gray-300"}`}
                         style={{ borderLeftWidth: 3, borderLeftColor: stageColor }}>
                         <div className="flex items-start justify-between gap-1 mb-1">
                           <p className="text-sm font-semibold text-gray-900 leading-tight flex-1">{deal.title}</p>
                           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             {rotting && <span title="No activity in 14+ days" className="text-xs">🟠</span>}
-                            <button onClick={(e) => openEdit(deal, e)} className="text-gray-300 hover:text-[#2a3db4] text-xs px-1">✎</button>
+                            <button onClick={(e) => openEdit(deal, e)} className="text-gray-300 hover:text-[#2448d8] text-xs px-1">✎</button>
                             <button onClick={(e) => removeDeal(deal.id, e)} className="text-gray-300 hover:text-red-500 text-xs px-1">✕</button>
                           </div>
                         </div>
                         {deal.companies && <p className="text-xs text-gray-400 mb-1">🏢 {(deal.companies as unknown as { name: string }).name}</p>}
-                        {deal.value && <p className="text-xs font-bold text-[#2a3db4] mb-1">${Number(deal.value).toLocaleString()}</p>}
+                        {deal.value && <p className="text-xs font-bold text-[#2448d8] mb-1">${Number(deal.value).toLocaleString()}</p>}
                         {deal.next_action && (
                           <p className={`text-xs truncate ${overdue ? "text-red-500 font-medium" : "text-gray-400"}`}>
                             {overdue ? "⚠️ " : "→ "}{deal.next_action}
@@ -366,7 +366,7 @@ export default function DealsPage() {
               <button onClick={() => setSelectedDeal(null)} className="text-gray-400 hover:text-gray-600 text-sm flex items-center gap-1">
                 ← Back
               </button>
-              <button onClick={(e) => openEdit(selectedDeal, e)} className="text-xs text-gray-400 hover:text-[#2a3db4] font-medium">Edit deal</button>
+              <button onClick={(e) => openEdit(selectedDeal, e)} className="text-xs text-gray-400 hover:text-[#2448d8] font-medium">Edit deal</button>
             </div>
             <h2 className="text-lg font-bold text-gray-900 leading-tight mb-1">{selectedDeal.title}</h2>
             {selectedDeal.companies && <p className="text-sm text-gray-400">🏢 {(selectedDeal.companies as unknown as { name: string }).name}</p>}
@@ -376,23 +376,23 @@ export default function DealsPage() {
               return c ? (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {c.email && (
-                    <a href={`mailto:${c.email}`} className="text-xs text-[#2a3db4] bg-blue-50 px-2.5 py-1 rounded-lg font-medium hover:bg-blue-100 transition-colors">
+                    <a href={`mailto:${c.email}`} className="text-xs text-[#2448d8] bg-blue-50 px-2.5 py-1 rounded-lg font-medium hover:bg-blue-100 transition-colors">
                       ✉ {c.email}
                     </a>
                   )}
                   {c.phone && (
-                    <a href={`tel:${c.phone}`} className="text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                    <a href={`tel:${c.phone}`} className="text-xs text-gray-500 bg-[#fcfbf8] px-2.5 py-1 rounded-lg font-medium hover:bg-gray-100 transition-colors">
                       📞 {c.phone}
                     </a>
                   )}
                 </div>
               ) : null;
             })()}
-            {selectedDeal.value && <p className="text-sm font-bold text-[#2a3db4] mt-1">${Number(selectedDeal.value).toLocaleString()}</p>}
+            {selectedDeal.value && <p className="text-sm font-bold text-[#2448d8] mt-1">${Number(selectedDeal.value).toLocaleString()}</p>}
             {contacts.find((c) => c.id === selectedDeal.primary_contact_id)?.email && (
               <button
                 onClick={() => { setShowCompose((v) => !v); setEmailSent(false); }}
-                className="mt-3 w-full py-2 rounded-xl text-sm font-semibold bg-[#2a3db4] text-white hover:bg-[#1e2d8a] transition-all shadow-sm"
+                className="mt-3 w-full py-2 rounded-xl text-sm font-semibold bg-[#2448d8] text-white hover:bg-[#10213f] transition-all shadow-sm"
               >
                 ✉ Compose Email
               </button>
@@ -403,7 +403,7 @@ export default function DealsPage() {
           {showCompose && (
             <div className="px-5 py-4 border-b border-blue-50 bg-blue-50/40 shrink-0">
               <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-semibold text-[#2a3db4] uppercase tracking-wide">New Email</p>
+                <p className="text-xs font-semibold text-[#2448d8] uppercase tracking-wide">New Email</p>
                 <p className="text-xs text-gray-400">From: stephen.cook@foundationsandhorizons.com</p>
               </div>
               {emailSent ? (
@@ -419,26 +419,26 @@ export default function DealsPage() {
                     value={composeSubject}
                     onChange={(e) => setComposeSubject(e.target.value)}
                     placeholder="Subject"
-                    className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20 mb-2 bg-white"
+                    className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20 mb-2 bg-white"
                   />
                   <textarea
                     value={composeBody}
                     onChange={(e) => setComposeBody(e.target.value)}
                     placeholder={`Hi ${contacts.find((c) => c.id === selectedDeal.primary_contact_id)?.full_name?.split(" ")[0] || "there"},\n\n`}
                     rows={6}
-                    className="w-full border border-blue-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20 resize-none bg-white mb-2"
+                    className="w-full border border-blue-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20 resize-none bg-white mb-2"
                   />
                   <div className="flex gap-2">
                     <button
                       onClick={() => setShowCompose(false)}
-                      className="flex-1 py-2 border border-gray-200 rounded-xl text-sm text-gray-500 hover:bg-gray-50 font-medium"
+                      className="flex-1 py-2 border border-gray-200 rounded-xl text-sm text-gray-500 hover:bg-[#fcfbf8] font-medium"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={sendEmail}
                       disabled={!composeSubject.trim() || !composeBody.trim() || sendingEmail}
-                      className="flex-1 py-2 bg-[#2a3db4] text-white rounded-xl text-sm font-semibold hover:bg-[#1e2d8a] disabled:opacity-40 shadow-sm transition-all"
+                      className="flex-1 py-2 bg-[#2448d8] text-white rounded-xl text-sm font-semibold hover:bg-[#10213f] disabled:opacity-40 shadow-sm transition-all"
                     >
                       {sendingEmail ? "Sending…" : "Send ✉"}
                     </button>
@@ -455,9 +455,9 @@ export default function DealsPage() {
               {selectedStages.map((s, i) => {
                 const isCurrent = s.id === selectedDeal.stage_id;
                 const isPast = i < selectedStageIdx;
-                const stageColor = selectedDeal.pipeline_id ? (pipelines.find((p) => p.id === selectedDeal.pipeline_id)?.color || "#2a3db4") : "#2a3db4";
+                const stageColor = selectedDeal.pipeline_id ? (pipelines.find((p) => p.id === selectedDeal.pipeline_id)?.color || "#2448d8") : "#2448d8";
                 return (
-                  <div key={s.id} className={`text-xs px-2.5 py-1 rounded-full font-medium transition-all ${isCurrent ? "text-white shadow-sm" : isPast ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-400"}`}
+                  <div key={s.id} className={`text-xs px-2.5 py-1 rounded-full font-medium transition-all ${isCurrent ? "text-white shadow-sm" : isPast ? "bg-green-50 text-green-600" : "bg-[#fcfbf8] text-gray-400"}`}
                     style={isCurrent ? { background: stageColor } : {}}>
                     {isPast ? "✓ " : ""}{s.label}
                   </div>
@@ -467,7 +467,7 @@ export default function DealsPage() {
             {selectedDeal.status === "open" && selectedStageIdx < selectedStages.length - 1 && (
               <button onClick={() => advanceStage(selectedDeal)}
                 className="mt-3 w-full py-2 rounded-xl text-sm font-semibold text-white transition-all shadow-sm"
-                style={{ background: pipelines.find((p) => p.id === selectedDeal.pipeline_id)?.color || "#2a3db4" }}>
+                style={{ background: pipelines.find((p) => p.id === selectedDeal.pipeline_id)?.color || "#2448d8" }}>
                 Move to {selectedStages[selectedStageIdx + 1]?.label} →
               </button>
             )}
@@ -492,7 +492,7 @@ export default function DealsPage() {
             <div className="flex gap-1.5 flex-wrap mb-3">
               {ACTIVITY_TYPES.map((t) => (
                 <button key={t.key} onClick={() => setLogType(t.key)}
-                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${logType === t.key ? "bg-[#2a3db4] text-white shadow-sm" : "bg-gray-50 text-gray-500 hover:bg-gray-100"}`}>
+                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${logType === t.key ? "bg-[#2448d8] text-white shadow-sm" : "bg-[#fcfbf8] text-gray-500 hover:bg-gray-100"}`}>
                   <span>{t.icon}</span><span>{t.label}</span>
                 </button>
               ))}
@@ -500,16 +500,16 @@ export default function DealsPage() {
             <textarea value={logBody} onChange={(e) => setLogBody(e.target.value)}
               placeholder="What happened? One sentence is enough."
               rows={2}
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20 resize-none text-gray-700 placeholder-gray-300 mb-2" />
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20 resize-none text-gray-700 placeholder-gray-300 mb-2" />
             <div className="grid grid-cols-2 gap-2 mb-2">
               <input value={logNextAction} onChange={(e) => setLogNextAction(e.target.value)}
                 placeholder="Next action..."
-                className="border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20 text-gray-700 placeholder-gray-300" />
+                className="border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20 text-gray-700 placeholder-gray-300" />
               <input type="date" value={logDue} onChange={(e) => setLogDue(e.target.value)}
-                className="border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20 text-gray-400" />
+                className="border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20 text-gray-400" />
             </div>
             <button onClick={logActivity} disabled={!logBody.trim() || loggingActivity}
-              className="w-full py-2.5 bg-[#2a3db4] text-white rounded-xl text-sm font-semibold hover:bg-[#1e2d8a] disabled:opacity-40 transition-all shadow-sm">
+              className="w-full py-2.5 bg-[#2448d8] text-white rounded-xl text-sm font-semibold hover:bg-[#10213f] disabled:opacity-40 transition-all shadow-sm">
               {loggingActivity ? "Saving…" : "Log Activity"}
             </button>
           </div>
@@ -528,7 +528,7 @@ export default function DealsPage() {
                 const typeObj = ACTIVITY_TYPES.find((t) => t.key === a.type);
                 return (
                   <div key={a.id} className="flex gap-3">
-                    <div className="w-7 h-7 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-sm shrink-0 mt-0.5">
+                    <div className="w-7 h-7 rounded-full bg-[#fcfbf8] border border-gray-100 flex items-center justify-center text-sm shrink-0 mt-0.5">
                       {a.type === "stage_change" ? "🔄" : typeObj?.icon || "📝"}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -557,20 +557,20 @@ export default function DealsPage() {
                 <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Title</label>
                 <input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                   placeholder="e.g. Humane Society — FoundationWorks"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20" />
+                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Pipeline</label>
                   <select value={form.pipeline_id} onChange={(e) => setForm((f) => ({ ...f, pipeline_id: e.target.value, stage_id: "" }))}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20">
+                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20">
                     {pipelines.map((p) => <option key={p.id} value={p.id}>{p.icon} {p.name}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Stage</label>
                   <select value={form.stage_id} onChange={(e) => setForm((f) => ({ ...f, stage_id: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20">
+                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20">
                     <option value="">— pick —</option>
                     {stages.filter((s) => s.pipeline_id === (form.pipeline_id || activePipeline)).map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
                   </select>
@@ -580,7 +580,7 @@ export default function DealsPage() {
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Company</label>
                   <select value={form.company_id} onChange={(e) => setForm((f) => ({ ...f, company_id: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20">
+                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20">
                     <option value="">— none —</option>
                     {companies.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
@@ -588,7 +588,7 @@ export default function DealsPage() {
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Contact</label>
                   <select value={form.primary_contact_id} onChange={(e) => setForm((f) => ({ ...f, primary_contact_id: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20">
+                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20">
                     <option value="">— none —</option>
                     {contacts.map((c) => <option key={c.id} value={c.id}>{c.full_name}</option>)}
                   </select>
@@ -599,37 +599,37 @@ export default function DealsPage() {
                   <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Value ($)</label>
                   <input type="number" min="0" value={form.value} onChange={(e) => setForm((f) => ({ ...f, value: e.target.value }))}
                     placeholder="0"
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20" />
+                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Expected Close</label>
                   <input type="date" value={form.expected_close} onChange={(e) => setForm((f) => ({ ...f, expected_close: e.target.value }))}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20" />
+                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Next Action</label>
                 <input value={form.next_action} onChange={(e) => setForm((f) => ({ ...f, next_action: e.target.value }))}
                   placeholder="e.g. Send follow-up email"
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20" />
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Due Date</label>
                 <input type="date" value={form.next_action_due} onChange={(e) => setForm((f) => ({ ...f, next_action_due: e.target.value }))}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20" />
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Notes</label>
                 <textarea value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                   rows={3} placeholder="Context, background, anything relevant..."
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/20 resize-none" />
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/20 resize-none" />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
               <button onClick={() => { setShowForm(false); setEditingDeal(null); }}
-                className="flex-1 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-500 hover:bg-gray-50 font-medium">Cancel</button>
+                className="flex-1 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-500 hover:bg-[#fcfbf8] font-medium">Cancel</button>
               <button onClick={saveDeal} disabled={!form.title || saving}
-                className="flex-1 py-2.5 bg-[#2a3db4] text-white rounded-xl text-sm font-semibold hover:bg-[#1e2d8a] disabled:opacity-40 shadow-sm">
+                className="flex-1 py-2.5 bg-[#2448d8] text-white rounded-xl text-sm font-semibold hover:bg-[#10213f] disabled:opacity-40 shadow-sm">
                 {saving ? "Saving…" : editingDeal ? "Save Changes" : "Create Deal"}
               </button>
             </div>
