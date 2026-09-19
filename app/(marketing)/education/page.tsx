@@ -1,81 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-
-export const metadata = {
-  title: "Education | Foundations & Horizons",
-  description: "Books, practical resources, and education for nonprofit leaders building stronger organizations.",
-};
-
-const guides = [
-  ["Burnout Self-Check", "Notice early signs of strain and start a better conversation about sustainability.", "/pdfs/BurnoutSelfCheck.pdf"],
-  ["Capacity Map", "Make the organization's real workload visible and identify where capacity is being stretched.", "/pdfs/CapacityMap.pdf"],
-  ["Mission Filter Checklist", "Slow the yes down long enough to decide whether a new opportunity truly serves the mission.", "/pdfs/MissionFilterChecklist.pdf"],
-  ["Delegation Planner", "Transfer ownership intentionally so people and systems become stronger together.", "/pdfs/DelegationPlanner.pdf"],
-];
-
-export default function EducationPage() {
-  return (
-    <>
-      <section className="bg-[#16265f] text-white py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-200 mb-5">Learn &amp; Equip</p>
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">Ideas are useful when they change what you do.</h1>
-          <p className="text-blue-100 text-lg md:text-xl leading-relaxed max-w-3xl">
-            The book, workshops, speaking, and practical resources all share the same goal: help nonprofit leaders see the system more clearly and leave with something they can actually use.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">The Book</p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-5">Strong Foundations, Higher Horizons</h2>
-            <p className="text-gray-600 leading-relaxed mb-5">
-              Stephen Cook&apos;s book brings together a practical philosophy for nonprofit leadership and operations: clarity before complexity, systems that serve people, measurable action, sustainable capacity, and an organization strong enough to support its mission.
-            </p>
-            <p className="text-gray-600 leading-relaxed mb-7">
-              It is the foundation for the workshop series and a way for leaders to get to know how Stephen thinks before deciding whether they want deeper help.
-            </p>
-            <a href="https://www.amazon.com/Strong-Foundations-Higher-Horizons-nonprofit-ebook/dp/B0G67NDZH7/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#2a3db4] text-white px-8 py-3 font-semibold hover:bg-[#1e2e8a]">Get the Book on Amazon</a>
-          </div>
-          <div className="flex justify-center">
-            <a href="https://www.amazon.com/Strong-Foundations-Higher-Horizons-nonprofit-ebook/dp/B0G67NDZH7/" target="_blank" rel="noopener noreferrer">
-              <Image src="/book-cover.jpg" alt="Strong Foundations, Higher Horizons by Stephen Cook" width={280} height={420} className="rounded-lg shadow-2xl" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-[#eef2ff] border-y border-blue-100">
-        <div className="max-w-5xl mx-auto text-center">
-          <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">Workshops</p>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">A chapter at a time. A real conversation each month.</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
-            The workshop series turns the book into practical sessions for nonprofit leaders. Each installment focuses on one idea, gives participants a framework they can use, and ends with a concrete action to take back to the organization.
-          </p>
-          <Link href="/workshops" className="inline-block bg-[#2a3db4] text-white px-8 py-3 font-semibold hover:bg-[#1e2e8a]">Explore the Workshops</Link>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">Free Resources</p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Start with something practical.</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Use these tools on your own. If they surface a bigger issue, that is useful too — it tells you where to look next.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {guides.map(([title, desc, file]) => (
-              <div key={title} className="bg-white border border-gray-200 p-7">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-                <p className="text-gray-600 leading-relaxed mb-5">{desc}</p>
-                <a href={file} download className="inline-block bg-[#2a3db4] text-white px-5 py-2.5 text-sm font-semibold hover:bg-[#1e2e8a]">Download Free</a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
+export const metadata={title:"Education | Foundations & Horizons",description:"Books, workshops, and practical resources for nonprofit leaders building stronger organizations."};
+const guides=[["Burnout Self-Check","Notice strain before it becomes the operating model.","/pdfs/BurnoutSelfCheck.pdf"],["Capacity Map","Make the organization's real workload visible.","/pdfs/CapacityMap.pdf"],["Mission Filter Checklist","Decide whether an opportunity strengthens the mission—or just makes you busier.","/pdfs/MissionFilterChecklist.pdf"],["Delegation Planner","Move ownership out of one person's head and into capable people and repeatable systems.","/pdfs/DelegationPlanner.pdf"]];
+const ideas=[["Strategic clarity","Know what matters, what can wait, and what deserves a no."],["Operational efficiency","Turn recurring work into systems people can actually use."],["Team sustainability","Build capacity without making heroics the job description."],["Leadership that lasts","Create an organization that can thrive without everything depending on one person."]];
+export default function EducationPage(){return <>
+<section className="relative overflow-hidden bg-[#101d4b] text-white py-28 md:py-36 px-5"><div className="absolute -right-32 -top-32 h-[520px] w-[520px] rounded-full border border-white/10"/><div className="relative max-w-7xl mx-auto"><p className="uppercase tracking-[.22em] text-blue-200 text-sm font-semibold mb-5">Learn. Apply. Strengthen.</p><h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.02] max-w-5xl mb-7">You shouldn't need an MBA to build a stronger nonprofit.</h1><p className="text-xl md:text-2xl text-blue-100 max-w-3xl leading-relaxed">Clear ideas, practical tools, and honest teaching for leaders who are wearing too many hats and still trying to move the mission forward.</p></div></section>
+<section className="py-24 md:py-32 px-5 bg-white"><div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_.8fr] gap-16 items-center"><div><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">The Book</p><h2 className="text-4xl md:text-6xl font-bold text-gray-950 mb-5">Strong Foundations, Higher Horizons</h2><p className="text-xl text-gray-600 leading-relaxed mb-6">Written for nonprofit leaders who have had to do everything, the book focuses on four areas often overlooked in leadership development: strategic clarity, operational efficiency, team sustainability, and leadership that lasts.</p><p className="text-lg text-gray-600 leading-relaxed mb-8">It follows Sarah Martinez, the fictional executive director of BrightPath Community Services, through challenges that are fictional in name but very real in nonprofit life. Each chapter moves from story to practical teaching to reflection.</p><a href="https://www.amazon.com/Strong-Foundations-Higher-Horizons-nonprofit-ebook/dp/B0G67NDZH7/" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#2a3db4] text-white px-8 py-4 font-semibold">Get the Book on Amazon</a></div><div className="flex justify-center"><a href="https://www.amazon.com/Strong-Foundations-Higher-Horizons-nonprofit-ebook/dp/B0G67NDZH7/" target="_blank" rel="noopener noreferrer"><Image src="/book-cover.jpg" alt="Strong Foundations, Higher Horizons by Stephen Cook" width={360} height={540} className="rounded-md shadow-2xl rotate-2 hover:rotate-0 transition-transform"/></a></div></div></section>
+<section className="py-24 px-5 bg-[#eef2ff] border-y border-blue-100"><div className="max-w-7xl mx-auto"><div className="max-w-4xl mb-14"><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">What You'll Work On</p><h2 className="text-4xl md:text-5xl font-bold text-gray-950">The goal isn't to become more corporate. It's to become more intentional.</h2></div><div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">{ideas.map(([t,d],i)=><div key={t} className="bg-white border border-blue-100 p-8"><div className="text-[#2a3db4] font-bold mb-9">0{i+1}</div><h3 className="text-2xl font-bold mb-3">{t}</h3><p className="text-gray-600 leading-relaxed">{d}</p></div>)}</div></div></section>
+<section className="py-24 px-5 bg-[#0f1c4b] text-white"><div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center"><div><p className="uppercase tracking-[.2em] text-blue-200 text-sm font-semibold mb-4">From Reading to Doing</p><h2 className="text-4xl md:text-6xl font-bold mb-6">The workshop is where the page becomes your organization.</h2><p className="text-xl text-blue-100 leading-relaxed mb-8">Each session takes one idea from the book, challenges a familiar nonprofit assumption, helps participants see the system behind it, and ends with one concrete action they can take back to work.</p><Link href="/workshops" className="inline-block bg-white text-[#2a3db4] px-8 py-4 font-semibold">Explore Workshops →</Link></div><div className="grid gap-3">{["Challenge a belief","See the situation clearly","Use a practical framework","Assess your own organization","Choose one concrete action"].map((x,i)=><div key={x} className="flex gap-5 items-center bg-white/5 border border-white/10 p-5"><span className="text-blue-300 font-bold">0{i+1}</span><span className="text-lg font-semibold">{x}</span></div>)}</div></div></section>
+<section className="py-24 px-5 bg-white"><div className="max-w-7xl mx-auto"><div className="max-w-3xl mb-12"><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">Free Tools</p><h2 className="text-4xl md:text-5xl font-bold text-gray-950 mb-5">Start with something useful today.</h2><p className="text-xl text-gray-600">No pitch required. Use the tool. See what it surfaces. Make one part of the organization clearer.</p></div><div className="grid md:grid-cols-2 gap-5">{guides.map(([t,d,f])=><div key={t} className="border border-gray-200 bg-gray-50 p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6"><div><h3 className="text-2xl font-bold mb-2">{t}</h3><p className="text-gray-600">{d}</p></div><a href={f} download className="shrink-0 text-[#2a3db4] font-bold">Download →</a></div>)}</div></div></section>
+<section className="py-20 px-5 bg-[#2a3db4] text-white text-center"><div className="max-w-3xl mx-auto"><h2 className="text-4xl md:text-5xl font-bold mb-5">You don't have to fix everything at once.</h2><p className="text-xl text-blue-100 mb-8">See the system. Choose the next useful move. Build from there.</p><Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold">Start a Conversation</Link></div></section>
+</>}
