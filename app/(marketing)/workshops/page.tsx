@@ -1,60 +1,10 @@
 import Link from "next/link";
-
-export const metadata = {
-  title: "Workshops | Foundations & Horizons",
-  description: "Practical nonprofit leadership and operations workshops based on Strong Foundations, Higher Horizons.",
-};
-
-export default function WorkshopsPage() {
-  return (
-    <>
-      <section className="bg-[#16265f] text-white py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-200 mb-5">Workshops</p>
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">Practical ideas. Real conversation. Something useful to take back with you.</h1>
-          <p className="text-blue-100 text-lg md:text-xl leading-relaxed max-w-3xl">
-            A workshop series built from <em>Strong Foundations, Higher Horizons</em> — designed to help nonprofit leaders step out of the daily reaction cycle long enough to see what is really happening and choose one meaningful next action.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">The Format</p>
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">A chapter at a time.</h2>
-          <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
-            <p>Each installment focuses on one idea from the book and turns it into a practical conversation for nonprofit leaders.</p>
-            <p>The goal is not to cram more information into an already-full calendar. It is to create clarity, give leaders a useful framework, and help each participant identify one thing worth changing.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-gray-50 border-y border-gray-100">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            ["Challenge the assumption", "Look at a common nonprofit habit or belief that may be creating more work than value."],
-            ["See the system", "Use a practical framework to understand how the issue connects to people, process, capacity, and mission."],
-            ["Choose one action", "Leave with a concrete next step you can actually take back to the organization."],
-          ].map(([title, text], i) => (
-            <div key={title} className="bg-white border border-gray-200 p-7">
-              <div className="text-sm font-bold text-[#2a3db4] mb-4">0{i + 1}</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-              <p className="text-gray-600 leading-relaxed">{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">Why It Matters</p>
-          <h2 className="text-3xl font-bold text-gray-900 mb-5">Strong organizations are built on purpose.</h2>
-          <p className="text-lg text-gray-600 leading-relaxed mb-8">
-            The workshop series is part of a larger approach: help nonprofit leaders build organizations where the mission can be carried by strong systems and capable people, rather than sustained by constant heroics.
-          </p>
-          <Link href="/contact" className="inline-block bg-[#2a3db4] text-white px-9 py-4 font-semibold hover:bg-[#1e2e8a]">Ask About Upcoming Workshops</Link>
-        </div>
-      </section>
-    </>
-  );
-}
+export const metadata={title:"Workshops | Foundations & Horizons",description:"Practical nonprofit leadership workshops based on Strong Foundations, Higher Horizons."};
+const themes=[["Nonprofit Doesn't Mean Non-Professional","Professionalism and heart can coexist. Examine the signals your organization sends and choose practical improvements that build trust."],["Systems, Not Heroics","Find the work that depends on memory, rescue, and individual effort—and begin turning it into something repeatable."],["Clarity Before Complexity","Create focus around what matters instead of allowing urgency to set the agenda."],["Capacity Is a Real Constraint","Look honestly at workload, roles, delegation, and the operational choices that contribute to burnout."],["Mission Before Opportunity","Use mission as a decision filter so growth strengthens the organization rather than stretching it thin."],["Leadership That Lasts","Build clarity, roles, systems, and people so the organization can thrive without everything depending on the leader."]];
+export default function WorkshopsPage(){return <>
+<section className="bg-[#101d4b] text-white py-28 md:py-36 px-5"><div className="max-w-7xl mx-auto"><p className="uppercase tracking-[.22em] text-blue-200 text-sm font-semibold mb-5">Strong Foundations Workshop Series</p><h1 className="text-5xl md:text-7xl font-bold leading-[1.02] tracking-tight max-w-5xl mb-7">Don't leave with more notes. Leave knowing what you're going to change.</h1><p className="text-xl md:text-2xl text-blue-100 max-w-3xl leading-relaxed mb-9">Practical sessions built from <em>Strong Foundations, Higher Horizons</em> for nonprofit leaders who need room to think, a framework that makes sense, and an action worth taking back to work.</p><Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold">Ask About Upcoming Workshops</Link></div></section>
+<section className="py-24 px-5 bg-white"><div className="max-w-7xl mx-auto"><div className="max-w-4xl mb-14"><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">The Experience</p><h2 className="text-4xl md:text-6xl font-bold text-gray-950 mb-6">A working session, not a lecture.</h2><p className="text-xl text-gray-600">The rhythm is simple: challenge a belief → see the issue clearly → use a framework → assess your own organization → choose one concrete action.</p></div><div className="grid md:grid-cols-3 gap-5">{[["See differently","Question a familiar habit or assumption that may be creating more work than value."],["Work on your organization","Apply the idea to the actual people, processes, capacity, and mission you lead."],["Leave with a move","Choose something specific enough to begin—not a list of twenty things you will never have time to do."]].map(([t,d],i)=><div key={t} className="p-8 bg-[#f5f7fc] border border-gray-200"><div className="text-[#2a3db4] font-bold mb-9">0{i+1}</div><h3 className="text-2xl font-bold mb-3">{t}</h3><p className="text-gray-600 leading-relaxed">{d}</p></div>)}</div></div></section>
+<section className="py-24 px-5 bg-[#eef2ff] border-y border-blue-100"><div className="max-w-7xl mx-auto"><div className="max-w-4xl mb-14"><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">Built From the Book</p><h2 className="text-4xl md:text-5xl font-bold text-gray-950">Conversations worth making time for.</h2></div><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">{themes.map(([t,d])=><div key={t} className="bg-white border border-blue-100 p-8"><h3 className="text-2xl font-bold mb-4">{t}</h3><p className="text-gray-600 leading-relaxed">{d}</p></div>)}</div><p className="mt-8 text-gray-600">The series draws from the book's broader themes and can continue chapter by chapter as additional sessions are scheduled.</p></div></section>
+<section className="py-24 px-5 bg-white"><div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14"><div><p className="uppercase tracking-[.2em] text-[#2a3db4] text-sm font-semibold mb-4">Designed for Real Nonprofit Calendars</p><h2 className="text-4xl md:text-5xl font-bold text-gray-950 mb-6">Useful enough to justify the hour.</h2><p className="text-xl text-gray-600 leading-relaxed">Sessions are designed around focused teaching and application, with room for questions and real-world discussion. The goal is not to impress the room with complexity. It is to make the next decision clearer.</p></div><div className="border-l-4 border-[#2a3db4] pl-8 space-y-6"><div><h3 className="font-bold text-xl">For nonprofit leaders and teams</h3><p className="text-gray-600">Executive directors, operations leaders, program leaders, and people carrying more than one role.</p></div><div><h3 className="font-bold text-xl">For associations and conferences</h3><p className="text-gray-600">A practical session that can stand alone or connect to a broader learning series.</p></div><div><h3 className="font-bold text-xl">For organizations that want to go deeper</h3><p className="text-gray-600">Private sessions can create space for a team to apply the framework together.</p></div></div></div></section>
+<section className="py-24 px-5 bg-[#2a3db4] text-white text-center"><div className="max-w-3xl mx-auto"><h2 className="text-4xl md:text-5xl font-bold mb-6">Bring the challenge you're actually dealing with.</h2><p className="text-xl text-blue-100 mb-9">The best workshop conversation starts where the work is real.</p><Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold">Ask About Workshops</Link></div></section>
+</>}
