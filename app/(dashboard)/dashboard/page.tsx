@@ -92,14 +92,14 @@ export default async function DashboardHome() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-10">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">{greeting()}, Stephen. 👋</h1>
         <p className="text-gray-500 mt-1">{motiveLine()}</p>
       </div>
 
-      {/* Top stat cards */}
+      {/* Business pulse */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         <Link href="/dashboard/deals" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${overdueCount > 0 ? "bg-red-50 border-red-400" : openCount >= 10 ? "bg-green-50 border-green-400" : "bg-white border-[#2a3db4]"}`}>
           <div className="flex items-center justify-between mb-3">
@@ -199,7 +199,7 @@ export default async function DashboardHome() {
         </Link>
       </div>
 
-      {/* Middle row: Overdue / Tasks */}
+      {/* Decision queue: the work that actually needs Stephen */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 
         {/* Overdue deals */}
@@ -239,7 +239,7 @@ export default async function DashboardHome() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <span>📋</span>
-              <h2 className="text-sm font-bold text-gray-800">Tasks</h2>
+              <div><p className="text-[10px] font-bold uppercase tracking-[.16em] text-[#2448d8]">Assistant Queue</p><h2 className="text-sm font-bold text-gray-800">Work already on the radar</h2></div>
             </div>
             <span className="text-xs bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 font-medium">{openTasks?.length || 0} open</span>
           </div>
@@ -276,15 +276,15 @@ export default async function DashboardHome() {
         </div>
       </div>
 
-      {/* Quick actions */}
+      {/* Command center actions */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Quick Actions</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Move the business</p>
         <div className="flex flex-wrap gap-2">
           <Link href="/dashboard/deals" className="flex items-center gap-2 bg-[#2a3db4] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#1e2d8a] font-medium transition-colors">
-            🎯 Open Pipeline
+            🎯 Relationship Pipeline
           </Link>
           <Link href="/dashboard/contacts" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
-            👤 Add Contact
+            👤 People & Organizations
           </Link>
           <Link href="/dashboard/linkedin" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
             💼 Log LinkedIn Post
