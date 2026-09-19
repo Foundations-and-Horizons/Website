@@ -37,6 +37,8 @@ export default async function DashboardHome() {
     { data: goalRow },
     { data: transactions },
     { data: openTasks },
+    { data: newInquiries },
+    { data: recentActivities },
   ] = await Promise.all([
     supabase.from("deals").select("id, title, next_action, next_action_due, companies(name)")
       .eq("status", "open").not("next_action_due", "is", null).lte("next_action_due", today).order("next_action_due"),
@@ -50,6 +52,8 @@ export default async function DashboardHome() {
     supabase.from("settings").select("value").eq("key", "annual_net_income_goal").single(),
     supabase.from("transactions").select("type, amount"),
     supabase.from("tasks").select("id, title, due_date, priority, deal_id, contact_id").eq("done", false).order("due_date"),
+    supabase.from("contact_submissions").select("id, first_name, last_name, subject, created_at").eq("status", "new").order("created_at", { ascending: false }).limit(5),
+    supabase.from("activities").select("id, type, subject, body, occurred_at, deals(title), companies(name), contacts(full_name)").order("occurred_at", { ascending: false }).limit(6),
   ]);
 
   // Finance
@@ -82,6 +86,7 @@ export default async function DashboardHome() {
   // Tasks
   const todayTasks = (openTasks || []).filter((t) => t.due_date && t.due_date <= today);
   const upcomingTasks = (openTasks || []).filter((t) => !t.due_date || t.due_date > today).slice(0, 3);
+  const inquiryCount = newInquiries?.length || 0;
 
   return (
     <div className="space-y-6 pb-10">
@@ -99,7 +104,7 @@ export default async function DashboardHome() {
           </div>
           <div className="grid grid-cols-3 gap-2 sm:gap-3 xl:w-[390px]">
             <div className="rounded-2xl border border-white/10 bg-white/[.06] p-3 sm:p-4">
-              <p className="text-2xl font-bold">{overdueCount}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Need you</p>
+              <p className="text-2xl font-bold">{overdueCount + inquiryCount}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Need you</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/[.06] p-3 sm:p-4">
               <p className="text-2xl font-bold">{openCount}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Active</p>
@@ -111,11 +116,21 @@ export default async function DashboardHome() {
         </div>
       </section>
 
+      {inquiryCount > 0 && (
+        <Link href="/dashboard/inquiries" className="group flex items-center justify-between gap-5 rounded-2xl border border-[#e86f51]/25 bg-[#fff8f5] p-5 shadow-sm transition hover:shadow-md">
+          <div className="flex items-center gap-4">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e86f51] text-sm font-bold text-white">{inquiryCount}</span>
+            <div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#e86f51]">New website conversation{inquiryCount === 1 ? "" : "s"}</p><p className="mt-1 font-serif text-lg text-[#10213f]">{inquiryCount === 1 ? `${newInquiries?.[0]?.first_name} ${newInquiries?.[0]?.last_name} reached out` : `${inquiryCount} people are waiting to hear from you`}</p></div>
+          </div>
+          <span className="text-[#10213f]/35 transition group-hover:translate-x-1">→</span>
+        </Link>
+      )}
+
       {/* Business pulse */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         <Link href="/dashboard/deals" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${overdueCount > 0 ? "bg-red-50 border-red-400" : openCount >= 10 ? "bg-green-50 border-green-400" : "bg-white border-[#2448d8]"}`}>
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Pipeline</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Relationships</p>
             <span className="text-xl">🎯</span>
           </div>
           <p className={`text-3xl font-bold ${overdueCount > 0 ? "text-red-600" : "text-gray-900"}`}>
@@ -287,6 +302,25 @@ export default async function DashboardHome() {
           )}
         </div>
       </div>
+
+      <section className="rounded-2xl border border-[#10213f]/10 bg-white p-5 shadow-sm">
+        <div className="mb-5 flex items-end justify-between gap-4">
+          <div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#a06b5b]">Activity</p><h2 className="mt-1 font-serif text-xl text-[#10213f]">What moved recently</h2></div>
+          <p className="text-xs text-gray-400">Real CRM activity only</p>
+        </div>
+        {(recentActivities || []).length > 0 ? (
+          <div className="grid gap-2 md:grid-cols-2">
+            {(recentActivities || []).map((a) => (
+              <div key={a.id} className="rounded-xl border border-[#10213f]/[.07] bg-[#fcfbf8] p-4">
+                <div className="flex items-start justify-between gap-3"><p className="text-sm font-bold text-[#10213f]">{a.subject || a.type}</p><span className="shrink-0 text-[10px] text-gray-300">{new Date(a.occurred_at).toLocaleDateString()}</span></div>
+                {a.body && <p className="mt-2 line-clamp-2 text-xs leading-5 text-gray-500">{a.body}</p>}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl bg-[#f7f2e8]/60 px-5 py-7 text-center"><p className="text-sm font-medium text-[#10213f]/60">No activity logged yet.</p><p className="mt-1 text-xs text-gray-400">Emails, meetings, notes, and relationship moves will appear here as they happen.</p></div>
+        )}
+      </section>
 
       {/* Command center actions */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
