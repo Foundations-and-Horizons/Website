@@ -40,6 +40,7 @@ export default async function DashboardHome() {
     { data: newInquiries },
     { data: recentActivities },
     { data: prospectRows },
+    { data: outreachReview },
   ] = await Promise.all([
     supabase.from("deals").select("id, title, next_action, next_action_due, companies(name)")
       .eq("status", "open").not("next_action_due", "is", null).lte("next_action_due", today).order("next_action_due"),
@@ -56,6 +57,7 @@ export default async function DashboardHome() {
     supabase.from("contact_submissions").select("id, first_name, last_name, subject, created_at").eq("status", "new").order("created_at", { ascending: false }).limit(5),
     supabase.from("activities").select("id, type, subject, body, occurred_at, deals(title), companies(name), contacts(full_name)").order("occurred_at", { ascending: false }).limit(6),
     supabase.from("prospects").select("id, organization_name, status, score, contact_name").in("status", ["qualified","draft_ready","approved","replied","interested"]).order("score", { ascending: false }).limit(6),
+    supabase.from("outreach_messages").select("id, status").in("status", ["draft","approved"]),
   ]);
 
   // Finance
@@ -91,6 +93,8 @@ export default async function DashboardHome() {
   const inquiryCount = newInquiries?.length || 0;
   const prospectAttention = prospectRows || [];
   const interestedCount = prospectAttention.filter((p) => p.status === "interested").length;
+  const outreachReviewCount = (outreachReview || []).filter((m) => m.status === "draft").length;
+  const needYouCount = overdueCount + inquiryCount + todayTasks.length + interestedCount + outreachReviewCount;
 
   return (
     <div className="space-y-6 pb-10">
@@ -108,7 +112,7 @@ export default async function DashboardHome() {
           </div>
           <div className="grid grid-cols-3 gap-2 sm:gap-3 xl:w-[390px]">
             <div className="rounded-2xl border border-white/10 bg-white/[.06] p-3 sm:p-4">
-              <p className="text-2xl font-bold">{overdueCount + inquiryCount}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Need you</p>
+              <p className="text-2xl font-bold">{needYouCount}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Need you</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/[.06] p-3 sm:p-4">
               <p className="text-2xl font-bold">{openCount}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Active</p>
@@ -137,56 +141,21 @@ export default async function DashboardHome() {
         </section>
       )}
 
-      {/* Business pulse */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-        <Link href="/dashboard/deals" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${overdueCount > 0 ? "bg-red-50 border-red-400" : openCount >= 10 ? "bg-green-50 border-green-400" : "bg-white border-[#2448d8]"}`}>
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Relationships</p>
-            <span className="text-xl">🎯</span>
-          </div>
-          <p className={`text-3xl font-bold ${overdueCount > 0 ? "text-red-600" : "text-gray-900"}`}>
-            {overdueCount > 0 ? overdueCount : openCount}
-          </p>
-          <p className="text-xs text-gray-400 mt-1">
-            {overdueCount > 0 ? `overdue follow-up${overdueCount > 1 ? "s" : ""} 🔴` : `open · ${wonCount} won`}
-          </p>
-        </Link>
-
-        <Link href="/dashboard/linkedin" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${postsCount >= 3 ? "bg-green-50 border-green-400" : "bg-white border-[#c026d3]"}`}>
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">LinkedIn</p>
-            <span className="text-xl">💼</span>
-          </div>
-          <p className={`text-3xl font-bold ${postsCount >= 3 ? "text-green-600" : postsCount >= 1 ? "text-amber-500" : "text-gray-900"}`}>
-            {postsCount}/3
-          </p>
-          <p className="text-xs text-gray-400 mt-1">
-            {postsCount >= 3 ? "Weekly goal crushed 🎉" : daysSincePost !== null ? `${daysSincePost}d since last post` : "No posts yet this week"}
-          </p>
-        </Link>
-
-        <Link href="/dashboard/books" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${daysSinceSale !== null && daysSinceSale > 30 ? "bg-amber-50 border-amber-400" : "bg-white border-amber-400"}`}>
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Book Sales</p>
-            <span className="text-xl">📚</span>
-          </div>
-          <p className="text-3xl font-bold text-gray-900">{bookTotal}</p>
-          <p className="text-xs text-gray-400 mt-1">
-            {daysSinceSale !== null ? `last logged ${daysSinceSale}d ago` : "No entries yet"}
-            {daysSinceSale !== null && daysSinceSale > 14 ? " · check KDP 👀" : ""}
-          </p>
-        </Link>
-
-        <Link href="/dashboard/finance" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${netIncome < 0 ? "bg-red-50 border-red-400" : netIncome >= goal * 0.75 ? "bg-green-50 border-green-400" : "bg-white border-green-500"}`}>
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Net Income</p>
-            <span className="text-xl">💰</span>
-          </div>
-          <p className={`text-3xl font-bold ${netIncome >= 0 ? "text-green-600" : "text-red-600"}`}>
-            ${netIncome.toLocaleString("en-US", { maximumFractionDigits: 0 })}
-          </p>
-          <p className="text-xs text-gray-400 mt-1">{revenuePercent}% of ${goal.toLocaleString()} goal</p>
-        </Link>
+      {/* Stephen's decision queue */}
+      <section className="rounded-2xl border border-[#10213f]/10 bg-white p-5 sm:p-6 shadow-sm">
+        <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#e86f51]">Needs Stephen</p><h2 className="mt-1 font-serif text-2xl text-[#10213f]">{needYouCount === 0 ? "Nothing is waiting on you." : `${needYouCount} thing${needYouCount === 1 ? "" : "s"} deserve your attention.`}</h2><p className="mt-2 text-sm text-gray-400">Everything else can stay in the system until it matters.</p></div><Link href="/dashboard/tasks" className="rounded-full border border-[#10213f]/10 px-4 py-2 text-xs font-bold text-[#10213f]">Open work queue →</Link></div>
+        {needYouCount > 0 && <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {interestedCount > 0 && <Link href="/dashboard/prospecting" className="rounded-xl bg-[#eef7f4] p-4"><p className="text-[10px] font-bold uppercase tracking-wider text-[#4f8b77]">Human conversation</p><p className="mt-2 text-sm font-bold text-[#10213f]">{interestedCount} positive prospect repl{interestedCount === 1 ? "y" : "ies"}</p><p className="mt-1 text-xs text-gray-500">Ready for you to take over.</p></Link>}
+          {inquiryCount > 0 && <Link href="/dashboard/inquiries" className="rounded-xl bg-[#fff5f1] p-4"><p className="text-[10px] font-bold uppercase tracking-wider text-[#e86f51]">Website</p><p className="mt-2 text-sm font-bold text-[#10213f]">{inquiryCount} new inquir{inquiryCount === 1 ? "y" : "ies"}</p><p className="mt-1 text-xs text-gray-500">Someone raised their hand.</p></Link>}
+          {outreachReviewCount > 0 && <Link href="/dashboard/outreach" className="rounded-xl bg-[#eef2ff] p-4"><p className="text-[10px] font-bold uppercase tracking-wider text-[#2448d8]">Voice check</p><p className="mt-2 text-sm font-bold text-[#10213f]">{outreachReviewCount} invitation{outreachReviewCount === 1 ? "" : "s"} to review</p><p className="mt-1 text-xs text-gray-500">Approve before anything represents you.</p></Link>}
+          {(todayTasks.length + overdueCount) > 0 && <Link href="/dashboard/tasks" className="rounded-xl bg-[#f7f2e8] p-4"><p className="text-[10px] font-bold uppercase tracking-wider text-[#10213f]/45">Due now</p><p className="mt-2 text-sm font-bold text-[#10213f]">{todayTasks.length + overdueCount} next move{todayTasks.length + overdueCount === 1 ? "" : "s"}</p><p className="mt-1 text-xs text-gray-500">Tasks and relationship follow-ups.</p></Link>}
+        </div>}
+      </section>
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <Link href="/dashboard/deals" className="rounded-2xl border border-[#10213f]/10 bg-white p-5 shadow-sm"><p className="text-[10px] font-bold uppercase tracking-[.16em] text-gray-400">Active relationships</p><p className="mt-2 font-serif text-3xl text-[#10213f]">{openCount}</p><p className="mt-1 text-xs text-gray-400">{wonCount} converted to clients</p></Link>
+        <Link href="/dashboard/prospecting" className="rounded-2xl border border-[#10213f]/10 bg-white p-5 shadow-sm"><p className="text-[10px] font-bold uppercase tracking-[.16em] text-gray-400">Qualified pipeline</p><p className="mt-2 font-serif text-3xl text-[#10213f]">{prospectAttention.length}</p><p className="mt-1 text-xs text-gray-400">{interestedCount > 0 ? `${interestedCount} ready for conversation` : "Research moving toward conversations"}</p></Link>
+        <Link href="/dashboard/finance" className="rounded-2xl border border-[#10213f]/10 bg-white p-5 shadow-sm"><p className="text-[10px] font-bold uppercase tracking-[.16em] text-gray-400">Business income</p><p className="mt-2 font-serif text-3xl text-[#10213f]">{netIncome.toLocaleString("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0})}</p><p className="mt-1 text-xs text-gray-400">{revenuePercent}% of annual goal</p></Link>
+        <Link href="/dashboard/books" className="rounded-2xl border border-[#10213f]/10 bg-white p-5 shadow-sm"><p className="text-[10px] font-bold uppercase tracking-[.16em] text-gray-400">Books logged</p><p className="mt-2 font-serif text-3xl text-[#10213f]">{bookTotal}</p><p className="mt-1 text-xs text-gray-400">{daysSinceSale !== null ? `Last entry ${daysSinceSale}d ago` : "No sales entered yet"}</p></Link>
       </div>
 
       {/* Goal bar + Pipeline breakdown side by side */}
