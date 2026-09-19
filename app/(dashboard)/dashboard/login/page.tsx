@@ -26,13 +26,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen bg-[#10213f] flex items-center justify-center px-4 relative overflow-hidden">
+      <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#e86f51]/20 blur-3xl" /><div className="absolute -left-24 bottom-[-80px] h-72 w-72 rounded-full bg-[#a7d8c8]/15 blur-3xl" /><div className="w-full max-w-sm relative">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-[#2a3db4]">Foundations & Horizons</h1>
-          <p className="text-gray-500 text-sm mt-1">Internal Dashboard</p>
+          <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[#f2a18c] mb-3">Private workspace</p><h1 className="font-serif text-3xl text-white">Foundations &amp; Horizons</h1>
+          <p className="text-white/45 text-sm mt-2">Command Center</p>
         </div>
-        <form onSubmit={handleLogin} className="bg-white rounded-lg shadow p-8 space-y-4">
+        <form onSubmit={handleLogin} className="bg-[#fcfbf8] rounded-[24px] shadow-2xl p-8 space-y-4 border border-white/10">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded px-3 py-2">
               {error}
@@ -45,7 +45,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]"
             />
           </div>
           <div>
@@ -55,13 +55,13 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#2a3db4] text-white py-2 rounded text-sm font-medium hover:bg-[#1e2d8a] transition-colors disabled:opacity-50"
+            className="w-full bg-[#2448d8] text-white py-3 rounded-xl text-sm font-bold hover:bg-[#10213f] transition-colors disabled:opacity-50"
           >
             {loading ? "Signing in…" : "Sign in"}
           </button>
