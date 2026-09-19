@@ -1,47 +1,46 @@
 import ContactForm from "@/components/ContactForm";
-import Image from "next/image";
 
 export const metadata = {
-  title: "Contact | Foundations & Horizons",
+  title: "Start a Conversation | Foundations & Horizons",
+  description: "Tell Foundations & Horizons what is happening in your nonprofit. Start with a conversation, not a sales pitch.",
 };
 
 export default function ContactPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-[#2a3db4] text-white py-20 px-4 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">Get in Touch</h1>
-          <p className="text-blue-100 text-lg leading-relaxed">
-            Let&apos;s talk about where your organization is stuck — and how to move forward with clarity.
+      <section className="bg-[#16265f] text-white py-24 px-4">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-200 mb-5">Start with Listening</p>
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">Tell us what&apos;s happening.</h1>
+          <p className="text-blue-100 text-lg md:text-xl leading-relaxed max-w-3xl">
+            You do not need to know exactly what you need. Tell us what is getting in the way, what feels harder than it should, or what you are trying to build.
           </p>
         </div>
       </section>
 
-      {/* Form Section */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           <div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h2>
-            <p className="text-gray-600 leading-relaxed mb-6">
-              At Foundations &amp; Horizons, we specialize in helping nonprofits strengthen their
-              operations, align their leadership, and create clear strategic plans for the future.
+            <h2 className="text-3xl font-bold text-gray-900 mb-5">The first step is a conversation.</h2>
+            <p className="text-gray-600 leading-relaxed mb-5">
+              We are not going to assume that a particular service or tool is the answer. The point of the first conversation is to understand your organization well enough to figure out whether there is a useful way we can help.
             </p>
-            <p className="text-gray-600 leading-relaxed">
-              If you&apos;re ready to build stronger systems, set a clear direction, or explore how
-              we can support your mission, we&apos;d love to hear from you. Send us a message below.
-            </p>
-            <div className="mt-8 rounded-lg overflow-hidden shadow-md">
-              <Image
-                src="/contact-photo.jpg"
-                alt="Mountain road"
-                width={500}
-                height={350}
-                className="w-full object-cover"
-              />
+            <div className="space-y-4 text-gray-700">
+              {[
+                ["Tell us what is happening.", "The good, the frustrating, and the thing everyone keeps working around."],
+                ["We listen and ask questions.", "We want to understand the system behind the symptom."],
+                ["Then we decide what makes sense.", "Sometimes that is hands-on work. Sometimes it is education, a resource, a tool, or simply a clearer next step."],
+              ].map(([title, text]) => (
+                <div key={title} className="border-l-4 border-[#2a3db4] pl-4">
+                  <p className="font-semibold text-gray-900">{title}</p>
+                  <p className="text-sm text-gray-600 mt-1">{text}</p>
+                </div>
+              ))}
             </div>
           </div>
-          <ContactForm />
+          <div className="bg-white border border-gray-200 p-6 md:p-8 shadow-sm">
+            <ContactForm />
+          </div>
         </div>
       </section>
     </>
