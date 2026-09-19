@@ -44,7 +44,7 @@ export default async function DashboardHome() {
       .eq("status", "open").not("next_action_due", "is", null).lte("next_action_due", today).order("next_action_due"),
     supabase.from("deals").select("id, pipeline_id, value").eq("status", "open"),
     supabase.from("deals").select("id").eq("status", "won"),
-    supabase.from("pipelines").select("id, name, color, icon, key").order("sort_order"),
+    supabase.from("pipelines").select("id, name, color, icon, key").neq("key", "software").order("sort_order"),
     supabase.from("linkedin_posts").select("id").eq("status", "posted").gte("posted_date", weekStart),
     supabase.from("linkedin_posts").select("posted_date").eq("status", "posted").order("posted_date", { ascending: false }).limit(1),
     supabase.from("book_sales").select("created_at").order("created_at", { ascending: false }).limit(1),
