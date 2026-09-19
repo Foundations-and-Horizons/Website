@@ -7,14 +7,15 @@ import { createClient } from "@/lib/supabase/client";
 const navItems = [
   { href: "/dashboard", label: "Command Center", mark: "01", exact: true },
   { href: "/dashboard/prospecting", label: "Prospecting", mark: "02" },
-  { href: "/dashboard/inquiries", label: "Inquiries", mark: "03" },
-  { href: "/dashboard/tasks", label: "Work Queue", mark: "04" },
-  { href: "/dashboard/deals", label: "Relationships", mark: "05" },
-  { href: "/dashboard/companies", label: "Organizations", mark: "06" },
-  { href: "/dashboard/contacts", label: "People", mark: "07" },
-  { href: "/dashboard/linkedin", label: "Visibility", mark: "08" },
-  { href: "/dashboard/books", label: "Book", mark: "09" },
-  { href: "/dashboard/finance", label: "Business Health", mark: "10" },
+  { href: "/dashboard/outreach", label: "Outreach Review", mark: "03" },
+  { href: "/dashboard/inquiries", label: "Inquiries", mark: "04" },
+  { href: "/dashboard/tasks", label: "Work Queue", mark: "05" },
+  { href: "/dashboard/deals", label: "Relationships", mark: "06" },
+  { href: "/dashboard/companies", label: "Organizations", mark: "07" },
+  { href: "/dashboard/contacts", label: "People", mark: "08" },
+  { href: "/dashboard/linkedin", label: "Visibility", mark: "09" },
+  { href: "/dashboard/books", label: "Book", mark: "10" },
+  { href: "/dashboard/finance", label: "Business Health", mark: "11" },
 ];
 
 export default function DashboardNav() {
