@@ -81,7 +81,7 @@ export default function BookSalesPage() {
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-[#2a3db4] text-white text-sm px-5 py-2.5 rounded-lg hover:bg-[#1e2d8a] font-medium shadow transition-colors"
+          className="bg-[#2448d8] text-white text-sm px-5 py-2.5 rounded-lg hover:bg-[#10213f] font-medium shadow transition-colors"
         >
           + Log Month
         </button>
@@ -89,24 +89,24 @@ export default function BookSalesPage() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 mt-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">All Time</p>
           <p className="text-3xl font-bold text-gray-900">{totalUnits}</p>
           <p className="text-xs text-gray-400 mt-1">copies sold 🎉</p>
         </div>
-        <div className={`rounded-xl shadow-sm border p-5 ${thisMonth !== null && thisMonth === 0 ? "bg-red-50 border-red-200" : thisMonth !== null && thisMonth === bestMonth ? "bg-green-50 border-green-200" : "bg-white border-gray-100"}`}>
+        <div className={`rounded-2xl shadow-sm border p-5 ${thisMonth !== null && thisMonth === 0 ? "bg-red-50 border-red-200" : thisMonth !== null && thisMonth === bestMonth ? "bg-green-50 border-green-200" : "bg-white border-gray-100"}`}>
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">This Month</p>
           <p className={`text-3xl font-bold ${thisMonth === null ? "text-gray-400" : thisMonth === 0 ? "text-red-500" : thisMonth === bestMonth ? "text-green-600" : "text-gray-900"}`}>
             {thisMonth !== null ? thisMonth : "—"}
           </p>
           <p className="text-xs text-gray-400 mt-1">{thisMonth === bestMonth && thisMonth > 0 ? "best month! 🏆" : thisMonth === 0 ? "zero this month" : "units"}</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">Best Month</p>
           <p className="text-3xl font-bold text-amber-500">{bestMonth || "—"}</p>
           <p className="text-xs text-gray-400 mt-1">units 🏅</p>
         </div>
-        <div className={`rounded-xl shadow-sm border p-5 ${lastLogged !== null && lastLogged > 30 ? "bg-amber-50 border-amber-200" : "bg-white border-gray-100"}`}>
+        <div className={`rounded-2xl shadow-sm border p-5 ${lastLogged !== null && lastLogged > 30 ? "bg-amber-50 border-amber-200" : "bg-white border-gray-100"}`}>
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">Last Logged</p>
           <p className={`text-3xl font-bold ${lastLogged !== null && lastLogged > 30 ? "text-amber-500" : "text-gray-900"}`}>
             {lastLogged !== null ? `${lastLogged}d` : "—"}
@@ -119,7 +119,7 @@ export default function BookSalesPage() {
 
       {/* Line chart */}
       {sorted.length > 1 && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-5">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
           <h2 className="text-sm font-bold text-gray-700 mb-3">📈 Sales Trend</h2>
           <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full" style={{ height: 160 }}>
             {[0, 0.25, 0.5, 0.75, 1].map((frac) => {
@@ -131,11 +131,11 @@ export default function BookSalesPage() {
                 </g>
               );
             })}
-            <polygon points={areaPoints} fill="#2a3db4" fillOpacity={0.08} />
-            <polyline points={points} fill="none" stroke="#2a3db4" strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
+            <polygon points={areaPoints} fill="#2448d8" fillOpacity={0.08} />
+            <polyline points={points} fill="none" stroke="#2448d8" strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
             {sorted.map((s, i) => (
               <g key={s.id}>
-                <circle cx={toX(i)} cy={toY(s.units_sold)} r={4} fill={s.units_sold === 0 ? "#fca5a5" : "#2a3db4"} stroke="white" strokeWidth={1.5} />
+                <circle cx={toX(i)} cy={toY(s.units_sold)} r={4} fill={s.units_sold === 0 ? "#fca5a5" : "#2448d8"} stroke="white" strokeWidth={1.5} />
                 <text x={toX(i)} y={chartHeight - padBottom + 14} textAnchor="middle" fontSize={9} fill="#9ca3af">
                   {formatPeriod(s.period)}
                 </text>
@@ -147,14 +147,14 @@ export default function BookSalesPage() {
 
       {/* Bar chart */}
       {sales.length > 0 && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-5">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
           <h2 className="text-sm font-bold text-gray-700 mb-4">📊 Units by Month</h2>
           <div className="flex items-end gap-2 h-32 overflow-x-auto pb-2">
             {sorted.map((s) => (
               <div key={s.id} className="flex flex-col items-center min-w-[48px]">
                 <span className={`text-xs mb-1 font-medium ${Number(s.units_sold) === 0 ? "text-red-400" : "text-gray-600"}`}>{s.units_sold}</span>
                 <div
-                  className={`rounded-t w-8 transition-all ${Number(s.units_sold) === 0 ? "bg-red-300 border border-red-400" : Number(s.units_sold) === bestMonth ? "bg-amber-400" : "bg-[#2a3db4]"}`}
+                  className={`rounded-t w-8 transition-all ${Number(s.units_sold) === 0 ? "bg-red-300 border border-red-400" : Number(s.units_sold) === bestMonth ? "bg-amber-400" : "bg-[#2448d8]"}`}
                   style={{ height: Number(s.units_sold) === 0 ? "24px" : `${Math.max(4, (Number(s.units_sold) / maxUnits) * 100)}px` }}
                 />
                 <span className="text-gray-400 mt-1 whitespace-nowrap" style={{ fontSize: "9px" }}>
@@ -167,12 +167,12 @@ export default function BookSalesPage() {
       )}
 
       {/* Log table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-50">
           <h2 className="text-sm font-bold text-gray-700">All Entries</h2>
         </div>
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-xs text-gray-400 uppercase tracking-wide">
+          <thead className="bg-[#fcfbf8] text-xs text-gray-400 uppercase tracking-wide">
             <tr>
               <th className="text-left px-5 py-3">Month</th>
               <th className="text-left px-5 py-3">Units</th>
@@ -185,7 +185,7 @@ export default function BookSalesPage() {
               <tr><td colSpan={4} className="px-5 py-8 text-center text-gray-400">No entries yet — log your first month!</td></tr>
             )}
             {sales.map((s) => (
-              <tr key={s.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={s.id} className="hover:bg-[#fcfbf8] transition-colors">
                 <td className="px-5 py-3 font-medium text-gray-800">{formatPeriod(s.period)}</td>
                 <td className="px-5 py-3">
                   <span className={`font-bold ${s.units_sold === 0 ? "text-red-400" : s.units_sold === bestMonth ? "text-amber-500" : "text-gray-900"}`}>
@@ -213,24 +213,24 @@ export default function BookSalesPage() {
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Month</label>
                 <input type="month" value={form.period} onChange={(e) => setForm((f) => ({ ...f, period: e.target.value }))}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Units Sold</label>
                 <input type="number" min="0" value={form.units_sold} onChange={(e) => setForm((f) => ({ ...f, units_sold: e.target.value }))}
                   placeholder="0"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">Notes</label>
                 <input value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                   placeholder="Anything notable this month?"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2a3db4]/30" />
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2448d8]/30" />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => setShowForm(false)} className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50">Cancel</button>
-              <button onClick={save} className="flex-1 py-2.5 bg-[#2a3db4] text-white rounded-lg text-sm font-semibold hover:bg-[#1e2d8a]">Save</button>
+              <button onClick={() => setShowForm(false)} className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-[#fcfbf8]">Cancel</button>
+              <button onClick={save} className="flex-1 py-2.5 bg-[#2448d8] text-white rounded-lg text-sm font-semibold hover:bg-[#10213f]">Save</button>
             </div>
           </div>
         </div>
