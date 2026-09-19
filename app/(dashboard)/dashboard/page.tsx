@@ -56,7 +56,7 @@ export default async function DashboardHome() {
   const goal = Number(goalRow?.value || 25000);
   const netIncome = (transactions || []).reduce((s, t) => t.type === "income" ? s + Number(t.amount) : s - Number(t.amount), 0);
   const revenuePercent = Math.min(100, Math.max(0, Math.round((netIncome / goal) * 100)));
-  const barColor = netIncome < 0 ? "bg-red-500" : revenuePercent >= 75 ? "bg-green-500" : "bg-[#2a3db4]";
+  const barColor = netIncome < 0 ? "bg-red-500" : revenuePercent >= 75 ? "bg-green-500" : "bg-[#2448d8]";
 
   // Pipeline
   const overdueDeals = overdueDealRows || [];
@@ -83,25 +83,37 @@ export default async function DashboardHome() {
   const todayTasks = (openTasks || []).filter((t) => t.due_date && t.due_date <= today);
   const upcomingTasks = (openTasks || []).filter((t) => !t.due_date || t.due_date > today).slice(0, 3);
 
-  function motiveLine() {
-    if (overdueCount > 0) return `${overdueCount} deal${overdueCount > 1 ? "s" : ""} waiting on you. Don't let momentum die.`;
-    if (postsCount >= 3) return "LinkedIn goal hit this week. Systems are working. Keep going.";
-    if (revenuePercent >= 75) return "In the final stretch on the annual goal. Push.";
-    if (todayTasks.length > 0) return `${todayTasks.length} task${todayTasks.length > 1 ? "s" : ""} on deck today. Let's knock them out.`;
-    return "Every day you show up compounds. Let's build.";
-  }
-
   return (
     <div className="space-y-6 pb-10">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">{greeting()}, Stephen. 👋</h1>
-        <p className="text-gray-500 mt-1">{motiveLine()}</p>
-      </div>
+      {/* Command center hero */}
+      <section className="relative overflow-hidden rounded-[28px] bg-[#10213f] px-6 py-7 sm:px-8 sm:py-9 text-white shadow-[0_20px_60px_rgba(16,33,63,.16)]">
+        <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#e86f51]/20 blur-3xl" />
+        <div className="absolute right-20 bottom-[-90px] h-52 w-52 rounded-full bg-[#a7d8c8]/15 blur-3xl" />
+        <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+          <div className="max-w-3xl">
+            <p className="mb-3 text-[10px] font-bold uppercase tracking-[.24em] text-[#f2a18c]">F&H Command Center</p>
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.05]">{greeting()}, Stephen.</h1>
+            <p className="mt-4 max-w-2xl text-sm sm:text-base leading-7 text-white/60">
+              Keep Foundations &amp; Horizons moving while your attention stays on decisions, relationships, and client work.
+            </p>
+          </div>
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 xl:w-[390px]">
+            <div className="rounded-2xl border border-white/10 bg-white/[.06] p-3 sm:p-4">
+              <p className="text-2xl font-bold">{overdueCount}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Need you</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[.06] p-3 sm:p-4">
+              <p className="text-2xl font-bold">{openCount}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">Active</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[.06] p-3 sm:p-4">
+              <p className="text-2xl font-bold">{openTasks?.length || 0}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">On radar</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Business pulse */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-        <Link href="/dashboard/deals" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${overdueCount > 0 ? "bg-red-50 border-red-400" : openCount >= 10 ? "bg-green-50 border-green-400" : "bg-white border-[#2a3db4]"}`}>
+        <Link href="/dashboard/deals" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${overdueCount > 0 ? "bg-red-50 border-red-400" : openCount >= 10 ? "bg-green-50 border-green-400" : "bg-white border-[#2448d8]"}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Pipeline</p>
             <span className="text-xl">🎯</span>
@@ -114,7 +126,7 @@ export default async function DashboardHome() {
           </p>
         </Link>
 
-        <Link href="/dashboard/linkedin" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${postsCount >= 3 ? "bg-green-50 border-green-400" : "bg-white border-[#c026d3]"}`}>
+        <Link href="/dashboard/linkedin" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${postsCount >= 3 ? "bg-green-50 border-green-400" : "bg-white border-[#c026d3]"}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">LinkedIn</p>
             <span className="text-xl">💼</span>
@@ -127,7 +139,7 @@ export default async function DashboardHome() {
           </p>
         </Link>
 
-        <Link href="/dashboard/books" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${daysSinceSale !== null && daysSinceSale > 30 ? "bg-amber-50 border-amber-400" : "bg-white border-amber-400"}`}>
+        <Link href="/dashboard/books" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${daysSinceSale !== null && daysSinceSale > 30 ? "bg-amber-50 border-amber-400" : "bg-white border-amber-400"}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Book Sales</p>
             <span className="text-xl">📚</span>
@@ -139,7 +151,7 @@ export default async function DashboardHome() {
           </p>
         </Link>
 
-        <Link href="/dashboard/finance" className={`rounded-xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${netIncome < 0 ? "bg-red-50 border-red-400" : netIncome >= goal * 0.75 ? "bg-green-50 border-green-400" : "bg-white border-green-500"}`}>
+        <Link href="/dashboard/finance" className={`rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border-t-4 ${netIncome < 0 ? "bg-red-50 border-red-400" : netIncome >= goal * 0.75 ? "bg-green-50 border-green-400" : "bg-white border-green-500"}`}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Net Income</p>
             <span className="text-xl">💰</span>
@@ -153,7 +165,7 @@ export default async function DashboardHome() {
 
       {/* Goal bar + Pipeline breakdown side by side */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <Link href="/dashboard/finance" className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-5 border border-gray-100">
+        <Link href="/dashboard/finance" className="block bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border border-gray-100">
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-sm font-bold text-gray-800">Annual Net Income Goal</p>
@@ -161,7 +173,7 @@ export default async function DashboardHome() {
                 {netIncome >= goal ? "Goal achieved! 🎉" : `$${Math.max(0, goal - netIncome).toLocaleString()} to go`}
               </p>
             </div>
-            <span className={`text-2xl font-bold ${revenuePercent >= 100 ? "text-green-600" : revenuePercent >= 50 ? "text-[#2a3db4]" : "text-gray-700"}`}>
+            <span className={`text-2xl font-bold ${revenuePercent >= 100 ? "text-green-600" : revenuePercent >= 50 ? "text-[#2448d8]" : "text-gray-700"}`}>
               {revenuePercent}%
             </span>
           </div>
@@ -174,9 +186,9 @@ export default async function DashboardHome() {
           </div>
         </Link>
 
-        <Link href="/dashboard/deals" className="block bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-5 border border-gray-100">
+        <Link href="/dashboard/deals" className="block bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-5 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-bold text-gray-800">Pipeline Breakdown</p>
+            <p className="text-sm font-bold text-gray-800">Relationship Pipeline</p>
             <p className="text-xs text-gray-400">{openCount} open · {pipelineValue > 0 ? `$${pipelineValue.toLocaleString()} value` : "no value logged"}</p>
           </div>
           <div className="space-y-3">
@@ -203,7 +215,7 @@ export default async function DashboardHome() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 
         {/* Overdue deals */}
-        <div className={`bg-white rounded-xl shadow-sm border p-5 ${overdueCount > 0 ? "border-red-200" : "border-green-200"}`}>
+        <div className={`bg-white rounded-2xl shadow-sm border p-5 ${overdueCount > 0 ? "border-red-200" : "border-green-200"}`}>
           <div className="flex items-center gap-2 mb-4">
             <span>{overdueCount > 0 ? "🔴" : "✅"}</span>
             <h2 className="text-sm font-bold text-gray-800">
@@ -223,19 +235,19 @@ export default async function DashboardHome() {
                 </div>
               ))}
               {overdueCount > 5 && <p className="text-xs text-gray-400 text-center">+{overdueCount - 5} more</p>}
-              <Link href="/dashboard/deals" className="block text-center text-xs text-[#2a3db4] font-semibold hover:underline pt-1">Open Pipeline →</Link>
+              <Link href="/dashboard/deals" className="block text-center text-xs text-[#2448d8] font-semibold hover:underline pt-1">Open Relationships →</Link>
             </div>
           ) : (
             <div className="text-center py-4">
               <p className="text-sm text-gray-500">You're on top of it.</p>
-              <p className="text-xs text-gray-400 mt-1">Keep deals moving forward.</p>
-              <Link href="/dashboard/deals" className="mt-3 inline-block text-xs text-[#2a3db4] font-semibold hover:underline">View Pipeline →</Link>
+              <p className="text-xs text-gray-400 mt-1">Nothing is asking for your judgment right now.</p>
+              <Link href="/dashboard/deals" className="mt-3 inline-block text-xs text-[#2448d8] font-semibold hover:underline">View Relationships →</Link>
             </div>
           )}
         </div>
 
         {/* Tasks */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <span>📋</span>
@@ -271,16 +283,16 @@ export default async function DashboardHome() {
             </div>
           )}
           {!todayTasks.length && !upcomingTasks.length && (
-            <p className="text-sm text-gray-400 text-center py-4">No open tasks. Add one from the Pipeline page.</p>
+            <p className="text-sm text-gray-400 text-center py-4">No open tasks. The queue is clear.</p>
           )}
         </div>
       </div>
 
       {/* Command center actions */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Move the business</p>
         <div className="flex flex-wrap gap-2">
-          <Link href="/dashboard/deals" className="flex items-center gap-2 bg-[#2a3db4] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#1e2d8a] font-medium transition-colors">
+          <Link href="/dashboard/deals" className="flex items-center gap-2 bg-[#2448d8] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#10213f] font-medium transition-colors">
             🎯 Relationship Pipeline
           </Link>
           <Link href="/dashboard/contacts" className="flex items-center gap-2 bg-white text-gray-700 text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 font-medium transition-colors">
