@@ -1,16 +1,11 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Georgia, serif;
-}
+:root{--ink:#14213d;--navy:#10213f;--blue:#2448d8;--sky:#dce8ff;--cream:#f7f2e8;--paper:#fcfbf8;--coral:#e86f51;--mint:#a7d8c8;--foreground:#172033;--background:#fcfbf8}
+html{scroll-behavior:smooth}
+body{background:var(--background);color:var(--foreground);font-family:Arial,Helvetica,sans-serif}
+h1,h2,h3{letter-spacing:-.025em}
+::selection{background:#f1b7a7;color:#14213d}
+.fh-hero{background:radial-gradient(circle at 82% 18%,rgba(232,111,81,.28),transparent 24%),radial-gradient(circle at 70% 80%,rgba(167,216,200,.16),transparent 30%),linear-gradient(135deg,#0d1b34 0%,#152d55 60%,#19345d 100%)}
+.fh-kicker{font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:#e86f51}
+.fh-display{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.045em}
+.fh-card{transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}.fh-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(20,33,61,.10)}
+.fh-button{transition:transform .2s ease,box-shadow .2s ease}.fh-button:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(20,33,61,.14)}
