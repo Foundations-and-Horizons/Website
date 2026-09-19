@@ -1,78 +1,76 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "FoundationWorks | Foundations & Horizons",
-  description: "FoundationWorks is a practical technology tool within Foundations & Horizons, built around real nonprofit workflows.",
+  title: "FoundationWorks | Technology That Fits the Nonprofit",
+  description: "FoundationWorks turns real nonprofit workflows into practical technology built around the organization.",
 };
+
+const moments = [
+  ["The spreadsheet became the system.", "Information is scattered, duplicated, and dependent on the person who knows which tab is current."],
+  ["Staff are doing work volunteers could do themselves.", "Routine sign-ups, updates, confirmations, and questions keep flowing back through staff."],
+  ["The software technically works—but not for us.", "Your team has built workarounds around a platform that was never designed for the way your organization operates."],
+  ["We can see the problem. We just can't find the tool.", "Sometimes the workflow is clear and the missing piece really is technology shaped around it."],
+];
 
 export default function FoundationWorksPage() {
   return (
     <>
-      <section className="bg-[#16265f] text-white py-24 px-4">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-200 mb-5">One Tool in the Toolbox</p>
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">FoundationWorks</h1>
-          <p className="text-blue-100 text-xl leading-relaxed max-w-3xl">
-            Practical technology built around the way a nonprofit actually works — used when technology is the right answer to an operational problem.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">Why It Exists</p>
-          <h2 className="text-3xl font-bold text-gray-900 mb-7">Technology should serve the system — not become the system.</h2>
-          <div className="space-y-5 text-gray-600 text-lg leading-relaxed">
-            <p>FoundationWorks grew out of real nonprofit operations work. The starting point was not “build software.” It was “there has to be a better way to do this work.”</p>
-            <p>When a process is clear and a tool can remove friction, technology can be powerful. When the underlying process is unclear, adding software usually just makes the confusion more expensive.</p>
-            <p>That is why FoundationWorks sits inside the larger Foundations &amp; Horizons approach. We understand the operation first, then determine whether a custom tool makes sense.</p>
+      <section className="relative overflow-hidden bg-[#0e1b49] text-white py-28 md:py-36 px-5">
+        <div className="absolute right-[-120px] top-[-120px] h-[520px] w-[520px] rounded-full border border-white/10" />
+        <div className="absolute right-[40px] top-[40px] h-[280px] w-[280px] rounded-full border border-white/10" />
+        <div className="relative max-w-7xl mx-auto">
+          <p className="text-sm font-semibold tracking-[0.22em] uppercase text-blue-200 mb-5">FoundationWorks</p>
+          <h1 className="text-5xl md:text-7xl font-bold leading-[1.02] tracking-tight max-w-5xl mb-7">What if your software actually felt like your organization?</h1>
+          <p className="text-xl md:text-2xl text-blue-100 leading-relaxed max-w-3xl mb-10">Not another platform your team has to work around. Practical technology shaped by your programs, people, workflows, and the job that actually needs to get done.</p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link href="/Volunteer-demo" className="bg-white text-[#2439a6] px-8 py-4 font-semibold text-center">Experience a Working Example</Link>
+            <Link href="/contact" className="border border-white/60 px-8 py-4 font-semibold text-center hover:bg-white/10">Tell Us What You Wish Worked Better</Link>
           </div>
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gray-50 border-y border-gray-100">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold tracking-[0.18em] uppercase text-[#2a3db4] mb-3">Available Now</p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">FoundationWorks Volunteers</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">A customizable volunteer-management system designed to make volunteer operations easier to run, easier to measure, and easier for volunteers to participate in.</p>
+      <section className="py-24 md:py-28 px-5 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-4xl mb-14">
+            <p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#2a3db4] mb-4">Does Any of This Sound Familiar?</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-950">The need for software usually shows up as friction first.</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              ["Volunteer profiles & roles", "Keep volunteer information, roles, participation, and history in one place."],
-              ["Scheduling & self-service", "Make it easier for volunteers to see opportunities, sign up, and participate without adding administrative work."],
-              ["Hours & reporting", "Capture service activity and produce useful operational reports without rebuilding spreadsheets."],
-              ["Recognition", "Make milestones and contribution visible so volunteer recognition becomes part of the system, not something someone remembers when there is time."],
-            ].map(([title, text]) => (
-              <div key={title} className="bg-white border border-gray-200 p-7">
-                <h3 className="font-bold text-gray-900 mb-2">{title}</h3>
-                <p className="text-gray-600 leading-relaxed">{text}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/solutions/volunteer-management" className="bg-[#2a3db4] text-white px-8 py-3 font-semibold text-center hover:bg-[#1e2e8a]">See the Volunteer Tool</Link>
-            <Link href="/contact" className="border-2 border-[#2a3db4] text-[#2a3db4] px-8 py-3 font-semibold text-center hover:bg-white">Talk Through Your Needs</Link>
+          <div className="grid md:grid-cols-2 gap-5">
+            {moments.map(([title,text]) => <div key={title} className="p-8 md:p-10 bg-[#f5f7fc] border border-gray-200"><h3 className="text-2xl font-bold text-gray-950 mb-3">{title}</h3><p className="text-lg text-gray-600 leading-relaxed">{text}</p></div>)}
           </div>
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-5">The tool is not the point.</h2>
-          <p className="text-lg text-gray-600 leading-relaxed mb-7">
-            The point is a stronger operation. If the right answer is a process change, training, documentation, or leadership work, that is what we should do. If the right answer includes technology, FoundationWorks is available.
-          </p>
-          <Link href="/services" className="text-[#2a3db4] font-semibold">See the larger approach →</Link>
+      <section className="py-24 md:py-28 px-5 bg-[#eef2ff] border-y border-blue-100">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#2a3db4] mb-4">See Yourself in the Possibility</p>
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-950 mb-6">This demo is not the product. It is proof of what is possible.</h2>
+            <p className="text-xl text-gray-600 leading-relaxed mb-5">The Volunteer Hub shows what happens when a system begins with the people doing the work: volunteers can handle more for themselves, managers can see what is happening, and recognition can become part of the operation.</p>
+            <p className="text-xl font-semibold text-gray-900 mb-9">As you explore it, the question is not “Do I need this exact software?” It is “What would this look like for us?”</p>
+            <Link href="/Volunteer-demo" className="inline-block bg-[#2a3db4] text-white px-8 py-4 font-semibold hover:bg-[#1e2e8a]">Open the Volunteer Demo →</Link>
+          </div>
+          <div className="bg-[#111f52] text-white shadow-2xl p-7 md:p-10">
+            <div className="flex items-center justify-between border-b border-white/15 pb-5 mb-6"><div><p className="text-xs uppercase tracking-[.18em] text-blue-200">Example Experience</p><h3 className="text-2xl font-bold mt-1">Volunteer Hub</h3></div><span className="text-xs bg-emerald-400/15 text-emerald-200 px-3 py-1 rounded-full">Live Demo</span></div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {["Find & join opportunities","Manage your own schedule","Track participation & hours","Celebrate milestones","See program activity","Reduce staff follow-up"].map((x,i)=><div key={x} className="bg-white/8 border border-white/10 p-5"><div className="text-blue-300 text-sm mb-2">0{i+1}</div><p className="font-semibold">{x}</p></div>)}
+            </div>
+            <p className="mt-7 text-blue-100">A working example of the principle: give people the right information and the right actions at the right time.</p>
+          </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-[#2a3db4] text-white text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">Want to see whether it fits?</h2>
-          <p className="text-blue-100 mb-8">Start with a conversation about how your volunteer operation works today.</p>
-          <Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold hover:bg-blue-50">Start a Conversation</Link>
+      <section className="py-24 md:py-28 px-5 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl mb-14"><p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#2a3db4] mb-4">How FoundationWorks Begins</p><h2 className="text-4xl md:text-5xl font-bold text-gray-950 mb-5">We don't sell you software and then discover your problem.</h2><p className="text-xl text-gray-600">We understand the operation first. Technology earns its place only when it makes the work clearer, easier, or more sustainable.</p></div>
+          <div className="grid md:grid-cols-4 gap-px bg-gray-200 border border-gray-200">
+            {[["01","Listen","Show us how the work happens now—including the workarounds."],["02","Map","Separate the real process from the friction that has accumulated around it."],["03","Build","Shape the right tool around the workflow instead of forcing the workflow into a template."],["04","Hand Over","Train the team, make it usable, and keep the organization in control."]].map(([n,t,d])=><div key={n} className="bg-white p-7"><div className="text-[#2a3db4] font-bold mb-10">{n}</div><h3 className="text-2xl font-bold mb-3">{t}</h3><p className="text-gray-600 leading-relaxed">{d}</p></div>)}
+          </div>
         </div>
+      </section>
+
+      <section className="py-24 px-5 bg-[#0f1c4b] text-white text-center">
+        <div className="max-w-4xl mx-auto"><p className="text-blue-200 uppercase tracking-[.2em] text-sm font-semibold mb-4">Your Organization Is the Starting Point</p><h2 className="text-4xl md:text-6xl font-bold mb-6">You don't need to know what should be built.</h2><p className="text-xl text-blue-100 leading-relaxed mb-9">Tell us what keeps taking too long, falling through the cracks, living in spreadsheets, or depending on one person. We'll figure out whether technology belongs in the answer.</p><Link href="/contact" className="inline-block bg-white text-[#2a3db4] px-9 py-4 font-semibold">Start With the Problem</Link></div>
       </section>
     </>
   );
