@@ -53,10 +53,10 @@ export default function SpeakingPage() {
       <section className="bg-[#2a3db4] text-white py-20 px-4 text-center">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-            Equipping Nonprofit Leaders<br />to Build What Lasts
+            Helping Nonprofit Leaders Build Systems That Last
           </h1>
           <p className="text-blue-100 text-lg leading-relaxed">
-            Practical, direct, and grounded in real nonprofit operations experience. No theory, no generic motivation — just what actually works.
+            Practical, direct, and grounded in real nonprofit operations experience. The goal is not more motivation for the week — it is clearer thinking, stronger systems, and something useful to take back to the organization.
           </p>
         </div>
       </section>
@@ -97,7 +97,7 @@ export default function SpeakingPage() {
       <section className="py-20 px-4 bg-gray-50 border-t border-gray-100">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Speaking Topics</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Ideas Worth Taking Back to Work</h2>
             <p className="text-gray-500 max-w-2xl mx-auto">Each session is built around practical takeaways — not inspiration that fades before the drive home.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
