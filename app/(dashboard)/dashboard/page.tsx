@@ -30,6 +30,7 @@ export default async function DashboardHome() {
     { data: openDeals },
     { data: wonDeals },
     { data: pipelines },
+    { data: softwarePipeline },
     { data: postsThisWeek },
     { data: lastPost },
     { data: lastSale },
@@ -47,6 +48,7 @@ export default async function DashboardHome() {
     supabase.from("deals").select("id, pipeline_id, value").eq("status", "open"),
     supabase.from("deals").select("id").eq("status", "won"),
     supabase.from("pipelines").select("id, name, color, icon, key").neq("key", "software").order("sort_order"),
+    supabase.from("pipelines").select("id").eq("key", "software").maybeSingle(),
     supabase.from("linkedin_posts").select("id").eq("status", "posted").gte("posted_date", weekStart),
     supabase.from("linkedin_posts").select("posted_date").eq("status", "posted").order("posted_date", { ascending: false }).limit(1),
     supabase.from("book_sales").select("created_at").order("created_at", { ascending: false }).limit(1),
@@ -67,12 +69,13 @@ export default async function DashboardHome() {
   const barColor = netIncome < 0 ? "bg-red-500" : revenuePercent >= 75 ? "bg-green-500" : "bg-[#2448d8]";
 
   // Pipeline
-  const softwarePipelineId = (pipelines || []).find((p) => p.key === "software")?.id;
+  const softwarePipelineId = softwarePipeline?.id;
   const overdueDeals = (overdueDealRows || []).filter((d) => d.pipeline_id !== softwarePipelineId);
   const overdueCount = overdueDeals.length;
-  const openCount = openDeals?.length || 0;
+  const visibleOpenDeals = (openDeals || []).filter((d) => d.pipeline_id !== softwarePipelineId);
+  const openCount = visibleOpenDeals.length;
   const wonCount = wonDeals?.length || 0;
-  const pipelineValue = (openDeals || []).reduce((s, d) => s + Number(d.value || 0), 0);
+  const pipelineValue = visibleOpenDeals.reduce((s, d) => s + Number(d.value || 0), 0);
 
   const pipelineStats = (pipelines || []).map((p) => ({
     ...p,
