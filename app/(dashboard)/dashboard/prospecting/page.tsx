@@ -18,7 +18,7 @@ export default function ProspectingPage(){
   const {data:pipeline}=await supabase.from("pipelines").select("id").eq("key","fh_relationships").single(); if(!pipeline){setSaving(false);return}
   const {data:stage}=await supabase.from("pipeline_stages").select("id").eq("pipeline_id",pipeline.id).eq("key","conversation").single();
   const {data:deal}=await supabase.from("deals").insert({title:p.organization_name,pipeline_id:pipeline.id,stage_id:stage?.id||null,company_id:companyId,primary_contact_id:contactId,status:"open",next_action:"Have the human conversation",notes:[p.fit_reason,p.opportunity_signal].filter(Boolean).join("\n\n")}).select("id").single();
-  if(deal?.id) await supabase.from("activities").insert({type:"system",subject:"Prospect handed to Stephen",body:"Qualified prospect became a human conversation.",deal_id:deal.id,company_id:companyId,contact_id:contactId});
+  if(deal?.id){await supabase.from("activities").insert({type:"system",subject:"Prospect handed to Stephen",body:"Qualified prospect became a human conversation.",deal_id:deal.id,company_id:companyId,contact_id:contactId});await supabase.from("tasks").insert({title:`Talk with ${p.contact_name||p.organization_name}`,priority:"high",deal_id:deal.id,contact_id:contactId});}
   await supabase.from("prospects").update({status:"converted",updated_at:new Date().toISOString()}).eq("id",p.id);setSelected({...p,status:"converted"});await load();setSaving(false)
  }
  const visible=items.filter(i=>filter==="all"?true:filter==="active"?!["declined","do_not_contact","converted"].includes(i.status):i.status===filter);
