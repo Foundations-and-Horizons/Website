@@ -42,8 +42,7 @@ export default async function DashboardHome() {
     { data: prospectRows },
     { data: outreachReview },
   ] = await Promise.all([
-    supabase.from("deals").select("id, title, next_action, next_action_due, companies(name)")
-      .eq("status", "open").not("next_action_due", "is", null).lte("next_action_due", today).order("next_action_due"),
+    supabase.from("deals").select("id, title, next_action, next_action_due, pipeline_id, companies(name)")\n      .eq("status", "open").not("next_action_due", "is", null).lte("next_action_due", today).order("next_action_due"),
     supabase.from("deals").select("id, pipeline_id, value").eq("status", "open"),
     supabase.from("deals").select("id").eq("status", "won"),
     supabase.from("pipelines").select("id, name, color, icon, key").neq("key", "software").order("sort_order"),
@@ -67,8 +66,7 @@ export default async function DashboardHome() {
   const barColor = netIncome < 0 ? "bg-red-500" : revenuePercent >= 75 ? "bg-green-500" : "bg-[#2448d8]";
 
   // Pipeline
-  const overdueDeals = overdueDealRows || [];
-  const overdueCount = overdueDeals.length;
+  const softwarePipelineId = (pipelines || []).find((p) => p.key === "software")?.id;\n  const overdueDeals = (overdueDealRows || []).filter((d) => d.pipeline_id !== softwarePipelineId);\n  const overdueCount = overdueDeals.length;
   const openCount = openDeals?.length || 0;
   const wonCount = wonDeals?.length || 0;
   const pipelineValue = (openDeals || []).reduce((s, d) => s + Number(d.value || 0), 0);
