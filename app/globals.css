@@ -21,3 +21,22 @@ body{overflow-x:hidden}.fh-progress{position:fixed;top:0;left:0;height:2px;width
 .fh-glow{position:absolute;border-radius:999px;filter:blur(70px);opacity:.22;animation:fhPulse 7s ease-in-out infinite}
 .fh-link{position:relative}.fh-link:after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:currentColor;transition:right .3s ease}.fh-link:hover:after{right:0}
 @keyframes fhFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}@keyframes fhMarquee{to{transform:translateX(-50%)}}@keyframes fhSpin{to{transform:rotate(360deg)}}@keyframes fhPulse{50%{transform:scale(1.16);opacity:.32}}@keyframes fhFlow{0%,100%{opacity:.35;transform:scaleX(.65)}50%{opacity:1;transform:scaleX(1)}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.fh-reveal{opacity:1;transform:none;transition:none}.fh-float,.fh-float-slow,.fh-wordstream,.fh-orbit,.fh-glow,.fh-flowline{animation:none!important}.fh-progress{display:none}}@media(max-width:767px){.fh-reveal{transform:translateY(18px)}.fh-wordstream{animation-duration:22s}}
+
+/* Mobile-first guardrails for the marketing journey */
+img,svg,video{max-width:100%;height:auto}
+main{min-width:0}
+@media(max-width:767px){
+  .fh-hero{min-height:auto!important}
+  .fh-hero h1{font-size:clamp(2.75rem,13vw,4.15rem)!important;line-height:.96!important;overflow-wrap:anywhere}
+  main h2{font-size:clamp(2.35rem,11vw,3.5rem)!important;line-height:1!important;overflow-wrap:anywhere}
+  main h3{overflow-wrap:anywhere}
+  main section{overflow:hidden}
+  main section>div{min-width:0}
+  .fh-orbit{opacity:.55;transform:scale(.72)}
+  .fh-glow{opacity:.15}
+  .fh-card:hover,.fh-button:hover{transform:none}
+}
+@media(max-width:390px){
+  .fh-hero h1{font-size:2.65rem!important}
+  main h2{font-size:2.25rem!important}
+}
