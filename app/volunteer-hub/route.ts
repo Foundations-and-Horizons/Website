@@ -1,11 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-export async function GET(req: NextRequest) {
-  const hasAccess = req.cookies.get("fh_demo_access")?.value === "1";
-  if (!hasAccess) return NextResponse.redirect(new URL("/gate", req.url));
-
+export async function GET() {
   const { readFileSync } = await import("fs");
   const { join } = await import("path");
 
