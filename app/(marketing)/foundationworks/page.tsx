@@ -53,7 +53,7 @@ export default function FoundationWorksPage() {
           <div className="bg-[#111f52] text-white shadow-2xl p-7 md:p-10">
             <div className="flex items-center justify-between border-b border-white/15 pb-5 mb-6"><div><p className="text-xs uppercase tracking-[.18em] text-blue-200">Example Experience</p><h3 className="text-2xl font-bold mt-1">Volunteer Hub</h3></div><span className="text-xs bg-emerald-400/15 text-emerald-200 px-3 py-1 rounded-full">Live Demo</span></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              {["Find & join opportunities","Manage your own schedule","Track participation & hours","Celebrate milestones","See program activity","Reduce staff follow-up"].map((x,i)=><div key={x} className="bg-white/8 border border-white/10 p-5"><div className="text-blue-300 text-sm mb-2">0{i+1}</div><p className="font-semibold">{x}</p></div>)}
+              {["Find & join opportunities","Manage your own schedule","Track participation & hours","Celebrate milestones","See program activity","Reduce staff follow-up"].map((x)=><div key={x} className="bg-white/8 border border-white/10 p-5"><div className="h-1 w-8 bg-blue-300 mb-4"/><p className="font-semibold">{x}</p></div>)}
             </div>
             <p className="mt-7 text-blue-100">A working example of the principle: give people the right information and the right actions at the right time.</p>
           </div>
@@ -64,7 +64,7 @@ export default function FoundationWorksPage() {
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl mb-14"><p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#2a3db4] mb-4">How FoundationWorks Begins</p><h2 className="text-4xl md:text-5xl font-bold text-gray-950 mb-5">We don't sell you software and then discover your problem.</h2><p className="text-xl text-gray-600">We understand the operation first. Technology earns its place only when it makes the work clearer, easier, or more sustainable.</p></div>
           <div className="grid md:grid-cols-4 gap-px bg-gray-200 border border-gray-200">
-            {[["01","Listen","Show us how the work happens now—including the workarounds."],["02","Map","Separate the real process from the friction that has accumulated around it."],["03","Build","Shape the right tool around the workflow instead of forcing the workflow into a template."],["04","Hand Over","Train the team, hand over the system and its infrastructure, and keep the organization in control."]].map(([n,t,d])=><div key={n} className="bg-white p-7"><div className="text-[#2a3db4] font-bold mb-10">{n}</div><h3 className="text-2xl font-bold mb-3">{t}</h3><p className="text-gray-600 leading-relaxed">{d}</p></div>)}
+            {[["Listen","Show us how the work happens now—including the workarounds."],["Map","Separate the real process from the friction that has accumulated around it."],["Build","Shape the right tool around the workflow instead of forcing the workflow into a template."],["Hand Over","Train the team, hand over the system and its infrastructure, and keep the organization in control."]].map(([t,d])=><div key={t} className="bg-white p-7"><div className="h-1 w-10 bg-[#2a3db4] mb-8"/><h3 className="text-2xl font-bold mb-3">{t}</h3><p className="text-gray-600 leading-relaxed">{d}</p></div>)}
           </div>
         </div>
       </section>
