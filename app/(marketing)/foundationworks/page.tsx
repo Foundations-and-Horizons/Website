@@ -23,7 +23,7 @@ export default function FoundationWorksPage() {
           <h1 className="text-5xl md:text-7xl font-bold leading-[1.02] tracking-tight max-w-5xl mb-7">What if your software actually felt like your organization?</h1>
           <p className="text-xl md:text-2xl text-blue-100 leading-relaxed max-w-3xl mb-10">Not another platform your team has to work around. Practical technology shaped by your programs, people, workflows, and the job that actually needs to get done.</p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/Volunteer-demo" className="bg-white text-[#2439a6] px-8 py-4 font-semibold text-center">Experience a Working Example</Link>
+            <Link href="/volunteer-hub" className="bg-white text-[#2439a6] px-8 py-4 font-semibold text-center">Experience a Working Example</Link>
             <Link href="/contact" className="border border-white/60 px-8 py-4 font-semibold text-center hover:bg-white/10">Tell Us What You Wish Worked Better</Link>
           </div>
         </div>
@@ -48,7 +48,7 @@ export default function FoundationWorksPage() {
             <h2 className="text-4xl md:text-6xl font-bold text-gray-950 mb-6">This demo is not the product. It is proof of what is possible.</h2>
             <p className="text-xl text-gray-600 leading-relaxed mb-5">The Volunteer Hub shows what happens when a system begins with the people doing the work: volunteers can handle more for themselves, managers can see what is happening, and recognition can become part of the operation.</p>
             <p className="text-xl font-semibold text-gray-900 mb-9">As you explore it, the question is not “Do I need this exact software?” It is “What would this look like for us?”</p>
-            <Link href="/Volunteer-demo" className="inline-block bg-[#2a3db4] text-white px-8 py-4 font-semibold hover:bg-[#1e2e8a]">Open the Volunteer Demo →</Link>
+            <Link href="/volunteer-hub" className="inline-block bg-[#2a3db4] text-white px-8 py-4 font-semibold hover:bg-[#1e2e8a]">Open the Volunteer Demo →</Link>
           </div>
           <div className="bg-[#111f52] text-white shadow-2xl p-7 md:p-10">
             <div className="flex items-center justify-between border-b border-white/15 pb-5 mb-6"><div><p className="text-xs uppercase tracking-[.18em] text-blue-200">Example Experience</p><h3 className="text-2xl font-bold mt-1">Volunteer Hub</h3></div><span className="text-xs bg-emerald-400/15 text-emerald-200 px-3 py-1 rounded-full">Live Demo</span></div>
