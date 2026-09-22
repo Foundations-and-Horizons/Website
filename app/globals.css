@@ -9,3 +9,15 @@ h1,h2,h3{letter-spacing:-.025em}
 .fh-display{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.045em}
 .fh-card{transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}.fh-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(20,33,61,.10)}
 .fh-button{transition:transform .2s ease,box-shadow .2s ease}.fh-button:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(20,33,61,.14)}
+
+/* F&H public-site motion language */
+body{overflow-x:hidden}.fh-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:80;pointer-events:none;background:linear-gradient(90deg,var(--coral),var(--mint));transform-origin:left;transform:scaleX(min(1,calc(var(--scroll,0)/5000)));opacity:.8}
+.fh-reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.75,.25,1) var(--reveal-delay,0ms),transform .8s cubic-bezier(.2,.75,.25,1) var(--reveal-delay,0ms)}
+.fh-reveal.fh-seen{opacity:1;transform:none}
+.fh-flowline{height:1px;background:linear-gradient(90deg,transparent,var(--coral),var(--mint),transparent);transform-origin:left;animation:fhFlow 5s ease-in-out infinite}
+.fh-float{animation:fhFloat 7s ease-in-out infinite}.fh-float-slow{animation:fhFloat 10s ease-in-out infinite reverse}
+.fh-wordstream{display:flex;gap:1.25rem;white-space:nowrap;width:max-content;animation:fhMarquee 28s linear infinite}
+.fh-orbit{position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:999px;animation:fhSpin 26s linear infinite}
+.fh-glow{position:absolute;border-radius:999px;filter:blur(70px);opacity:.22;animation:fhPulse 7s ease-in-out infinite}
+.fh-link{position:relative}.fh-link:after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:currentColor;transition:right .3s ease}.fh-link:hover:after{right:0}
+@keyframes fhFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}@keyframes fhMarquee{to{transform:translateX(-50%)}}@keyframes fhSpin{to{transform:rotate(360deg)}}@keyframes fhPulse{50%{transform:scale(1.16);opacity:.32}}@keyframes fhFlow{0%,100%{opacity:.35;transform:scaleX(.65)}50%{opacity:1;transform:scaleX(1)}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.fh-reveal{opacity:1;transform:none;transition:none}.fh-float,.fh-float-slow,.fh-wordstream,.fh-orbit,.fh-glow,.fh-flowline{animation:none!important}.fh-progress{display:none}}@media(max-width:767px){.fh-reveal{transform:translateY(18px)}.fh-wordstream{animation-duration:22s}}
