@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.crm-preview.json
+supabase/.temp/
+pnpm-lock.yaml
+pnpm-workspace.yaml
