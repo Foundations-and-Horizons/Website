@@ -24,7 +24,9 @@ export async function saveInvoice(input: Record<string,unknown>) {
   if(!["draft","sent","paid","void"].includes(status)) throw new Error("Choose a valid invoice status.");
   const label=textField(input.label,250),paid_on=dateField(input.paid_on);
   if(!label || (status==="paid" && !paid_on) || (status!=="paid" && paid_on)) throw new Error("Paid invoices need a payment date; other invoices must leave it blank.");
-  const fields={record_id:uuid(input.record_id),label,amount:amountField(input.amount),status,issued_on:dateField(input.issued_on),due_on:dateField(input.due_on),paid_on,notes:textField(input.notes)};
+  const import_key=textField(input.import_key,100)||null;
+  if(import_key && !/^square:[A-Za-z0-9_-]+$/.test(import_key)) throw new Error("Enter the exact Square invoice number using letters, numbers, dashes or underscores.");
+  const fields={record_id:uuid(input.record_id),label,amount:amountField(input.amount),status,issued_on:dateField(input.issued_on),due_on:dateField(input.due_on),paid_on,notes:textField(input.notes),import_key};
   const result=await db.rpc("crm_save_item",{p_owner:owner,category:"invoice",p_id:input.id?uuid(input.id):null,expected_at:input.id?textField(input.updated_at):null,value:fields});
   if(result.error) throw new Error("Invoice could not be saved, or it changed since you opened it. Refresh and try again.");
   revalidatePath("/dashboard"); return workspace();
