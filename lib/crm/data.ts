@@ -14,7 +14,9 @@ export async function workspace(): Promise<Workspace> {
     db.from("crm_invoices").select("*").eq("owner_id",owner).order("issued_on",{ascending:false}),
     db.from("crm_tasks").select("*").eq("owner_id",owner).order("due_on",{nullsFirst:false}),
     db.from("crm_activity").select("id,record_id,source,event_type,summary,occurred_at").eq("owner_id",owner).order("occurred_at",{ascending:false}).limit(100),
+    db.from("crm_goals").select("first_year,first_target,annual_target,take_home_aim").eq("owner_id",owner).maybeSingle(),
+    db.from("crm_other_income").select("id,label,amount,received_on,reference").eq("owner_id",owner).order("received_on",{ascending:false}),
   ]);
   if(results.some(r=>r.error)) throw new Error("The CRM could not load. Your records have not been changed. Try refreshing or check the database connection.");
-  return { records: results[0].data as RecordItem[], invoices: results[1].data as Invoice[], tasks: results[2].data as Task[], activity: results[3].data as Activity[] };
+  return { records: results[0].data as RecordItem[], invoices: results[1].data as Invoice[], tasks: results[2].data as Task[], activity: results[3].data as Activity[], goal:results[4].data, otherIncome:results[5].data||[] };
 }
