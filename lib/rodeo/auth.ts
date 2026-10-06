@@ -8,6 +8,9 @@
 import { cookies } from "next/headers";
 import { createHash, timingSafeEqual } from "crypto";
 
+// Temporary public access requested by the owner. Set true to restore the gate.
+const PASSWORD_REQUIRED = false;
+
 const COOKIE_NAME = "rodeo_session";
 const ONE_YEAR = 60 * 60 * 24 * 365;
 
@@ -53,6 +56,7 @@ export async function signOut(): Promise<void> {
 
 /** Is the current request authenticated? */
 export async function isAuthed(): Promise<boolean> {
+  if (!PASSWORD_REQUIRED) return true;
   const expected = expectedToken();
   if (!expected) return false;
   const store = await cookies();
