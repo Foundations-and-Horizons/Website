@@ -5,12 +5,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
-  { href: "/dashboard", label: "Command Center", mark: "01", exact: true },
-  { href: "/dashboard/prospecting", label: "Prospecting", mark: "02" },
-  { href: "/dashboard/outreach", label: "Outreach Review", mark: "03" },
+  { href: "/dashboard", label: "Business CRM", mark: "01", exact: true },
+  { href: "/dashboard/prospecting", label: "Earlier prospect research", mark: "02" },
+  { href: "/dashboard/outreach", label: "Earlier outreach drafts", mark: "03" },
   { href: "/dashboard/inquiries", label: "Inquiries", mark: "04" },
-  { href: "/dashboard/tasks", label: "Work Queue", mark: "05" },
-  { href: "/dashboard/deals", label: "Relationships", mark: "06" },
+  { href: "/dashboard/tasks", label: "Earlier work queue", mark: "05" },
+  { href: "/dashboard/deals", label: "Earlier relationships", mark: "06" },
   { href: "/dashboard/companies", label: "Organizations", mark: "07" },
   { href: "/dashboard/contacts", label: "People", mark: "08" },
   { href: "/dashboard/linkedin", label: "Visibility", mark: "09" },
