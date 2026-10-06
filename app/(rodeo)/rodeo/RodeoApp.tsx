@@ -9,7 +9,6 @@ import {
   saveArenaAction,
   saveHorseAction,
   deleteHorseAction,
-  logoutAction,
 } from "./actions";
 import type {
   ArenaMap,
@@ -427,11 +426,6 @@ export default function RodeoApp({
             </button>
           );
         })}
-        <form action={logoutAction} style={{ display: "flex" }}>
-          <button className="tab" type="submit" title="Sign out" aria-label="Sign out">
-            <Icon name="logout" size={15} color="#C9BFAE" />
-          </button>
-        </form>
       </div>
     </div>
   );
