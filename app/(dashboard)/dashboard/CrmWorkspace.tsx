@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { labels, stages, kinds, closed, dateLabel, todayDenver, totals, money, type Workspace, type RecordItem, type Invoice, type Task, type Kind } from "@/lib/crm/model";
 import { loadWorkspace, saveRecord, saveInvoice, saveTask } from "./crm-actions";
 import styles from "./crm.module.css";
+import WinningScorecard from "./WinningScorecard";
 const emptyRecord = (kind:Kind): RecordItem => ({ id:"",kind,organization:"",title:"",contact:"",email:"",stage:stages[kind][0],value:null,event_date:null,next_action:"",next_action_due:null,notes:"",source:"Stephen",needs_review:false,updated_at:"" });
 const tabs = ["Overview","Clients","Outreach","Speaking & workshops","Invoices","Work queue","Activity"];
 type Editor = { type:"record"; value:RecordItem } | { type:"invoice"; value:Invoice } | {type:"task";value:Task};
@@ -25,7 +26,7 @@ export default function CrmWorkspace({ initial, preview=false, loadError }: { in
       finally {refreshBusy.current=false;}
     };
     const db=createClient(),channel=db.channel("crm-workspace");
-    for(const table of ["crm_records","crm_invoices","crm_tasks","crm_activity"]) channel.on("postgres_changes",{event:"*",schema:"public",table},()=>void refresh());
+    for(const table of ["crm_records","crm_invoices","crm_tasks","crm_activity","crm_goals","crm_other_income"]) channel.on("postgres_changes",{event:"*",schema:"public",table},()=>void refresh());
     channel.subscribe(status=> {connected=status==="SUBSCRIBED";if(active)setSync(connected?"Live updates connected":"Checking every 30 seconds");if(connected)void refresh();});
     const timer=setInterval(()=>void refresh(),30000);
     const onVisible=()=> {if(document.visibilityState==="visible")void refresh();};
@@ -60,6 +61,7 @@ export default function CrmWorkspace({ initial, preview=false, loadError }: { in
     {notice&&<div role="status" className={styles.banner}>{notice}<button aria-label="Dismiss message" onClick={()=>setNotice("")}>×</button></div>}
     <nav aria-label="CRM sections" className={styles.tabs}>{tabs.map(t=><button key={t} aria-current={tab===t?"page":undefined} className={tab===t?styles.activeTab:""} onClick={()=>{setTab(t);setQuery("");}}>{t}</button>)}</nav>
     {tab==="Overview"?<>
+      {ready&&<WinningScorecard data={data} preview={preview} onUpdate={setData}/>}
       <section className={styles.stats} aria-label="Business totals">{[["Active clients",summary.clients],["Contracted work",money(summary.contracted)],["Invoiced · awaiting payment",money(summary.receivable)],["Speaking applications",summary.applied]].map(([label,value])=><div key={label}><span>{label}</span><strong>{value}</strong></div>)}</section>
       <div className={styles.overviewGrid}><section className={styles.panel}><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>Client delivery</p><h2>The work you’ve won.</h2></div><button onClick={()=>setTab("Clients")}>View clients →</button></div>
         {clientRows.length?clientRows.map(r=><div key={r.id} className={styles.feature}><div><span className={`${styles.pill} ${styles.green}`}>{labels[r.stage]}</span><h3>{r.organization}</h3><p>{r.title} · {r.contact}</p></div><div className={styles.featureFacts}><div><span>Project fee</span><strong>{money(Number(r.value||0))}</strong></div><div><span>Kickoff / key date</span><strong>{dateLabel(r.event_date)}</strong></div></div><p className={styles.featureNote}>{r.next_action}</p><button className={styles.secondary} onClick={()=>setEditor({type:"record",value:r})}>Open project →</button></div>):<p className={styles.empty}>No active clients yet. Add a client when work is agreed.</p>}

@@ -20,7 +20,9 @@ export type Invoice = { id: string; record_id: string; label: string; amount: nu
   issued_on: string | null; due_on: string | null; paid_on: string | null; notes: string; updated_at: string; import_key?: string | null };
 export type Task = { id: string; record_id: string | null; title: string; due_on: string | null; done: boolean; updated_at: string; import_key?: string | null };
 export type Activity = { id: string; record_id: string | null; source: string; event_type: string; summary: string; occurred_at: string };
-export type Workspace = { records: RecordItem[]; invoices: Invoice[]; tasks: Task[]; activity: Activity[] };
+export type Goal = { first_year:number; first_target:number; annual_target:number; take_home_aim:number };
+export type OtherIncome = { id:string; label:string; amount:number; received_on:string; reference:string };
+export type Workspace = { records: RecordItem[]; invoices: Invoice[]; tasks: Task[]; activity: Activity[]; goal?:Goal|null; otherIncome?:OtherIncome[] };
 export function todayDenver(now = new Date()) {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Denver", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
 }

@@ -3,6 +3,14 @@ import { session, workspace } from "@/lib/crm/data";
 import { recordFields, textField, dateField, amountField, uuid } from "@/lib/crm/validation";
 import { revalidatePath } from "next/cache";
 export async function loadWorkspace() { return workspace(); }
+export async function logOtherIncome(input:Record<string,unknown>) {
+  const {db,owner}=await session();
+  const label=textField(input.label,250),reference=textField(input.reference,250),amount=amountField(input.amount),date=dateField(input.received_on);
+  if(!label||!reference||!date||!amount)throw new Error("Enter a label, positive amount, received date and unique receipt reference.");
+  const result=await db.rpc("crm_log_other_income",{p_owner:owner,p_label:label,p_amount:amount,p_received_on:date,p_reference:reference});
+  if(result.error)throw new Error("Could not log income. Check the date and whether that receipt reference is already recorded.");
+  revalidatePath("/dashboard");return workspace();
+}
 export async function saveRecord(input: Record<string,unknown>) {
   const { db, owner } = await session();
   const fields = recordFields(input);
