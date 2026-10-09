@@ -353,23 +353,32 @@ function viewRuns(){
   }
   body+='<div class="list">'+list.map(function(r){
     var money=Number(r.earnings)>0?'<span class="chip money">'+icon('trophy',11,'var(--money)')+'Won '+fmtMoney(r.earnings)+'</span>':'';
+    var horse='<span class="chip gold">'+icon('horse',11,'var(--leather)')+esc(horseName(r.horseId))+'</span>';
+    var draw=r.drawNumber?'<span class="chip">Draw #'+esc(r.drawNumber)+'</span>':'';
+    var barrels=Number(r.barrelsDown)||0, penalty=Number(r.penaltySeconds)||0;
+    var runStatus=(barrels===0&&penalty===0)
+      ?'<span class="chip teal">Clean run</span>'
+      :'<span class="chip rust">'+(barrels?barrels+' barrel'+(barrels===1?'':'s')+' down':'Penalty')+(penalty?' · +'+penalty+'s':'')+'</span>';
+    var ground=r.ground?'<span class="chip denim">'+esc(r.ground)+'</span>':'';
+    var net=(Number(r.earnings)||0)-(Number(r.entryFee)||0);
+    var netLine=(Number(r.entryFee)||0)>0?'<div class="tny" style="margin-top:3px;">Net '+fmtMoney(net)+'</div>':'';
     return '<div class="card">'+
       '<div class="row between" style="align-items:flex-start;">'+
-        '<div style="padding-right:8px;"><div class="font-display" style="font-size:20px;font-weight:800;line-height:1.05;">'+esc(r.event)+'</div>'+
+        '<div style="padding-right:8px;min-width:0;"><div class="font-display" style="font-size:20px;font-weight:800;line-height:1.05;">'+esc(r.event)+'</div>'+
           '<div class="muted" style="font-size:12px;margin-top:2px;">'+esc(fmtDate(r.date))+'</div>'+
-          '<div class="chips">'+
+          '<div class="chips">'+horse+draw+
             '<span class="chip '+catClass(r.category)+'">'+catLabel(r.category)+'</span>'+
             '<span class="chip denim">'+icon('mappin',11,'var(--denim)')+esc(r.arena)+'</span>'+
-            money+
+            runStatus+ground+money+
           '</div></div>'+
-        '<div style="text-align:right;"><div class="time">'+fmtTime(r.time)+'</div><div class="tny">seconds</div></div>'+
+        '<div style="text-align:right;flex:none;"><div class="time">'+fmtTime(r.time)+'</div><div class="tny">seconds</div>'+netLine+'</div>'+
       '</div>'+
       (r.notes?'<div style="font-size:14px;margin-top:10px;">'+esc(r.notes)+'</div>':'')+
       '<div class="row between" style="margin-top:12px;">'+
         (r.videoLink?'<a class="chip teal" href="'+esc(r.videoLink)+'" target="_blank" rel="noreferrer">'+icon('video',12,'var(--teal)')+'Watch run</a>':'<span></span>')+
         '<div class="row gap2">'+
-          '<button class="icon-btn" data-editrun="'+r.id+'">'+icon('pencil',14,'var(--leather)')+'</button>'+
-          '<button class="icon-btn" data-delrun="'+r.id+'">'+icon('trash',14,'var(--rust)')+'</button>'+
+          '<button class="icon-btn" data-editrun="'+r.id+'" aria-label="Edit run">'+icon('pencil',14,'var(--leather)')+'</button>'+
+          '<button class="icon-btn" data-delrun="'+r.id+'" aria-label="Delete run">'+icon('trash',14,'var(--rust)')+'</button>'+
         '</div>'+
       '</div>'+
     '</div>';
