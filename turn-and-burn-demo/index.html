@@ -461,7 +461,10 @@ function renderModal(){
   var m=S.modal, f=S.form, i;
   if(m.kind==='run'){
     var alist=arenas().map(function(a){return '<option value="'+esc(a)+'"></option>';}).join('');
+    var hlist=(S.horses||[]).map(function(h){return '<option value="'+esc(h.id)+'" '+(f.horseId===h.id?'selected':'')+'>'+esc(h.name)+'</option>';}).join('');
     return modalShell(m.editing?'Edit run':'Log a run',
+      field('Horse','<select class="inp" data-f="horseId">'+hlist+'</select>')+
+      field('Draw number','<input class="inp" data-f="drawNumber" value="'+esc(f.drawNumber||'')+'" placeholder="Optional">')+
       field('Event / Rodeo name','<input class="inp" data-f="event" value="'+esc(f.event)+'" placeholder="e.g. Weber State College Rodeo">')+
       field('Type','<div class="seg rust">'+[['jackpot','Jackpot'],['college','College Rodeo']].map(function(o){
         return '<button data-cat="'+o[0]+'" class="'+(f.category===o[0]?'on':'')+'">'+o[1]+'</button>';}).join('')+'</div>')+
@@ -470,9 +473,16 @@ function renderModal(){
       field('Arena type','<div class="seg denim">'+[['outdoor','Outdoor','sun'],['indoor','Indoor','building']].map(function(o){
         return '<button data-atype="'+o[0]+'" class="'+(f.arenaType===o[0]?'on':'')+'">'+icon(o[2],15)+o[1]+'</button>';}).join('')+'</div>')+
       field('Time (seconds)','<input class="inp" type="number" step="0.01" inputmode="decimal" data-f="time" value="'+esc(f.time)+'" placeholder="17.23">')+
-      field('Money won (leave 0 if none)','<div class="prefix"><span>$</span><input class="inp" type="number" step="1" inputmode="numeric" data-f="earnings" value="'+esc(f.earnings)+'" placeholder="0"></div>')+
-      field('Video link','<input class="inp" data-f="videoLink" value="'+esc(f.videoLink)+'" placeholder="Paste a link for now">')+
-      field('Notes','<textarea class="inp" data-f="notes" placeholder="Wide first turn, watch the gate...">'+esc(f.notes)+'</textarea>')+
+      field('Money won','<div class="prefix"><span>$</span><input class="inp" type="number" step="1" inputmode="numeric" data-f="earnings" value="'+esc(f.earnings)+'" placeholder="0"></div>')+
+      field('Entry fee','<div class="prefix"><span>$</span><input class="inp" type="number" step="0.01" inputmode="decimal" data-f="entryFee" value="'+esc(f.entryFee||'')+'" placeholder="0"></div>')+
+      field('Ground conditions','<input class="inp" data-f="ground" value="'+esc(f.ground||'')+'" placeholder="Deep, hard, slick, holding...">')+
+      field('Barrels down','<select class="inp" data-f="barrelsDown"><option value="0" '+(Number(f.barrelsDown||0)===0?'selected':'')+'>Clean run</option><option value="1" '+(Number(f.barrelsDown)===1?'selected':'')+'>1 barrel</option><option value="2" '+(Number(f.barrelsDown)===2?'selected':'')+'>2 barrels</option><option value="3" '+(Number(f.barrelsDown)===3?'selected':'')+'>3 barrels</option></select>')+
+      field('Penalty seconds','<input class="inp" type="number" step="0.01" inputmode="decimal" data-f="penaltySeconds" value="'+esc(f.penaltySeconds||'')+'" placeholder="0">')+
+      field('Barrel 1 notes','<input class="inp" data-f="barrel1Notes" value="'+esc(f.barrel1Notes||'')+'" placeholder="Approach, pocket, turn...">')+
+      field('Barrel 2 notes','<input class="inp" data-f="barrel2Notes" value="'+esc(f.barrel2Notes||'')+'" placeholder="What worked?">')+
+      field('Barrel 3 notes','<input class="inp" data-f="barrel3Notes" value="'+esc(f.barrel3Notes||'')+'" placeholder="Finish the run...">')+
+      field('Run video','<input class="inp" data-f="videoLink" value="'+esc(f.videoLink||'')+'" placeholder="Demo link for now — phone video comes in Android">')+
+      field('Notes','<textarea class="inp" data-f="notes" placeholder="Wide first turn, watch the gate...">'+esc(f.notes||'')+'</textarea>')+
       '<button class="btn-block" style="background:var(--rust)" data-saverun>Save run</button>');
   }
   if(m.kind==='arenaDetail'){
