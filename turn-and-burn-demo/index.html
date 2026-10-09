@@ -262,7 +262,8 @@ var S = {
   runCat:'all',
   runSort:'date-desc'
 };
-function persist(){ save('turn-burn-runs',S.runs); save('turn-burn-travel',S.travel); save('turn-burn-arena-info',S.arenaInfo); }
+function persist(){ save('turn-burn-runs',S.runs); save('turn-burn-travel',S.travel); save('turn-burn-arena-info',S.arenaInfo); save('turn-burn-horses',S.horses); }
+function horseName(id){ var h=(S.horses||[]).find(function(x){return x.id===id;}); return h?h.name:'Horse'; }
 function arenas(){
   var set={}; S.runs.forEach(function(r){ if(r.arena) set[r.arena]=1; });
   Object.keys(S.arenaInfo).forEach(function(a){ set[a]=1; });
@@ -279,9 +280,9 @@ function staysForArena(name){ return S.travel.filter(function(t){return t.arena=
 
 /* ---- shared bits ---- */
 function topbar(current){
-  var tabs=[['home','Home','home'],['turn-burn-runs','Runs','timer'],['arenas','Arenas','mappin'],['turn-burn-travel','Travel','hotel']];
+  var tabs=[['home','Home','home'],['runs','Runs','timer'],['arenas','Arenas','mappin'],['travel','Travel','hotel']];
   return '<div class="topbar">'+
-    '<div class="brand" data-nav="home">RODEO ROAD LOG</div>'+
+    '<div class="brand" data-nav="home">TURN & BURN</div>'+
     '<div class="tabs">'+tabs.map(function(t){
       var on=current===t[0];
       return '<button class="tab'+(on?' active':'')+'" data-nav="'+t[0]+'">'+icon(t[2],15,on?'#F3EBDC':'#C9BFAE')+'<span class="hide-sm">'+t[1]+'</span></button>';
@@ -296,15 +297,15 @@ function typeChip(type){
 /* ---- HOME ---- */
 function viewHome(){
   var cards=[
-    ['turn-burn-runs','Log a run','Times, category, winnings','timer','var(--rust)'],
+    ['runs','Log a run','Times, category, winnings','timer','var(--rust)'],
     ['arenas','Arenas','Indoor/outdoor & notes','mappin','var(--denim)'],
-    ['turn-burn-travel','On the road','Hotels & campgrounds','hotel','var(--teal)']
+    ['travel','On the road','Hotels & campgrounds','hotel','var(--teal)']
   ];
   var bo=bestByType('outdoor'), bi=bestByType('indoor');
   return '<div class="hero">'+
       '<img src="'+HERO_IMG+'" alt="Barrel racing" />'+
       '<div class="scrim"></div>'+
-      '<div class="cap"><h1>RODEO ROAD LOG</h1><p>Every run, every arena, every stop on the road — in one place.</p></div>'+
+      '<div class="cap"><h1>TURN & BURN</h1><p>Track every run. Understand your performance. Own your data.</p></div>'+
     '</div>'+
     '<div class="stats">'+
       pill('Runs logged',S.runs.length,'flag',null)+
@@ -338,7 +339,7 @@ function viewRuns(){
     return '<option value="'+esc(a)+'"'+(S.runFilter===a?' selected':'')+'>'+esc(a)+'</option>';}).join('');
   var catOpts=[['all','All types'],['jackpot','Jackpots'],['college','College rodeo']].map(function(o){
     return '<option value="'+o[0]+'"'+(S.runCat===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('');
-  var body=topbar('turn-burn-runs')+'<div class="wrap">'+
+  var body=topbar('runs')+'<div class="wrap">'+
     '<div class="row between gap2 wrapf" style="margin-bottom:12px;">'+
       '<div class="row gap2 wrapf grow" style="flex:1 1 200px;min-width:0;">'+
         '<select class="selectlike" data-catfilter style="min-width:0;">'+catOpts+'</select>'+
@@ -411,7 +412,7 @@ function viewArenas(){
 /* ---- TRAVEL ---- */
 function viewTravel(){
   var list=S.travel.slice().sort(function(a,b){return (b.startDate||'').localeCompare(a.startDate||'');});
-  var body=topbar('turn-burn-travel')+'<div class="wrap">'+
+  var body=topbar('travel')+'<div class="wrap">'+
     '<div class="row between" style="margin-bottom:12px;">'+
       '<div class="title">On the Road</div>'+
       '<button class="btn teal" data-newstay>'+icon('plus',16,'#fff')+'Log a stay</button>'+
@@ -524,7 +525,7 @@ function renderModal(){
 
 /* ---- render ---- */
 function render(){
-  var v = S.view==='turn-burn-runs'?viewRuns():S.view==='arenas'?viewArenas():S.view==='turn-burn-travel'?viewTravel():viewHome();
+  var v = S.view==='runs'?viewRuns():S.view==='arenas'?viewArenas():S.view==='travel'?viewTravel():viewHome();
   document.getElementById('app').innerHTML = v + renderModal();
 }
 
@@ -536,14 +537,14 @@ document.addEventListener('click',function(e){
   if(t.hasAttribute('data-nav')){ S.view=t.getAttribute('data-nav'); S.modal=null; render(); return; }
 
   // runs
-  if(t.hasAttribute('data-newrun')){ S.form={id:uid(),date:'',event:'',arena:'',arenaType:'outdoor',category:'jackpot',time:'',earnings:'',videoLink:'',notes:''}; S.modal={kind:'run',editing:false}; render(); return; }
+  if(t.hasAttribute('data-newrun')){ S.form={id:uid(),date:'',event:'',arena:'',arenaType:'outdoor',horseId:(S.horses[0]&&S.horses[0].id)||'',drawNumber:'',category:'jackpot',time:'',entryFee:'',earnings:'',ground:'',barrelsDown:0,penaltySeconds:'',barrel1Notes:'',barrel2Notes:'',barrel3Notes:'',videoLink:'',notes:''}; S.modal={kind:'run',editing:false}; render(); return; }
   if(t.hasAttribute('data-editrun')){ var r=S.runs.find(function(x){return x.id===t.getAttribute('data-editrun');}); S.form=Object.assign({arenaType:arenaType(r.arena)||'outdoor'},r); S.modal={kind:'run',editing:true}; render(); return; }
   if(t.hasAttribute('data-delrun')){ S.runs=S.runs.filter(function(x){return x.id!==t.getAttribute('data-delrun');}); persist(); render(); return; }
   if(t.hasAttribute('data-runsort')){ S.runSort=S.runSort==='date-desc'?'date-asc':S.runSort==='date-asc'?'time-asc':'date-desc'; render(); return; }
   if(t.hasAttribute('data-cat')){ S.form.category=t.getAttribute('data-cat'); render(); return; }
   if(t.hasAttribute('data-saverun')){
     var f=S.form; if(!f.event||!f.arena) return;
-    var run={id:f.id,date:f.date,event:f.event,arena:f.arena,category:f.category,time:f.time,earnings:Number(f.earnings)||0,videoLink:f.videoLink,notes:f.notes};
+    var run={id:f.id,date:f.date,event:f.event,arena:f.arena,horseId:f.horseId||'',drawNumber:f.drawNumber||'',category:f.category,time:f.time,entryFee:Number(f.entryFee)||0,earnings:Number(f.earnings)||0,ground:f.ground||'',barrelsDown:Number(f.barrelsDown)||0,penaltySeconds:Number(f.penaltySeconds)||0,barrel1Notes:f.barrel1Notes||'',barrel2Notes:f.barrel2Notes||'',barrel3Notes:f.barrel3Notes||'',videoLink:f.videoLink||'',notes:f.notes||''};
     var ex=S.runs.some(function(x){return x.id===run.id;});
     S.runs = ex? S.runs.map(function(x){return x.id===run.id?run:x;}) : S.runs.concat([run]);
     // remember the arena's indoor/outdoor type
