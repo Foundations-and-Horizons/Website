@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
+  { href: "/dashboard/scout-inbox", label: "Scout Inbox", mark: "IN" },
   { href: "/dashboard", label: "Business CRM", mark: "01", exact: true },
   { href: "/dashboard/prospecting", label: "Earlier prospect research", mark: "02" },
   { href: "/dashboard/outreach", label: "Earlier outreach drafts", mark: "03" },
