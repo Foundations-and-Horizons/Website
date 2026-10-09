@@ -518,7 +518,7 @@ function renderModal(){
     return modalShell(m.name,
       field('Indoor or outdoor','<div class="seg denim">'+[['outdoor','Outdoor','sun'],['indoor','Indoor','building']].map(function(o){
         return '<button data-atype="'+o[0]+'" class="'+(f.type===o[0]?'on':'')+'">'+icon(o[2],15)+o[1]+'</button>';}).join('')+'</div>')+
-      '<div class="field"><label>Times here, fastest first</label><div class="list" style="gap:8px;">'+rows+'</div></div>'+
+      '<div class="field"><label>Run history — fastest first</label><div class="list" style="gap:8px;">'+rows+'</div></div>'+
       '<div class="field"><label>Where we stayed</label><div class="list" style="gap:8px;">'+stays+'</div></div>'+
       field('Tips & tricks for this arena','<textarea class="inp" style="min-height:90px;" data-f="note" placeholder="e.g. Ground is deep near barrel 3, take it wider...">'+esc(f.note)+'</textarea>')+
       '<button class="btn-block" style="background:var(--denim)" data-savenote>Save arena</button>');
