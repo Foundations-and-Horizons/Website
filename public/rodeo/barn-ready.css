@@ -12,3 +12,6 @@
 .profile-options .event-art{width:64px;height:64px;flex-shrink:0}.profile-options .event-art img{width:100%;height:100%}
 @media(max-width:760px){.event-hero .event-art{width:205px;height:195px}}
 @media(max-width:480px){.event-card .event-art{height:125px}.event-card{min-height:310px}.event-hero .event-art{width:220px;height:195px}}
+
+/* Illustrated My Horses emblem. */
+.horse-nav-art{width:25px;height:25px;padding:2px;object-fit:contain;background:var(--cream);border-radius:6px;display:block}.horse-card-art{width:100%;height:165px;margin:0 auto 12px}.horse-card-art img{width:100%;height:100%;object-fit:contain;display:block}
