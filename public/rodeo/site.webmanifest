@@ -1,8 +1,8 @@
 {
   "id": "/rodeo",
-  "name": "Turn & Burn by Barn Ready",
-  "short_name": "Turn & Burn",
-  "description": "Track barrel-racing runs, arenas, and travel.",
+  "name": "Barn Ready",
+  "short_name": "Barn Ready",
+  "description": "Personal rodeo records for every event, together.",
   "start_url": "/rodeo",
   "scope": "/rodeo",
   "display": "standalone",

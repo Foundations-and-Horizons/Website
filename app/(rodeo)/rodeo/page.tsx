@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Turn & Burn by Barn Ready — Demo",
-  description: "Turn & Burn by Barn Ready barrel-racing app demo.",
-  applicationName: "Turn & Burn",
+  title: "Barn Ready — Rodeo",
+  description: "Your rodeo events, records, horses, and season totals in one place.",
+  applicationName: "Barn Ready",
   manifest: "/rodeo/site.webmanifest",
   icons: {
     icon: [{ url: "/rodeo/app-icon-192.png", sizes: "192x192", type: "image/png" }, { url: "/rodeo/app-icon-512.png", sizes: "512x512", type: "image/png" }],
@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 export default function RodeoPage() {
   return (
     <iframe
-      src="/rodeo/turn-and-burn.html"
-      title="Turn & Burn by Barn Ready demo"
+      src="/rodeo/barn-ready.html"
+      title="Barn Ready rodeo app"
       style={{ position: "fixed", inset: 0, width: "100%", height: "100dvh", border: 0, background: "#fff", zIndex: 9999 }}
       allow="fullscreen"
     />
