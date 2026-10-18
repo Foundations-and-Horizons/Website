@@ -165,6 +165,7 @@
 <div id="app"></div>
 <div class="demo-tag">Turn & Burn Demo — saved on this device</div>
 
+<script src="/rodeo/barn-ready-cleanup.js?v=1"></script>
 <script>
 /* ============================================================
    Turn & Burn — self-contained demo
@@ -218,29 +219,7 @@ function typeLabel(t){ return t==='indoor'?'Indoor':t==='outdoor'?'Outdoor':''; 
 function load(key,fb){ try{ var v=localStorage.getItem(key); return v==null?fb:JSON.parse(v);}catch(e){return fb;} }
 function save(key,v){ try{ localStorage.setItem(key,JSON.stringify(v)); }catch(e){} }
 
-/* ---- seed sample data (v2: arena type, run category, winnings, stay↔arena) ---- */
-(function seedData(){
-  if(localStorage.getItem('turn-burn-seed-v1')) return;
-  save('turn-burn-runs',[
-    {id:'r1',date:'2026-06-27',event:'Cache Valley Summer Jackpot',arena:'Cache County Fairgrounds',category:'jackpot',time:'17.42',earnings:320,videoLink:'',notes:'Clean run, great first turn.'},
-    {id:'r6',date:'2026-06-06',event:'Southern Utah University Rodeo',arena:'Golden Spike Arena',category:'college',time:'17.48',earnings:0,videoLink:'',notes:'Great indoor footing.'},
-    {id:'r2',date:'2026-05-30',event:'Weber State College Rodeo',arena:'Golden Spike Arena',category:'college',time:'17.65',earnings:0,videoLink:'',notes:'First college rodeo of the split.'},
-    {id:'r3',date:'2026-05-16',event:'Spring Sizzler Jackpot',arena:'Cache County Fairgrounds',category:'jackpot',time:'17.61',earnings:150,videoLink:'',notes:''},
-    {id:'r4',date:'2026-04-25',event:'Utah State University Rodeo',arena:'Heber City Rodeo Grounds',category:'college',time:'18.05',earnings:0,videoLink:'',notes:'Deep ground, ran wide on purpose.'},
-    {id:'r5',date:'2026-04-11',event:'Season Opener Jackpot',arena:'Heber City Rodeo Grounds',category:'jackpot',time:'17.95',earnings:75,videoLink:'',notes:'First run of the season.'}
-  ]);
-  save('turn-burn-travel',[
-    {id:'t1',startDate:'2026-06-26',endDate:'2026-06-28',type:'hotel',name:'Best Western Logan Inn',arena:'Cache County Fairgrounds',ada:true,rating:4,notes:'Close to the fairgrounds, easy trailer parking.'},
-    {id:'t2',startDate:'2026-05-29',endDate:'2026-05-31',type:'campground',name:'Golden Spike RV Park',arena:'Golden Spike Arena',ada:false,rating:3,notes:'Full hookups, a little dusty but fine for a weekend.'}
-  ]);
-  save('turn-burn-arena-info',{
-    'Cache County Fairgrounds':{type:'outdoor',notes:'Ground stays firm. Good electronic timer. Warm-up pen is small — get there early.'},
-    'Golden Spike Arena':{type:'indoor',notes:'Indoor, great footing. Can get loud, give her a minute to settle.'},
-    'Heber City Rodeo Grounds':{type:'outdoor',notes:'Deep near barrel 3, take it a touch wider. Long score line.'}
-  });
-  localStorage.setItem('turn-burn-seed-v1','1');
-})();
-
+/* New record books start empty. */
 /* ---- state (with light migration/defaulting of older records) ---- */
 function migrateArenaInfo(){
   var info=load('turn-burn-arena-info',null);
@@ -249,7 +228,7 @@ function migrateArenaInfo(){
   Object.keys(oldNotes).forEach(function(k){ out[k]={type:'',notes:oldNotes[k]||''}; });
   return out;
 }
-var horses=load('turn-burn-horses',[{id:'h1',name:'Primary Horse',registeredName:'',notes:''}]);
+var horses=load('turn-burn-horses',[]);
 var S = {
   view:'home',
   runs:load('turn-burn-runs',[]).map(function(r){ return Object.assign({horseId:'h1',drawNumber:'',entryFee:0,ground:'',barrelsDown:0,penaltySeconds:0,barrel1Notes:'',barrel2Notes:'',barrel3Notes:'',category:'jackpot',earnings:0,videoLink:'',notes:''},r); }),
