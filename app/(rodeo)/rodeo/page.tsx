@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   applicationName: "Barn Ready",
   manifest: "/rodeo/site.webmanifest",
   icons: {
-    icon: [{ url: "/rodeo/app-icon-192.png", sizes: "192x192", type: "image/png" }, { url: "/rodeo/app-icon-512.png", sizes: "512x512", type: "image/png" }],
-    shortcut: "/rodeo/app-icon-192.png",
-    apple: "/rodeo/app-icon-192.png",
+    icon: [{ url: "/rodeo/barn-ready-icon-192.png", sizes: "192x192", type: "image/png" }, { url: "/rodeo/barn-ready-icon-512.png", sizes: "512x512", type: "image/png" }],
+    shortcut: "/rodeo/barn-ready-icon-192.png",
+    apple: "/rodeo/barn-ready-icon-192.png",
   },
 };
 
