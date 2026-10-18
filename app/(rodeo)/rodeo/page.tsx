@@ -1,30 +1,17 @@
 import type { Metadata } from "next";
-import { isAuthed, isPasswordConfigured } from "@/lib/rodeo/auth";
-import { fetchAll } from "@/lib/rodeo/db";
-import LoginForm from "./LoginForm";
-import RodeoApp from "./RodeoApp";
 
 export const metadata: Metadata = {
-  title: "Rodeo Road Log",
-  description: "Track barrel-racing runs, arenas, and travel.",
+  title: "Turn & Burn by Barn Ready — Demo",
+  description: "Turn & Burn by Barn Ready barrel-racing app demo.",
 };
 
-export const dynamic = "force-dynamic";
-
-export default async function RodeoPage() {
-  const authed = await isAuthed();
-
-  if (!authed) {
-    return <LoginForm configured={isPasswordConfigured()} />;
-  }
-
-  const data = await fetchAll();
+export default function RodeoPage() {
   return (
-    <RodeoApp
-      initialRuns={data.runs}
-      initialStays={data.stays}
-      initialArenas={data.arenas}
-      initialHorses={data.horses}
+    <iframe
+      src="/rodeo/turn-and-burn.html"
+      title="Turn & Burn by Barn Ready demo"
+      style={{ position: "fixed", inset: 0, width: "100%", height: "100dvh", border: 0, background: "#fff", zIndex: 9999 }}
+      allow="fullscreen"
     />
   );
 }
