@@ -4,3 +4,11 @@
 @media(max-width:760px){.event-grid{grid-template-columns:repeat(2,1fr)}.hero-inner{padding:28px 20px;gap:15px}.brand-art{width:190px;height:150px}.two-col{grid-template-columns:1fr}.header-inner{padding:10px 14px}.header-nav button{padding:8px 9px}.header-nav button .nav-text{display:none}}
 @media(max-width:480px){.container{padding:22px 14px 35px}.hero-inner{display:flex;flex-direction:column-reverse;text-align:center}.hero-links{justify-content:center}.hero-copy p{margin:auto}.brand-art{width:140px;height:115px}.stats{grid-template-columns:repeat(2,1fr);gap:10px}.event-grid{gap:10px}.event-card{padding:17px 14px;min-height:230px}.event-card h3{font-size:23px}.event-card .event-meta{font-size:11px;gap:4px}.profile-options{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.section-head{align-items:flex-start}.hero-copy h1{font-size:43px}.wordmark{font-size:21px}.record .result{font-size:24px}.record .row{align-items:flex-start}.event-hero .event-mark{width:100px;height:100px}.event-hero .event-mark svg{width:75px;height:75px}dialog .dialog-body{padding:18px}.profile-save{font-size:12px}.backline{font-size:12px}.balance{gap:8px}}
 @media(max-width:480px){.brand-art{width:230px;height:125px}.section-head{flex-wrap:wrap}.section-head h1{font-size:40px}.section-head select{max-width:165px}.hero-panel .event-mark{flex-shrink:0}}
+
+/* Shared illustrated event-logo system. */
+.event-art{background:transparent;border-radius:0;overflow:visible}.event-art img{width:100%;height:100%;object-fit:contain;display:block}
+.event-card .event-art{width:100%;height:155px;margin:0 auto 4px}.event-card{min-height:330px}.event-card .event-art img{width:100%;height:100%}
+.event-hero .event-art{width:270px;height:245px;background:transparent}.event-hero .event-art img{width:100%;height:100%}
+.profile-options .event-art{width:64px;height:64px;flex-shrink:0}.profile-options .event-art img{width:100%;height:100%}
+@media(max-width:760px){.event-hero .event-art{width:205px;height:195px}}
+@media(max-width:480px){.event-card .event-art{height:125px}.event-card{min-height:310px}.event-hero .event-art{width:220px;height:195px}}
