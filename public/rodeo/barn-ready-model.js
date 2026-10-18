@@ -2,14 +2,14 @@
   'use strict';
   const EVENTS = [
     {id:'barrels',name:'Barrel Racing',brand:'Turn & Burn',type:'timed',color:'#BE4B23',symbol:'barrel',horse:true,tag:'Find your line. Finish strong.'},
-    {id:'breakaway',name:'Breakaway Roping',brand:'Breakaway Roping',type:'timed',color:'#2E7472',symbol:'loop',horse:true,tag:'A clean start. A quick catch.'},
-    {id:'goats',name:'Goat Tying',brand:'Goat Tying',type:'timed',color:'#84612D',symbol:'goat',horse:true,tag:'Dismount. Gather. Tie.'},
-    {id:'tiedown',name:'Tie-Down Roping',brand:'Tie-Down Roping',type:'timed',color:'#47637A',symbol:'calf',horse:true,tag:'Every catch. Every tie. Every finish.'},
-    {id:'steer',name:'Steer Wrestling',brand:'Steer Wrestling',type:'timed',color:'#67703C',symbol:'steer',horse:true,tag:'From the box to the ground.'},
-    {id:'team',name:'Team Roping',brand:'Team Roping',type:'timed',color:'#7A4C3F',symbol:'team',horse:true,tag:'Two riders. One run.'},
-    {id:'bareback',name:'Bareback Riding',brand:'Bareback Riding',type:'scored',color:'#786078',symbol:'bareback',horse:false,tag:'Track the ride. Build your score.'},
-    {id:'saddle',name:'Saddle Bronc Riding',brand:'Saddle Bronc Riding',type:'scored',color:'#98603A',symbol:'saddle',horse:false,tag:'Rhythm from the first jump.'},
-    {id:'bulls',name:'Bull Riding',brand:'Bull Riding',type:'scored',color:'#494E56',symbol:'bull',horse:false,tag:'Every out is something to learn from.'}
+    {id:'breakaway',name:'Breakaway Roping',brand:'Bell Collar',type:'timed',color:'#2E7472',symbol:'loop',horse:true,tag:'A clean start. A quick catch.'},
+    {id:'goats',name:'Goat Tying',brand:'Flank & Tie',type:'timed',color:'#84612D',symbol:'goat',horse:true,tag:'Dismount. Gather. Tie.'},
+    {id:'tiedown',name:'Tie-Down Roping',brand:'Hooey',type:'timed',color:'#47637A',symbol:'calf',horse:true,tag:'Every catch. Every tie. Every finish.'},
+    {id:'steer',name:'Steer Wrestling',brand:'Bulldoggin’',type:'timed',color:'#67703C',symbol:'steer',horse:true,tag:'From the box to the ground.'},
+    {id:'team',name:'Team Roping',brand:'Head & Heel',type:'timed',color:'#7A4C3F',symbol:'team',horse:true,tag:'Two riders. One run.'},
+    {id:'bareback',name:'Bareback Riding',brand:'Riggin’',type:'scored',color:'#786078',symbol:'bareback',horse:false,tag:'Track the ride. Build your score.'},
+    {id:'saddle',name:'Saddle Bronc Riding',brand:'Bronc Rein',type:'scored',color:'#98603A',symbol:'saddle',horse:false,tag:'Rhythm from the first jump.'},
+    {id:'bulls',name:'Bull Riding',brand:'Eight Seconds',type:'scored',color:'#494E56',symbol:'bull',horse:false,tag:'Every out is something to learn from.'}
   ];
   const KEYS={profile:'barn-ready-profile-v1',entries:'barn-ready-entries-v1',rodeos:'barn-ready-rodeos-v1'};
   function read(storage,key,fallback){try{const value=JSON.parse(storage.getItem(key));return value==null?fallback:value;}catch(_){return fallback;}}
