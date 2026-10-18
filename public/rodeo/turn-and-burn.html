@@ -453,7 +453,7 @@ function viewTravel(){
 
 /* ---- MODALS ---- */
 function modalShell(title,inner){
-  return '<div class="overlay" data-overlay><div class="sheet" data-sheet onclick="event.stopPropagation()">'+
+  return '<div class="overlay" data-overlay><div class="sheet" data-sheet>'+
     '<div class="head"><div class="title">'+esc(title)+'</div><button class="icon-btn" data-closemodal>'+icon('x',18,'var(--charcoal)')+'</button></div>'+
     '<div class="body">'+inner+'</div></div></div>';
 }
@@ -468,9 +468,11 @@ function renderModal(){
   if(!S.modal) return '';
   var m=S.modal, f=S.form, i;
   if(m.kind==='run'){
+    var sharedRodeos=load('barn-ready-rodeos-v1',[]);
     var alist=arenas().map(function(a){return '<option value="'+esc(a)+'"></option>';}).join('');
     var hlist=(S.horses||[]).map(function(h){return '<option value="'+esc(h.id)+'" '+(f.horseId===h.id?'selected':'')+'>'+esc(h.name)+'</option>';}).join('');
     return modalShell(m.editing?'Edit run':'Log a run',
+      field('Saved rodeo (optional)','<select class="inp" data-f="rodeoId" aria-label="Saved rodeo"><option value="">Enter rodeo details below</option>'+sharedRodeos.map(function(r){return '<option value="'+esc(r.id)+'" '+(f.rodeoId===r.id?'selected':'')+'>'+esc(r.name)+' · '+esc(fmtDate(r.date))+'</option>';}).join('')+'</select>')+
       field('Horse','<select class="inp" data-f="horseId">'+hlist+'</select>')+
       field('Draw number','<input class="inp" data-f="drawNumber" value="'+esc(f.drawNumber||'')+'" placeholder="Optional">')+
       field('Event / Rodeo name','<input class="inp" data-f="event" value="'+esc(f.event)+'" placeholder="e.g. Weber State College Rodeo">')+
@@ -558,6 +560,7 @@ function render(){
 document.addEventListener('click',function(e){
   var t=e.target.closest('[data-nav],[data-newrun],[data-editrun],[data-delrun],[data-runsort],[data-newarena],[data-arena],[data-newstay],[data-editstay],[data-delstay],[data-closemodal],[data-overlay],[data-saverun],[data-savenote],[data-savearena],[data-savestay],[data-type],[data-cat],[data-atype],[data-star],[data-ada],[data-gotostay]');
   if(!t) return;
+  if(t.hasAttribute('data-overlay')&&e.target!==t) return;
 
   if(t.hasAttribute('data-nav')){ S.view=t.getAttribute('data-nav'); S.modal=null; render(); return; }
 
@@ -569,7 +572,7 @@ document.addEventListener('click',function(e){
   if(t.hasAttribute('data-cat')){ S.form.category=t.getAttribute('data-cat'); render(); return; }
   if(t.hasAttribute('data-saverun')){
     var f=S.form; if(!f.event||!f.arena) return;
-    var run={id:f.id,date:f.date,event:f.event,arena:f.arena,horseId:f.horseId||'',drawNumber:f.drawNumber||'',category:f.category,time:f.time,entryFee:Number(f.entryFee)||0,earnings:Number(f.earnings)||0,ground:f.ground||'',barrelsDown:Number(f.barrelsDown)||0,penaltySeconds:Number(f.penaltySeconds)||0,barrel1Notes:f.barrel1Notes||'',barrel2Notes:f.barrel2Notes||'',barrel3Notes:f.barrel3Notes||'',videoLink:f.videoLink||'',notes:f.notes||''};
+    var run={id:f.id,rodeoId:f.rodeoId||'',date:f.date,event:f.event,arena:f.arena,horseId:f.horseId||'',drawNumber:f.drawNumber||'',category:f.category,time:f.time,entryFee:Number(f.entryFee)||0,earnings:Number(f.earnings)||0,ground:f.ground||'',barrelsDown:Number(f.barrelsDown)||0,penaltySeconds:Number(f.penaltySeconds)||0,barrel1Notes:f.barrel1Notes||'',barrel2Notes:f.barrel2Notes||'',barrel3Notes:f.barrel3Notes||'',videoLink:f.videoLink||'',notes:f.notes||''};
     var ex=S.runs.some(function(x){return x.id===run.id;});
     S.runs = ex? S.runs.map(function(x){return x.id===run.id?run:x;}) : S.runs.concat([run]);
     // remember the arena's indoor/outdoor type
@@ -584,7 +587,7 @@ document.addEventListener('click',function(e){
   if(t.hasAttribute('data-arena')){ var nm=t.getAttribute('data-arena'); S.form={note:arenaNotesOf(nm),type:arenaType(nm)}; S.modal={kind:'arenaDetail',name:nm}; render(); return; }
   if(t.hasAttribute('data-savenote')){ S.arenaInfo[S.modal.name]={type:S.form.type||'',notes:S.form.note||''}; persist(); S.modal=null; render(); return; }
   if(t.hasAttribute('data-savearena')){ var n=(S.form.name||'').trim(); if(!n) return; S.arenaInfo[n]={type:S.form.type||'',notes:arenaNotesOf(n)}; persist(); S.modal=null; render(); return; }
-  if(t.hasAttribute('data-gotostay')){ S.modal=null; S.view='turn-burn-travel'; render(); return; }
+  if(t.hasAttribute('data-gotostay')){ S.modal=null; S.view='travel'; render(); return; }
 
   // travel
   if(t.hasAttribute('data-newstay')){ S.form={id:uid(),startDate:'',endDate:'',type:'hotel',name:'',arena:'',ada:false,rating:0,notes:''}; S.modal={kind:'turn-burn-travel',editing:false}; render(); return; }
@@ -609,6 +612,10 @@ document.addEventListener('click',function(e){
 function syncField(e){
   var el=e.target.closest('[data-f]'); if(!el||!S.form) return;
   S.form[el.getAttribute('data-f')]=el.value;
+  if(el.getAttribute('data-f')==='rodeoId'){
+    var savedRodeo=load('barn-ready-rodeos-v1',[]).find(function(r){return r.id===el.value;});
+    if(savedRodeo){S.form.event=savedRodeo.name;S.form.date=savedRodeo.date;S.form.arena=savedRodeo.arena||'';S.form.category=savedRodeo.category==='college'?'college':'jackpot';render();}
+  }
 }
 document.addEventListener('input',syncField);
 document.addEventListener('change',function(e){
