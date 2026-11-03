@@ -3,7 +3,6 @@ export type Prospect = {
   id: string;
   organization_name: string;
   contact_email: string | null;
-  email_verified: boolean;
   source_url: string | null;
   fit_reason: string | null;
   status: string;
@@ -20,14 +19,14 @@ export function decideOutreach(
   history: Message[],
   mail: MailSignal,
   now: Date,
-  options: { pilotMode: boolean; capacityAvailable: boolean; excludedOrganizations: string[] }
+  options: { pilotMode: boolean; capacityAvailable: boolean; excludedOrganizations: string[]; verifiedContactEmails: string[] }
 ): ScoutDecision {
   const hold = (reason: string): ScoutDecision => ({ action: "hold", reason });
   if (mail.replied || mail.bounced || mail.optedOut) return hold("Reply, bounce, or opt-out detected");
   if (options.excludedOrganizations.some(x => x.trim().toLowerCase() === prospect.organization_name.trim().toLowerCase()))
     return hold("Excluded organization");
   if (!options.capacityAvailable) return hold("Capacity reached: waitlist");
-  if (!prospect.contact_email || !prospect.email_verified || !prospect.source_url || !prospect.fit_reason)
+  if (!prospect.contact_email || !options.verifiedContactEmails.some(email => email.toLowerCase() === prospect.contact_email?.toLowerCase()) || !prospect.source_url || !prospect.fit_reason)
     return hold("Verified contact, source, and specific fit rationale required");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(prospect.contact_email)) return hold("Invalid contact email");
   if (!["new", "qualified", "pursue", "contacted"].includes(prospect.status.toLowerCase()))
