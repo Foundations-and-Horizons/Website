@@ -11,7 +11,7 @@ export type Prospect = {
   gmail_thread_id: string | null;
 };
 export type Message = { prospect_id: string; kind: string; status: string; sent_at: string | null };
-export type MailSignal = { replied: boolean; bounced: boolean; optedOut: boolean };
+export type MailSignal = { replied: boolean; bounced: boolean; optedOut: boolean; uncertain: boolean };
 export type ScoutDecision = { action: "hold" | "draft_initial" | "draft_follow_up"; reason: string };
 const DAY = 86_400_000;
 export function decideOutreach(
@@ -22,6 +22,7 @@ export function decideOutreach(
   options: { pilotMode: boolean; capacityAvailable: boolean; excludedOrganizations: string[]; verifiedContactEmails: string[] }
 ): ScoutDecision {
   const hold = (reason: string): ScoutDecision => ({ action: "hold", reason });
+  if (mail.uncertain) return hold("Gmail thread status uncertain");
   if (mail.replied || mail.bounced || mail.optedOut) return hold("Reply, bounce, or opt-out detected");
   if (options.excludedOrganizations.some(x => x.trim().toLowerCase() === prospect.organization_name.trim().toLowerCase()))
     return hold("Excluded organization");
